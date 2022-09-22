@@ -35,10 +35,6 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\b
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySql.Data.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Ubiety.Dns.Core.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Zstandard.Net.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySql.Data.EntityFrameworkCore.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Renci.SshNet.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\SshNet.Security.Cryptography.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -50,7 +46,6 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\b
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\System.Security.Permissions.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\System.Windows.Extensions.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\System.Xml.XPath.XmlDocument.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
@@ -77,3 +72,7 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\o
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\obj\Debug\net6.0\BookingSoccers.pdb
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\obj\Debug\net6.0\BookingSoccers.genruntimeconfig.cache
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\obj\Debug\net6.0\ref\BookingSoccers.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\ZstdNet.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySqlConnector.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySql.EntityFrameworkCore.dll

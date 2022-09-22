@@ -8,10 +8,14 @@ namespace BookingSoccers.Context
     public class BookingSoccersContext : DbContext
     {
 
-        public BookingSoccersContext(DbContextOptions<BookingSoccersContext> options) :
+        public BookingSoccersContext(DbContextOptions options) :
             base(options)
         {
 
+        }
+
+        protected BookingSoccersContext()
+        {
         }
 
         public DbSet<SoccerField> SoccerFields { get; set; }

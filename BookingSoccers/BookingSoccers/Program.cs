@@ -1,5 +1,6 @@
 using BookingSoccers.Context;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("CapstoneGradingBEContextConnection") ??
     throw new InvalidOperationException("Connection string 'CapstoneGradingBEContextConnection' not found.");
 
+var ServerVer = new MySqlServerVersion(ServerVersion.AutoDetect(connectionString));
 
 
 builder.Services.AddControllers();
@@ -15,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookingSoccersContext>(options => {
 
- options.UseMySQL(connectionString);
+ options.UseMySql(ServerVer);
 });
 
 var app = builder.Build();
@@ -34,3 +36,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
