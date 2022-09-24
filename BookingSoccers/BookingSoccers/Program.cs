@@ -1,4 +1,4 @@
-//using BookingSoccers.Context;
+using BookingSoccers.Context;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,10 +15,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddDbContext<BookingSoccersContext>(options => {
+builder.Services.AddDbContext<BookingSoccersContext>(options =>
+{
 
- //options.UseMySql(ServerVer);
-//});
+    options.UseMySql(ServerVer);
+});
 
 var app = builder.Build();
 
