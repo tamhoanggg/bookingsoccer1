@@ -36,6 +36,10 @@ namespace BookingSoccers.Context
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<Booking> Bookings { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
