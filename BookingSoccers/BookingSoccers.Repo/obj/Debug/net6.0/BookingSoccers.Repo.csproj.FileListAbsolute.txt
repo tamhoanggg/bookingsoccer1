@@ -1,0 +1,12 @@
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\bin\Debug\net6.0\BookingSoccers.Repo.deps.json
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\bin\Debug\net6.0\BookingSoccers.Repo.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\bin\Debug\net6.0\BookingSoccers.Repo.pdb
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.csproj.AssemblyReference.cache
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.AssemblyInfoInputs.cache
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.AssemblyInfo.cs
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\refint\BookingSoccers.Repo.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.pdb
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\ref\BookingSoccers.Repo.dll

@@ -12,12 +12,7 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\b
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.runtimeconfig.json
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.pdb
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BouncyCastle.Crypto.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Google.Protobuf.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Humanizer.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\K4os.Compression.LZ4.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\K4os.Compression.LZ4.Streams.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\K4os.Hash.xxHash.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -33,8 +28,6 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\b
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.OpenApi.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySql.Data.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Ubiety.Dns.Core.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -72,7 +65,9 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\o
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\obj\Debug\net6.0\BookingSoccers.pdb
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\obj\Debug\net6.0\BookingSoccers.genruntimeconfig.cache
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\obj\Debug\net6.0\ref\BookingSoccers.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\ZstdNet.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySqlConnector.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
-C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\MySql.EntityFrameworkCore.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.Repo.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.Service.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.Repo.pdb
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers\bin\Debug\net6.0\BookingSoccers.Service.pdb

@@ -1,6 +1,6 @@
 using BookingSoccers.Context;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

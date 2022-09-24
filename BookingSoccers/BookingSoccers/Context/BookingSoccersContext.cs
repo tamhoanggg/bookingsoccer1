@@ -1,7 +1,7 @@
-﻿using System;
+﻿
 using BookingSoccers.Models;
 using Microsoft.EntityFrameworkCore;
-using SoccerBookings.Models;
+
 #nullable disable
 namespace BookingSoccers.Context 
 {
