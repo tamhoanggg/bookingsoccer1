@@ -10,3 +10,5 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.R
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\refint\BookingSoccers.Repo.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.pdb
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\ref\BookingSoccers.Repo.dll
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\bin\Debug\net6.0\BookingSoccers.Repo.runtimeconfig.json
+C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Repo\obj\Debug\net6.0\BookingSoccers.Repo.genruntimeconfig.cache

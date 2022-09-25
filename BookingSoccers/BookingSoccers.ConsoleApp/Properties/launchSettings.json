@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BookingSoccers.ConsoleApp": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

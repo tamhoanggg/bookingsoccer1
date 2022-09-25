@@ -1,9 +1,9 @@
 ﻿
-using BookingSoccers.Models;
+using BookingSoccers.Repo.Models;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
-namespace BookingSoccers.Context 
+namespace BookingSoccers.Repo.Context 
 {
     public class BookingSoccersContext : DbContext
     {

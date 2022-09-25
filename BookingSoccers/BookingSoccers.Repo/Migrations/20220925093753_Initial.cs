@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BookingSoccers.Migrations
+namespace BookingSoccers.Repo.Migrations
 {
     public partial class Initial : Migration
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookingSoccers.Models
+namespace BookingSoccers.Repo.Models
 {
     enum PaymentTypeEnum
     {

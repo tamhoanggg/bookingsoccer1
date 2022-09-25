@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 
-namespace BookingSoccers.Models
+namespace BookingSoccers.Repo.Models
 {
 
     public class SoccerField
