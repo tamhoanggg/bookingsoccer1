@@ -2,11 +2,12 @@
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-namespace BookingSoccers.Authentication
+namespace BookingSoccers.Service.Authentication
 {
     public class FirebaseAuthenticationHandler: 
         AuthenticationHandler<AuthenticationSchemeOptions>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingSoccers.DTO.UserInfo
+namespace BookingSoccers.Service.DTO.UserInfo
 {
     public class HomePageUserInfo
     {

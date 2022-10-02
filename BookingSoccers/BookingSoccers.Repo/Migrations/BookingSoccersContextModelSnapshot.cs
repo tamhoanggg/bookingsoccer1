@@ -22,7 +22,7 @@ namespace BookingSoccers.Repo.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.BookingInfo.Booking", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.BookingInfo.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,10 +53,8 @@ namespace BookingSoccers.Repo.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TotalPrice")
                         .HasColumnType("integer");
@@ -80,7 +78,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.BookingInfo.Payment", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.BookingInfo.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,10 +101,8 @@ namespace BookingSoccers.Repo.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -117,7 +113,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.ImageFolder", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ImageFolder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,7 +136,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("ImageFolders");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.PriceItem", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,7 +166,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("PriceItems");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.PriceMenu", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceMenu", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,10 +174,8 @@ namespace BookingSoccers.Repo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DayType")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
+                    b.Property<int>("DayType")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
@@ -207,7 +201,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("PriceMenus");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.SoccerField", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -257,7 +251,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("SoccerFields");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.Zone", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -292,7 +286,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("Zones");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.ZoneSlot", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneSlot", b =>
                 {
                     b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
@@ -319,7 +313,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("ZoneSlots");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.ZoneType", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneType", b =>
                 {
                     b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
@@ -340,7 +334,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("ZoneTypes");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.UserInfo.Role", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.UserInfo.Role", b =>
                 {
                     b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
@@ -358,7 +352,7 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.UserInfo.User", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.UserInfo.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -376,10 +370,8 @@ namespace BookingSoccers.Repo.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("character varying(6)");
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -406,27 +398,27 @@ namespace BookingSoccers.Repo.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.BookingInfo.Booking", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.BookingInfo.Booking", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.UserInfo.User", "Customer")
+                    b.HasOne("BookingSoccers.Repo.Entities.UserInfo.User", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.SoccerField", "FieldInfo")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "FieldInfo")
                         .WithMany()
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.Zone", "ZoneInfo")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", "ZoneInfo")
                         .WithMany()
                         .HasForeignKey("ZoneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.ZoneType", "TypeZone")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneType", "TypeZone")
                         .WithMany()
                         .HasForeignKey("ZoneTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -441,15 +433,15 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("ZoneInfo");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.BookingInfo.Payment", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.BookingInfo.Payment", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.BookingInfo.Booking", "BookingInfo")
+                    b.HasOne("BookingSoccers.Repo.Entities.BookingInfo.Booking", "BookingInfo")
                         .WithMany()
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingSoccers.Repo.Models.UserInfo.User", "ReceiverInfo")
+                    b.HasOne("BookingSoccers.Repo.Entities.UserInfo.User", "ReceiverInfo")
                         .WithMany()
                         .HasForeignKey("ReceiverInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -460,9 +452,9 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("ReceiverInfo");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.ImageFolder", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ImageFolder", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.SoccerField", "Field")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
                         .WithMany()
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -471,9 +463,9 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("Field");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.PriceItem", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceItem", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.PriceMenu", "Menu")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceMenu", "Menu")
                         .WithMany()
                         .HasForeignKey("PriceMenuId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -482,15 +474,15 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("Menu");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.PriceMenu", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceMenu", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.SoccerField", "Field")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
                         .WithMany()
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.ZoneType", "TypeOfZone")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneType", "TypeOfZone")
                         .WithMany()
                         .HasForeignKey("ZoneTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -501,9 +493,9 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("TypeOfZone");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.SoccerField", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.UserInfo.User", "user")
+                    b.HasOne("BookingSoccers.Repo.Entities.UserInfo.User", "user")
                         .WithMany()
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -512,15 +504,15 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.Zone", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.SoccerField", "Field")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
                         .WithMany()
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.ZoneType", "ZoneCate")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneType", "ZoneCate")
                         .WithMany()
                         .HasForeignKey("ZoneTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,9 +523,9 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("ZoneCate");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.SoccerFieldInfo.ZoneSlot", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneSlot", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.SoccerFieldInfo.Zone", "FieldZone")
+                    b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", "FieldZone")
                         .WithMany()
                         .HasForeignKey("ZoneId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -542,9 +534,9 @@ namespace BookingSoccers.Repo.Migrations
                     b.Navigation("FieldZone");
                 });
 
-            modelBuilder.Entity("BookingSoccers.Repo.Models.UserInfo.User", b =>
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.UserInfo.User", b =>
                 {
-                    b.HasOne("BookingSoccers.Repo.Models.UserInfo.Role", "role")
+                    b.HasOne("BookingSoccers.Repo.Entities.UserInfo.Role", "role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

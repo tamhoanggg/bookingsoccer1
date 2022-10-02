@@ -58,7 +58,7 @@ namespace BookingSoccers.Repo.Entities.BookingInfo
         public DateTime CreateTime { get; set; }
 
         [Required]
-        public StatusEnum PaymentType { get; set; }
+        public StatusEnum Status { get; set; }
 
         public byte Rating { get; set; }
 

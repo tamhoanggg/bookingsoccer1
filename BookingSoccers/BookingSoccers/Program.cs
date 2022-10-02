@@ -1,11 +1,14 @@
-using BookingSoccers.Authentication;
+
 using BookingSoccers.DI;
 using BookingSoccers.Repo.Context;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
-using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +22,20 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddScheme<AuthenticationSchemeOptions, FirebaseAuthenticationHandler>
-    (JwtBearerDefaults.AuthenticationScheme, (o) => { });
-    ;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            "This is a sample secret key - please don't use in production environment.'")),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+//.AddScheme<AuthenticationSchemeOptions, FirebaseAuthenticationHandler>
+//(JwtBearerDefaults.AuthenticationScheme, (o) => { });
+//;
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()
@@ -50,7 +63,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 
 app.UseRouting();
 

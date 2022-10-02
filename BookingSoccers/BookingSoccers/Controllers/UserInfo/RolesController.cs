@@ -5,9 +5,9 @@ using BookingSoccers.Service.UserInfo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookingSoccers.Controllers
+namespace BookingSoccers.Controllers.UserInfo
 {
-    [Route("api/Roles")]
+    [Route("api/roles")]
     [ApiController]
     public class RolesController : ControllerBase
     {
@@ -23,13 +23,13 @@ namespace BookingSoccers.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
-            if(bookingSoccersContext.Roles == null) return NotFound();
+            if (bookingSoccersContext.Roles == null) return NotFound();
             var result = await roleService.RetrieveAllRoles();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewRole(string RoleName) 
+        public async Task<IActionResult> AddNewRole(string RoleName)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -39,7 +39,7 @@ namespace BookingSoccers.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateARole(int id, string NewRoleName) 
+        public async Task<IActionResult> UpdateARole(int id, string NewRoleName)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -49,7 +49,7 @@ namespace BookingSoccers.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificRole(int id) 
+        public async Task<IActionResult> GetOneSpecificRole(int id)
         {
             Role retrievedRole = await roleService.RetrieveARoleById(id);
             if (retrievedRole != null) return Ok(retrievedRole);
@@ -57,7 +57,7 @@ namespace BookingSoccers.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteARole( int id) 
+        public async Task<IActionResult> DeleteARole(int id)
         {
             Role deletedRole = await roleService.RemoveARole(id);
             if (deletedRole != null) return Ok(deletedRole);

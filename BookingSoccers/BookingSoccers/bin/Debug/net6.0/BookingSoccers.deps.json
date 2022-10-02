@@ -1589,7 +1589,10 @@
       "BookingSoccers.Service/1.0.0": {
         "dependencies": {
           "AutoMapper": "12.0.0",
-          "BookingSoccers.Repo": "1.0.0"
+          "BookingSoccers.Repo": "1.0.0",
+          "FirebaseAdmin": "2.3.0",
+          "FirebaseAuthentication.net": "3.7.2",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.9"
         },
         "runtime": {
           "BookingSoccers.Service.dll": {}

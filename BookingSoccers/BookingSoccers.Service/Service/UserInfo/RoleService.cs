@@ -25,6 +25,9 @@ namespace BookingSoccers.Service.UserInfo
 
         public async Task<Role> AddANewRole(string roleName)
         {
+            var existRole = roleRepo.GetById(roleName);
+            if (existRole != null) return null;
+
             Role newRoleObj = new Role()
             {
                 Name = roleName
