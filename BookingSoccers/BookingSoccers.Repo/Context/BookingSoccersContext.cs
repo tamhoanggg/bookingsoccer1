@@ -1,17 +1,19 @@
-﻿
-using BookingSoccers.Repo.Models;
+﻿using BookingSoccers.Repo.Entities.BookingInfo;
+using BookingSoccers.Repo.Entities.SoccerFieldInfo;
+using BookingSoccers.Repo.Entities.UserInfo;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
-namespace BookingSoccers.Repo.Context 
+namespace BookingSoccers.Repo.Context
 {
     public class BookingSoccersContext : DbContext
     {
+        //protected readonly IConfiguration configuration;
 
-        public BookingSoccersContext(DbContextOptions options) :
+        public BookingSoccersContext(DbContextOptions<BookingSoccersContext> options) :
             base(options)
         {
-
+            //this.configuration = configuration;
         }
 
         protected BookingSoccersContext()
@@ -40,11 +42,17 @@ namespace BookingSoccers.Repo.Context
 
         public DbSet<Payment> Payments { get; set; }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseNpgsql(configuration.GetConnectionString("DatabaseConnectionString"));
+        //    base.OnConfiguring(optionsBuilder);
+        //}
     }
 }
 

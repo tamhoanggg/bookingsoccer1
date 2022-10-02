@@ -68,7 +68,7 @@ namespace BookingSoccers.Authentication
             {
                 new Claim("id", claims["user_id"].ToString()),
                 new Claim("email", claims["email"].ToString()),
-                new Claim("name", claims["name"].ToString()),
+                new Claim("name", claims["name"].ToString())
             };
         }
     }

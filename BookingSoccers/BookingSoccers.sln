@@ -8,8 +8,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingSoccers.Repo", "BookingSoccers.Repo\BookingSoccers.Repo.csproj", "{DC30AE36-402C-4E3B-BD60-D9C9CA0DA8C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingSoccers.Service", "BookingSoccers.Service\BookingSoccers.Service.csproj", "{D520F3A5-0CC3-4552-9CE8-F172A6A20815}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DC30AE36-402C-4E3B-BD60-D9C9CA0DA8C5} = {DC30AE36-402C-4E3B-BD60-D9C9CA0DA8C5}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingSoccers.ConsoleApp", "BookingSoccers.ConsoleApp\BookingSoccers.ConsoleApp.csproj", "{18EF39F9-E5A9-4D4E-A83C-5B88631FC047}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingSoccers.ConsoleApp", "BookingSoccers.ConsoleApp\BookingSoccers.ConsoleApp.csproj", "{18EF39F9-E5A9-4D4E-A83C-5B88631FC047}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
