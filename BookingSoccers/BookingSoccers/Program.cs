@@ -53,7 +53,8 @@ builder.Services.AddDbContext<BookingSoccersContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
-
+builder.Services.AddDefaultIdentity<IdentityUser>( ... )
+    .AddRoles<User>().AddRoles<ADMIN>.AddRoles<FieldManager>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

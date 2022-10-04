@@ -12,7 +12,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 {
    [Route("api/bookings")]
    [ApiController]
-   [Authorize(Roles ="Users")]
+   [Authorize(Roles = "User")]
     public class BookingsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

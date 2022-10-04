@@ -11,7 +11,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
     [Route("api/zone-slots")]
     [ApiController]
-    [Authorize(Roles ="Field Manager")]
+  [Authorize(Roles = "FieldManager")]
     public class ZoneSlotsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
