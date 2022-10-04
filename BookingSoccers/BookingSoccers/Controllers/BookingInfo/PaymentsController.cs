@@ -4,6 +4,7 @@ using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.Payment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace BookingSoccers.Controllers.BookingInfo
     [Route("api/payments")]
   
     [ApiController]
-    [Authorize(Roles ="Users")]
+    [Authorize(Roles ="User")]
     public class PaymentsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

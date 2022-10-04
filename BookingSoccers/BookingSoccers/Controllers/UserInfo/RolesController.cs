@@ -4,6 +4,7 @@ using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.UserInfo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace BookingSoccers.Controllers.UserInfo
 {
     [Route("api/roles")]
     [ApiController]
-    [Authorize(Roles ="ADMIN")]
+    [Authorize(Roles ="Admin")]
     public class RolesController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

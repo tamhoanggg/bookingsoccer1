@@ -30,7 +30,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             "This is a sample secret key - please don't use in production environment.'")),
         ValidateIssuer = false,
-        ValidateAudience = false
+        ValidateAudience = false,
+        ValidateLifetime = true
     };
 });
 //.AddScheme<AuthenticationSchemeOptions, FirebaseAuthenticationHandler>

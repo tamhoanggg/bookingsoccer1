@@ -12,6 +12,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using BookingSoccers.Service.Models.Common;
+using Microsoft.EntityFrameworkCore;
+using BookingSoccers.Service.Models.Payload;
 //using Firebase.Auth;
 //using BookingSoccers.Service.Service.UserInfo;
 
@@ -47,28 +50,31 @@ namespace BookingSoccers.Service.Service
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret_key)),
-                ValidateLifetime = false
+                ValidateLifetime = true
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, 
+                StringComparison.InvariantCultureIgnoreCase) || 
+                securityToken.ValidTo > DateTime.UtcNow)
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
 
         }
 
-        public async Task<LoginUserInfo> Authentication(string IdToken) 
+        public async Task<GeneralResult<LoginUserInfo>> Authentication(string IdToken)
         {
-            
+
             string API_key = "AIzaSyCSYPWwr8YTJ3_vYAynxeZr37OKSC9VQng";
             string RoleName = "";
             string tokenString = "";
             string RefreshToken = "";
+
             LoginUserInfo userInfo = new LoginUserInfo();
-            DateTime? validFromDate = null;
-            DateTime? validToDate = null;
+
             try
             {
                 FirebaseToken decodedToken = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance
@@ -77,7 +83,8 @@ namespace BookingSoccers.Service.Service
                 var authUser = new FirebaseAuthProvider(new FirebaseConfig(API_key));
                 var auth = authUser.GetUserAsync(IdToken);
                 User user = auth.Result;
-                var UserWithEmail = await userRepo.GetById(user.Email.ToLower());
+                var UserWithEmail = await userRepo.Get().Where(x =>
+                x.Email == user.Email.ToLower()).FirstOrDefaultAsync();
 
                 if (UserWithEmail == null) return null;
 
@@ -87,13 +94,13 @@ namespace BookingSoccers.Service.Service
 
                 if (UserWithEmail.RoleId == 1)
                 {
-                    userInfo.Role = "Manager";
-                    RoleName = "Manager";
+                    userInfo.Role = "Admin";
+                    RoleName = "Admin";
                 }
                 else if (UserWithEmail.RoleId == 2)
                 {
-                    userInfo.Role = "Admin";
-                    RoleName = "Admin";
+                    userInfo.Role = "Manager";
+                    RoleName = "Manager";
                 }
                 else if (UserWithEmail.RoleId == 3)
                 {
@@ -137,7 +144,7 @@ namespace BookingSoccers.Service.Service
             userInfo.RefreshToken = RefreshToken;
             userInfo.RefreshTokenExpirationTime = refreshTokenExiryTime;
 
-            return userInfo;
+            return GeneralResult<LoginUserInfo>.Success(userInfo);
         }
 
         private JwtSecurityToken CreateToken(List<Claim> authClaims)
@@ -155,22 +162,18 @@ namespace BookingSoccers.Service.Service
             return token;
         }
 
-        public async Task<IActionResult> RefreshToken(string AccessToken, string RefreshToken, 
-            DateTime refreshTokenExpiryDate)
+        public async Task<GeneralResult<APIToken>> RefreshToken(TokenRefresh tokenInfo)
         {
-            if (AccessToken is null || RefreshToken is null)
-            {
-                return null;
-            }
+            if (tokenInfo.AccessToken is null || tokenInfo.RefreshToken is null)
+                return GeneralResult<APIToken>.Error(400,
+                        "Access token or refresh token is empty");
 
-            string? accessToken = AccessToken;
-            string? refreshToken = RefreshToken;
+            string? accessToken = tokenInfo.AccessToken;
+            string? refreshToken = tokenInfo.RefreshToken;
 
             var principal = GetPrincipalFromExpiredToken(accessToken);
-            if (principal == null)
-            {
-                return null;
-            }
+            if (principal == null) 
+                GeneralResult<APIToken>.Error(400,"Access token is invalid");
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -178,20 +181,20 @@ namespace BookingSoccers.Service.Service
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
-            var user = await userRepo.GetById(username);
+            var user = await userRepo.Get().Where(x =>
+                 x.UserName == username).FirstOrDefaultAsync();
 
-            if (user == null || refreshTokenExpiryDate <= DateTime.UtcNow)
-            {
-                return null;
-            }
+            if (user == null || tokenInfo.RefreshTokenExpiryDate <= DateTime.UtcNow)
+                return GeneralResult<APIToken>.Error(400,
+                    "Access token or refresh token is invalid");
 
             var newAccessToken = CreateToken(principal.Claims.ToList());
             var newRefreshToken = GenerateRefreshToken();
 
-            return new ObjectResult(new
+            return GeneralResult<APIToken>.Success(new APIToken()
             {
-                accessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
-                refreshToken = newRefreshToken
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+                RefreshToken = newRefreshToken
             });
         }
 
