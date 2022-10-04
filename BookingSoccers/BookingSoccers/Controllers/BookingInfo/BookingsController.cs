@@ -12,7 +12,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 {
    [Route("api/bookings")]
    [ApiController]
-   [Authorize(Roles = "User")]
+   [Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -41,7 +41,7 @@ namespace BookingSoccers.Controllers.BookingInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+        [Authorize(Roles = "User,ADMIN")]
         [HttpPost]
         public async Task<IActionResult> AddNewBooking(BookingCreatePayload newBookingInfo)
         {
@@ -56,7 +56,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(AddedBooking.StatusCode, response);
         }
-
+        [Authorize(Roles = "User,ADMIN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateABooking(int id, BookingUpdatePayload NewUserInfo)
         {
@@ -73,7 +73,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(updatedBooking.StatusCode, response);
         }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificBooking(int id)
         {
@@ -88,7 +88,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(retrievedBooking.StatusCode, response);
         }
-
+        [Authorize(Roles = "User,ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteABooking(int id)
         {

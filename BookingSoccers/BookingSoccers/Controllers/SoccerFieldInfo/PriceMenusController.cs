@@ -10,7 +10,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
     [Route("api/price-menus")]
     [ApiController]
-   [Authorize(Roles = "FieldManager")]
+   [Authorize]
     public class PriceMenusController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -39,7 +39,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+        [Authorize(Roles = "FieldManager,ADMIN")]
         [HttpPost]
         public async Task<IActionResult> AddNewPriceMenu(PriceMenuCreatePayload newPriceMenuInfo)
         {
@@ -54,7 +54,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedPriceMenu.StatusCode, response);
         }
-
+        [Authorize(Roles = "FieldManager,ADMIN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAPriceMenu(int id,
             PriceMenuUpdatePayload NewPriceMenuInfo)
@@ -86,7 +86,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedPriceMenu.StatusCode, response);
         }
-
+        [Authorize(Roles = "FieldManager,ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAPriceMenu(int id)
         {

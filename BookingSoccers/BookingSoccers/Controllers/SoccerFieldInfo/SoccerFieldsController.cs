@@ -10,7 +10,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
     [Route("api/soccer-fields")]
     [ApiController]
-[Authorize(Roles = "FieldManager")]
+[Authorize]
     public class SoccerFieldsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -39,7 +39,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+        [Authorize(Roles = "FieldManager,ADMIN")]
         [HttpPost]
         public async Task<IActionResult> AddNewSoccerField(SoccerFieldCreatePayload newSoccerFieldInfo)
         {
@@ -54,7 +54,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedSoccerField.StatusCode, response);
         }
-
+        [Authorize(Roles = "FieldManager,ADMIN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateASoccerField(int id,
             SoccerFieldUpdatePayload NewSoccerFieldInfo)
@@ -86,7 +86,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedSoccerField.StatusCode, response);
         }
-
+        [Authorize(Roles = "FieldManager,ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteASoccerField(int id)
         {
