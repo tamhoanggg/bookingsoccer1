@@ -10,6 +10,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
     [Route("api/price-items")]
     [ApiController]
+    [Authorize(Roles ="Field Manager")]
     public class PriceItemsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

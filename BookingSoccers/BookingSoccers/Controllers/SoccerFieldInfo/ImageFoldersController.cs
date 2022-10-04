@@ -11,6 +11,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
     [Route("api/image-folders")]
     [ApiController]
+    [Authorize(Roles ="Field Manager")]
     public class ImageFoldersController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

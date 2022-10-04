@@ -10,6 +10,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 {
     [Route("api/zones")]
     [ApiController]
+    [Authorize(Roles ="Field Manager")]
     public class ZonesController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

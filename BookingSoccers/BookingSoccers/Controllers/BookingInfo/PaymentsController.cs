@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookingSoccers.Controllers.BookingInfo
 {
     [Route("api/payments")]
+  
     [ApiController]
+    [Authorize(Roles ="User")]
     public class PaymentsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

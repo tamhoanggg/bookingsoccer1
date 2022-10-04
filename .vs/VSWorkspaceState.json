@@ -3,9 +3,14 @@
     "",
     "\\BookingSoccers",
     "\\BookingSoccers\\BookingSoccers",
-    "\\BookingSoccers\\BookingSoccers\\bin",
-    "\\BookingSoccers\\BookingSoccers\\Context",
-    "\\BookingSoccers\\BookingSoccers\\Controllers"
+    "\\BookingSoccers\\BookingSoccers.Service",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\DTO",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\DTO\\User",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\Payload\\User",
+    "\\BookingSoccers\\BookingSoccers\\Controllers",
+    "\\BookingSoccers\\BookingSoccers\\Controllers\\BookingInfo"
   ],
+  "SelectedNode": "\\BookingSoccers",
   "PreviewInSolutionExplorer": false
 }
