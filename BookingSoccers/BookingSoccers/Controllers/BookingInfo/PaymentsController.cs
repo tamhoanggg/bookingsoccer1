@@ -12,7 +12,7 @@ namespace BookingSoccers.Controllers.BookingInfo
     [Route("api/payments")]
   
     [ApiController]
-    [Authorize(Roles ="User")]
+    [Authorize(Roles ="Users")]
     public class PaymentsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
