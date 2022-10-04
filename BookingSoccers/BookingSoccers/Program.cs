@@ -4,6 +4,7 @@ using BookingSoccers.Repo.Context;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 
+using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,7 +39,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //(JwtBearerDefaults.AuthenticationScheme, (o) => { });
 //;
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. " +
+        "\r\n\r\n Enter 'Bearer' [space] and then your token in the text input below." +
+        "\r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
+    });
+
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+ {
+     {
+           new OpenApiSecurityScheme
+             {
+                 Reference = new OpenApiReference
+                 {
+                     Type = ReferenceType.SecurityScheme,
+                     Id = "Bearer"
+                 }
+             },
+             new string[] {}
+     }
+ });
+}    
+);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()
 {
