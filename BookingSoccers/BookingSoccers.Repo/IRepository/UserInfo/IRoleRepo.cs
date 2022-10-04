@@ -9,6 +9,6 @@ namespace BookingSoccers.Repo.IRepository.UserInfo
 {
     public interface IRoleRepo : IBaseRepository<Role>
     {
-        
+        Task<Role> GetRoleByName(String RoleName);   
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BookingSoccers.Repo.Entities.UserInfo;
+using BookingSoccers.Service.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,15 @@ namespace BookingSoccers.Service.IService.UserInfo
 {
     public interface IRoleService
     {
-        Task<Role> AddANewRole(string RoleName);
+        Task<GeneralResult<Role>> AddANewRole(string RoleName);
 
-        Task<Role> RetrieveARoleById(int roleId);
+        Task<GeneralResult<Role>> RetrieveARoleById(byte roleId);
 
-        Task<List<Role>> RetrieveAllRoles();
+        Task<GeneralResult< List<Role> > > RetrieveAllRoles();
 
-        Task<Role> UpdateARole(int Id, string roleName);
+        Task<GeneralResult<Role>> UpdateARole(byte Id, string roleName);
 
-        Task<Role> RemoveARole(int RoleId);
+        Task<GeneralResult<Role>> RemoveARole(byte RoleId);
 
     }
 }

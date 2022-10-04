@@ -1,6 +1,9 @@
-﻿using BookingSoccers.Repo.Entities.BookingInfo;
+﻿using AutoMapper;
+using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.IRepository.BookingInfo;
 using BookingSoccers.Service.IService.BookingInfo;
+using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.Payment;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,57 +16,70 @@ namespace BookingSoccers.Service.Service.BookingInfo
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepo paymentRepo;
+        private readonly IMapper mapper;
 
-        public PaymentService(IPaymentRepo paymentRepo)
+        public PaymentService(IPaymentRepo paymentRepo, IMapper mapper)
         {
             this.paymentRepo = paymentRepo;
+            this.mapper = mapper;
         }
 
-        public async Task<Payment> AddANewPayment(Payment paymentinfo)
+        public async Task<GeneralResult<Payment>> AddANewPayment(PaymentCreatePayload paymentinfo)
         {
-            paymentRepo.Create(paymentinfo);
+            var payment = mapper.Map<Payment>(paymentinfo);
+
+            paymentRepo.Create(payment);
             await paymentRepo.SaveAsync();
-            return paymentinfo;
+
+            return GeneralResult<Payment>.Success(payment);
         }
 
-        public async Task<Payment> RemoveAPayment(int PaymentId)
+        public async Task<GeneralResult<Payment>> RemoveAPayment(int PaymentId)
         {
-            var searchPayment = await RetrieveAPaymentById(PaymentId);
-            if (searchPayment == null) return null;
+            var searchPayment = await paymentRepo.GetById(PaymentId);
+
+            if (searchPayment == null) return GeneralResult<Payment>.Error(
+                204, "Payment not found with Id:" + PaymentId);
+
             paymentRepo.Delete(searchPayment);
             await paymentRepo.SaveAsync();
-            return searchPayment;
+
+            return GeneralResult<Payment>.Success(searchPayment);
         }
 
-        public async Task<Payment> RetrieveAPaymentById(int PaymentId)
+        public async Task<GeneralResult<Payment>> RetrieveAPaymentById(int PaymentId)
         {
             var returnedPayment = await paymentRepo.GetById(PaymentId);
-            if (returnedPayment == null) return null;
-            return returnedPayment;
+
+            if (returnedPayment == null) return GeneralResult<Payment>.Error(
+                204, "Payment not found with Id:" + PaymentId);
+
+            return GeneralResult<Payment>.Success(returnedPayment);
         }
 
-        public async Task<List<Payment>> RetrieveAllPayments()
+        public async Task<GeneralResult<List<Payment>>> RetrieveAllPayments()
         {
             var PaymentList = await paymentRepo.Get().ToListAsync();
-            if (PaymentList == null) return null;
-            return PaymentList;
+
+            if (PaymentList == null) return GeneralResult<List<Payment>>.Error(
+                204, "No payment found ");
+
+            return GeneralResult <List<Payment>>.Success(PaymentList);
         }
 
-        public async Task<Payment> UpdateAPayment(int Id, Payment newPaymentInfo)
+        public async Task<GeneralResult<Payment>> UpdateAPayment(int Id, 
+            PaymentUpdatePayload newPaymentInfo)
         {
-            var toUpdatePayment = await RetrieveAPaymentById(Id);
-            if (toUpdatePayment == null) return null;
+            var toUpdatePayment = await paymentRepo.GetById(Id);
+            if (toUpdatePayment == null) return GeneralResult<Payment>.Error(
+                204, "Payment not found with Id:" + Id);
 
-            toUpdatePayment.Type = newPaymentInfo.Type;
-            toUpdatePayment.BookingId = newPaymentInfo.BookingId;
-            toUpdatePayment.Amount = newPaymentInfo.Amount;
-            toUpdatePayment.ReceiverId = newPaymentInfo.ReceiverId;
-            toUpdatePayment.Time = newPaymentInfo.Time;
-            
+            mapper.Map(newPaymentInfo, toUpdatePayment);
+
             paymentRepo.Update(toUpdatePayment);
             await paymentRepo.SaveAsync();
 
-            return toUpdatePayment;
+            return GeneralResult<Payment>.Success(toUpdatePayment);
         }
     }
 }

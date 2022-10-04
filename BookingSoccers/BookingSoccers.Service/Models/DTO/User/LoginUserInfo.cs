@@ -1,4 +1,6 @@
-﻿namespace BookingSoccers.Service.DTO.UserInfo
+﻿using BookingSoccers.Service.Models.DTO.User;
+
+namespace BookingSoccers.Service.Models.DTO.User
 {
     public class LoginUserInfo: RefreshTokenInfo
     {

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "5HWKcz8GqE8ouc09AvYIcF4G1ILKQwzBfs2A0P4qpIX/V3G3U2lAdj4cuC5kyr34IGS+fQP4h/CaYo3o6itZTA==",
+  "dgSpecHash": "UEE81rRQ7oYeUkCJLlo/XYiD6zE6g66bAmUL2z4HFnYLiT5mbV2kOo43HOOmyMp2ys47y4m+t8dCPojqACszgQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers\\BookingSoccers.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\bouncycastle.netcore\\1.8.3\\bouncycastle.netcore.1.8.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\firebaseadmin\\2.3.0\\firebaseadmin.2.3.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\firebaseauthentication.net\\3.7.2\\firebaseauthentication.net.3.7.2.nupkg.sha512",

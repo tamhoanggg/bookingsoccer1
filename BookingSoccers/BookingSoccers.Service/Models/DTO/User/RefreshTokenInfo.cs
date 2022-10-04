@@ -1,4 +1,4 @@
-﻿namespace BookingSoccers.Service.DTO
+﻿namespace BookingSoccers.Service.Models.DTO.User
 {
     public class RefreshTokenInfo
     {

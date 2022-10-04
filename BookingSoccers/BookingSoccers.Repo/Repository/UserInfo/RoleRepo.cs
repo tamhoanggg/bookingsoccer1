@@ -18,5 +18,13 @@ namespace BookingSoccers.Repo.Repository.UserInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<Role> GetRoleByName(string RoleName)
+        {
+            //if (bookingSoccersContext.Roles == null)
+            //    return null;
+
+            var returnedRole = await Get().Where(x => x.Name == RoleName).FirstOrDefaultAsync();
+            return returnedRole;
+        }
     }
 }

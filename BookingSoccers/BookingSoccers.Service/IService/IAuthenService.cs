@@ -1,4 +1,4 @@
-﻿using BookingSoccers.Service.DTO.UserInfo;
+﻿using BookingSoccers.Service.Models.DTO.User;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

@@ -1,84 +1,99 @@
-﻿using BookingSoccers.Repo.Context;
+﻿using AutoMapper;
 using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
+using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.User;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BookingSoccers.Service.Service.UserInfo
 {
     public class UserService : IUserService
     {
         private readonly IUserRepo userRepo;
-        private readonly BookingSoccersContext bookingSoccersContext;
+        private readonly IMapper mapper;
 
-        public UserService(IUserRepo userRepo, 
-            BookingSoccersContext bookingSoccersContext)
+        public UserService(IUserRepo userRepo, IMapper mapper)
         {
             this.userRepo = userRepo;
-            this.bookingSoccersContext = bookingSoccersContext;
+            this.mapper = mapper;
         }
 
-        public async Task<User> AddANewUser(User userinfo)
+        public async Task< GeneralResult<User> > AddANewUser(UserCreatePayload userinfo)
         {
-            if (await userRepo.GetById(userinfo.UserName) != null ||
-                await userRepo.GetById(userinfo.Email) != null ||
-                await userRepo.GetById(userinfo.PhoneNumber) != null) return null;
-                userRepo.Create(userinfo);
+            
+           var userExistCheck = await userRepo.Get().Where(x =>
+                x.UserName == userinfo.UserName ||
+                x.Email == userinfo.Email ||
+                x.PhoneNumber == userinfo.PhoneNumber).FirstOrDefaultAsync();
+
+            if (userExistCheck != null) return 
+                    GeneralResult<User>.Error(403, "User already exists"); 
+
+            var toCreateUser = mapper.Map<User>(userinfo);
+            userRepo.Create(toCreateUser);
             await userRepo.SaveAsync();
-            return await userRepo.GetById(userinfo.UserName);
+
+            return GeneralResult<User>.Success(toCreateUser);
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task< GeneralResult<User> > GetByEmail(string email)
         {
             var User = await userRepo.GetById(email);
-            if (User == null) return null;
-            return User;
+
+            if (User == null) return GeneralResult<User>.Error(
+                204, "User not found with Email:" + email); 
+
+            return GeneralResult<User>.Success(User);
         }
 
-        public async Task<User> RemoveAUser(int UserId)
+        public async Task< GeneralResult<User> > RemoveAUser(int UserId)
         {
             var returnedUser = await userRepo.GetById(UserId);
-            if (returnedUser == null) return null;
+
+            if (returnedUser == null) return GeneralResult<User>.Error(
+                204, "User not found with Id:" + UserId);
+
             userRepo.Delete(returnedUser);
             await userRepo.SaveAsync();
-            return returnedUser;
+
+            return GeneralResult<User>.Success(returnedUser);
         }
 
-        public async Task<List<User>> RetrieveAllUsers()
+        public async Task< GeneralResult< List<User> > > RetrieveAllUsers()
         {
             var returnedUserList = await userRepo.Get().ToListAsync();
-            if (returnedUserList == null) return null;
-            return returnedUserList;
+
+            if (returnedUserList == null) return GeneralResult< List<User>>.Error(
+                204, "No users found ");
+
+            return GeneralResult<List<User>>.Success(returnedUserList);
         }
 
-        public async Task<User> RetrieveAUserById(int UserId)
+        public async Task<GeneralResult<User>> RetrieveAUserById(int UserId)
         {
             var userById = await userRepo.GetById(UserId);
-            if (userById == null) return null;
-            return userById;
+
+            if (userById == null) return GeneralResult<User>.Error(
+                204, "User not found with Id:" + UserId); 
+
+            return GeneralResult<User>.Success(userById);
         }
 
-        public async Task<User> UpdateAUser(int Id, User newUserInfo)
+        public async Task<GeneralResult<User>> UpdateAUser(int Id, UserUpdatePayload newUserInfo)
         {
             var toUpdateUser = await userRepo.GetById(Id);
-            if (toUpdateUser == null) return null;
 
-            toUpdateUser.UserName = newUserInfo.UserName;
-            toUpdateUser.FirstName = newUserInfo.FirstName;
-            toUpdateUser.LastName = newUserInfo.LastName;
-            toUpdateUser.PhoneNumber = newUserInfo.PhoneNumber;
-            toUpdateUser.Gender = newUserInfo.Gender;
-            toUpdateUser.Email = newUserInfo.Email;
+            if (toUpdateUser == null) return GeneralResult<User>.Error(
+                204, "User not found with Id:" + Id);
+
+            mapper.Map(newUserInfo, toUpdateUser);
 
             userRepo.Update(toUpdateUser);
             await userRepo.SaveAsync();
 
-            return toUpdateUser;
+            return GeneralResult<User>.Success(toUpdateUser);
         }
     }
 }

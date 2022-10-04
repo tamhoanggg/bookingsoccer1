@@ -47,7 +47,7 @@ namespace BookingSoccers.Repo.Migrations
                     UserName = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: false),
                     FirstName = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     LastName = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Gender = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
                     PhoneNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     Email = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: false)
                 },
@@ -118,7 +118,7 @@ namespace BookingSoccers.Repo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FieldId = table.Column<int>(type: "integer", nullable: false),
                     ZoneTypeId = table.Column<byte>(type: "smallint", nullable: false),
-                    DayType = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    DayType = table.Column<int>(type: "integer", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<byte>(type: "smallint", nullable: false)
@@ -207,7 +207,7 @@ namespace BookingSoccers.Repo.Migrations
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     Rating = table.Column<byte>(type: "smallint", nullable: false),
                     Comment = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false)
                 },
@@ -244,7 +244,7 @@ namespace BookingSoccers.Repo.Migrations
                 name: "ZoneSlots",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(type: "smallint", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ZoneId = table.Column<int>(type: "integer", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -271,7 +271,7 @@ namespace BookingSoccers.Repo.Migrations
                     BookingId = table.Column<int>(type: "integer", nullable: false),
                     ReceiverInfoId = table.Column<int>(type: "integer", nullable: false),
                     ReceiverId = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
                     Amount = table.Column<int>(type: "integer", nullable: false),
                     Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

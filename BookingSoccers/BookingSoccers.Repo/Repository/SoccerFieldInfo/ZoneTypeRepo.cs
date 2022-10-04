@@ -1,6 +1,7 @@
 ﻿using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,10 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public Task<ZoneType> GetZoneTypeByName(string TypeName)
+        {
+            var foundZoneType = Get().Where(x => x.Name == TypeName).FirstOrDefaultAsync();
+            return foundZoneType;
+        }
     }
 }

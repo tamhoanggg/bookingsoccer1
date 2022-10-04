@@ -11,7 +11,7 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public byte Id { get; set; }
+        public int Id { get; set; }
 
         [ForeignKey("ZoneId")]
         public Zone FieldZone { get; set; }

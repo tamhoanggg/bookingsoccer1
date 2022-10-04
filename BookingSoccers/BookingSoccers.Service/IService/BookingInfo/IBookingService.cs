@@ -1,4 +1,6 @@
 ﻿using BookingSoccers.Repo.Entities.BookingInfo;
+using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.Booking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,14 @@ namespace BookingSoccers.Service.IService.BookingInfo
 {
     public interface IBookingService
     {
-        Task<Booking> AddANewBooking(Booking bookinginfo);
+        Task<GeneralResult<Booking>> AddANewBooking(BookingCreatePayload bookinginfo);
 
-        Task<Booking> RetrieveABookingById(int BookingId);
+        Task<GeneralResult<Booking>> RetrieveABookingById(int BookingId);
 
-        Task<List<Booking>> RetrieveAllBooking();
+        Task<GeneralResult<List<Booking>>> RetrieveAllBookings();
 
-        Task<Booking> UpdateABooking(int Id, Booking newBookingInfo);
+        Task<GeneralResult<Booking>> UpdateABooking(int Id, BookingUpdatePayload newBookingInfo);
 
-        Task<Booking> RemoveABooking(int BookingId);
+        Task<GeneralResult<Booking>> RemoveABooking(int BookingId);
     }
 }

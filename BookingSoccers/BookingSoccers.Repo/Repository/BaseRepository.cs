@@ -23,19 +23,19 @@ public BaseRepository(BookingSoccersContext bookingSoccersContext)
         public virtual void Create(T type)
         {
             dbSet.Add(type);
-            //throw new NotImplementedException();
+            
         }
 
         public virtual void Delete(T type)
         {
             dbSet.Remove(type);
-            //throw new NotImplementedException();
+            
         }
 
         public IQueryable<T> Get()
         {
             return this.dbSet;
-            //throw new NotImplementedException();
+            
         }
 
         public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null, string includeProperties = "")
@@ -58,25 +58,25 @@ public BaseRepository(BookingSoccersContext bookingSoccersContext)
                 return await orderby(query).ToListAsync();
             }
             return await query.ToListAsync();
-            //throw new NotImplementedException();
+            
         }
 
         public virtual async Task<T> GetById<TKey>(TKey id)
         {
             return await this.dbSet.FindAsync(id);
-            //throw new NotImplementedException();
+
         }
 
         public virtual async Task<int> SaveAsync()
         {
             return await bookingSoccersContext.SaveChangesAsync();
-            //throw new NotImplementedException();
+            
         }
 
         public virtual void Update(T type)
         {
             dbSet.Update(type);
-            //throw new NotImplementedException();
+            
         }
     }
 }

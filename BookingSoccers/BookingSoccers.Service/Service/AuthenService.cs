@@ -1,6 +1,6 @@
 ﻿//using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
-using BookingSoccers.Service.DTO.UserInfo;
+using BookingSoccers.Service.Models.DTO.User;
 using BookingSoccers.Service.IService;
 using Firebase.Auth;
 using FirebaseAdmin.Auth;

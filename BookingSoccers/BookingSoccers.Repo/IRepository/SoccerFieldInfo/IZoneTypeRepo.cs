@@ -9,5 +9,6 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 {
     public interface IZoneTypeRepo : IBaseRepository<ZoneType>
     {
+        Task<ZoneType> GetZoneTypeByName(string TypeName); 
     }
 }

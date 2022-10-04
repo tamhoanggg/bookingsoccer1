@@ -288,11 +288,11 @@ namespace BookingSoccers.Repo.Migrations
 
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneSlot", b =>
                 {
-                    b.Property<byte>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<byte>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");

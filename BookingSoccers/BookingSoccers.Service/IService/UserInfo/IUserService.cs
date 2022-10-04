@@ -1,4 +1,6 @@
 ﻿using BookingSoccers.Repo.Entities.UserInfo;
+using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +11,16 @@ namespace BookingSoccers.Service.IService.UserInfo
 {
     public interface IUserService
     {
-        public Task<User> GetByEmail(string email);
+        public Task< GeneralResult<User> > GetByEmail(string email);
 
-        Task<User> AddANewUser(User userinfo);
+        Task< GeneralResult<User> > AddANewUser(UserCreatePayload userinfo);
 
-        Task<User> RetrieveAUserById(int UserId);
+        Task< GeneralResult<User> > RetrieveAUserById(int UserId);
 
-        Task<List<User>> RetrieveAllUsers();
+        Task< GeneralResult< List<User> > > RetrieveAllUsers();
 
-        Task<User> UpdateAUser(int Id, User newUserInfo);
+        Task< GeneralResult<User> > UpdateAUser(int Id, UserUpdatePayload newUserInfo);
 
-        Task<User> RemoveAUser(int UserId);
+        Task< GeneralResult<User> > RemoveAUser(int UserId);
     }
 }

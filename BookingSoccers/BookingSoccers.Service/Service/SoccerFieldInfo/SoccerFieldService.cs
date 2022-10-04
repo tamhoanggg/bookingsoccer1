@@ -1,7 +1,10 @@
-﻿using BookingSoccers.Repo.Entities.BookingInfo;
+﻿using AutoMapper;
+using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
+using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.SoccerField;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,66 +17,80 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
     public class SoccerFieldService : ISoccerFieldService
     {
         private readonly ISoccerFieldRepo soccerFieldRepo;
+        private readonly IMapper mapper;
 
-        public SoccerFieldService(ISoccerFieldRepo soccerFieldRepo)
+        public SoccerFieldService(ISoccerFieldRepo soccerFieldRepo, IMapper mapper)
         {
             this.soccerFieldRepo = soccerFieldRepo;
+            this.mapper = mapper;
         }
 
-        public async Task<SoccerField> AddANewSoccerField(SoccerField SoccerFieldinfo)
+        public async Task<GeneralResult<SoccerField>> AddANewSoccerField(
+            SoccerFieldCreatePayload SoccerFieldinfo)
         {
-            if (await soccerFieldRepo.GetById(SoccerFieldinfo.FieldName) != null ||
-               await soccerFieldRepo.GetById(SoccerFieldinfo.Address) != null)
-                return null;
-            soccerFieldRepo.Create(SoccerFieldinfo);
+            var soccerFieldExistCheck = soccerFieldRepo.Get().Where(x =>
+            x.FieldName == SoccerFieldinfo.FieldName ||
+            x.Address == SoccerFieldinfo.Address);
+
+            if (soccerFieldExistCheck != null) return
+                GeneralResult<SoccerField>.Error(
+                    403, "Soccer field name or address already exists");
+
+            var toCreateSoccerField = mapper.Map<SoccerField>(SoccerFieldinfo);
+
+            soccerFieldRepo.Create(toCreateSoccerField);
             await soccerFieldRepo.SaveAsync();
-            return await soccerFieldRepo.GetById(SoccerFieldinfo.FieldName);
+
+            return GeneralResult<SoccerField>.Success(toCreateSoccerField);
         }
 
-        public async Task<SoccerField> RemoveASoccerField(int SoccerFieldId)
+        public async Task<GeneralResult<SoccerField>> RemoveASoccerField(int SoccerFieldId)
         {
-            var toDeleteSoccerField = await RetrieveASoccerFieldById(SoccerFieldId);
-            if (toDeleteSoccerField == null) return null;
+            var toDeleteSoccerField = await soccerFieldRepo.GetById(SoccerFieldId);
+
+            if (toDeleteSoccerField == null) return GeneralResult<SoccerField>.Error(
+                204, "No soccer field found with Id:" + SoccerFieldId);
 
             soccerFieldRepo.Delete(toDeleteSoccerField);
             await soccerFieldRepo.SaveAsync();
-            return toDeleteSoccerField;
+
+            return GeneralResult<SoccerField>.Success(toDeleteSoccerField);
         }
 
-        public async Task<List<SoccerField>> RetrieveAllSoccerFields()
+        public async Task<GeneralResult<List<SoccerField>>> RetrieveAllSoccerFields()
         {
             var soccerFieldList = await soccerFieldRepo.Get().ToListAsync();
-            if (soccerFieldList == null) return null;
-            return soccerFieldList;
+
+            if (soccerFieldList == null) return GeneralResult<List<SoccerField>>.Error(
+                204, "No soccer fields found");
+
+            return GeneralResult<List<SoccerField>>.Success(soccerFieldList); 
         }
 
-        public async Task<SoccerField> RetrieveASoccerFieldById(int SoccerFieldId)
+        public async Task<GeneralResult<SoccerField>> RetrieveASoccerFieldById(int SoccerFieldId)
         {
             var retrievedSoccerField = await soccerFieldRepo.GetById(SoccerFieldId);
-            if (retrievedSoccerField == null) return null;
-            return retrievedSoccerField;
+
+            if (retrievedSoccerField == null) return GeneralResult<SoccerField>.Error(
+                204, "No soccer field found with Id:"+ SoccerFieldId);
+
+            return GeneralResult<SoccerField>.Success(retrievedSoccerField);
         }
 
-        public async Task<SoccerField> UpdateASoccerField(int Id, SoccerField newSoccerFieldInfo)
+        public async Task<GeneralResult<SoccerField>> UpdateASoccerField(int Id,
+            SoccerFieldUpdatePayload newSoccerFieldInfo)
         {
-            var toUpdateSoccerField = await RetrieveASoccerFieldById(Id);
-            if (toUpdateSoccerField == null) return null;
+            var toUpdateSoccerField = await soccerFieldRepo.GetById(Id);
 
-            toUpdateSoccerField.CloseHour = newSoccerFieldInfo.CloseHour;
-            toUpdateSoccerField.Address = newSoccerFieldInfo.Address;
-            toUpdateSoccerField.OpenHour = newSoccerFieldInfo.OpenHour;
-            toUpdateSoccerField.Status = newSoccerFieldInfo.Status;
-            toUpdateSoccerField.BaseTimeInterval = newSoccerFieldInfo.BaseTimeInterval;
-            toUpdateSoccerField.Description = newSoccerFieldInfo.Description;
-            toUpdateSoccerField.FieldName = newSoccerFieldInfo.FieldName;
-            toUpdateSoccerField.ManagerId = newSoccerFieldInfo.ManagerId;
-            toUpdateSoccerField.ReviewScoreSum = newSoccerFieldInfo.ReviewScoreSum;
-            toUpdateSoccerField.TotalReviews = newSoccerFieldInfo.TotalReviews;
+            if (toUpdateSoccerField == null) return GeneralResult<SoccerField>.Error(
+                204, "No soccer field found with Id:" + Id);
+
+            mapper.Map(newSoccerFieldInfo, toUpdateSoccerField);
 
             soccerFieldRepo.Update(toUpdateSoccerField);
             await soccerFieldRepo.SaveAsync();
 
-            return toUpdateSoccerField;
+            return GeneralResult<SoccerField>.Success(toUpdateSoccerField);
         }
     }
 }

@@ -8,6 +8,7 @@ using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Repo.Repository.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
+using BookingSoccers.Service.Models.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingSoccers.Service.UserInfo
@@ -23,10 +24,10 @@ namespace BookingSoccers.Service.UserInfo
             //this.mapper = mapper;
         }
 
-        public async Task<Role> AddANewRole(string roleName)
+        public async Task<GeneralResult<Role>> AddANewRole(string roleName)
         {
-            var existRole = roleRepo.GetById(roleName);
-            if (existRole != null) return null;
+            var existRole = await roleRepo.GetRoleByName(roleName);
+            if (existRole != null) return GeneralResult<Role>.Error(403 , "Role already exists");
 
             Role newRoleObj = new Role()
             {
@@ -34,44 +35,50 @@ namespace BookingSoccers.Service.UserInfo
             };
             roleRepo.Create(newRoleObj);
             await roleRepo.SaveAsync();
-            return newRoleObj;
+
+            return GeneralResult<Role>.Success(newRoleObj);
         }
 
-        public async Task<Role> RetrieveARoleById(int roleId)
+        public async Task<GeneralResult<Role>> RetrieveARoleById(byte roleId)
         {
-            Role returnedRole = await roleRepo.GetById(roleId);
-            if (returnedRole == null) return null;
-            return returnedRole;
+            var returnedRole = await roleRepo.GetById(roleId);
+            if (returnedRole == null) return GeneralResult<Role>.Error(
+                204 , "Role not found with Id:"+roleId);
+            return GeneralResult<Role>.Success(returnedRole);
         }
 
-        public async Task<List<Role>> RetrieveAllRoles() 
+        public async Task<GeneralResult < List<Role> > > RetrieveAllRoles() 
         { 
-            List<Role> roles = await roleRepo.Get().ToListAsync();
-            return roles;
+            var roles = await roleRepo.Get().ToListAsync();
+            if (roles == null) return GeneralResult< List<Role> >.Error(
+                204, "No role found");
+            return GeneralResult< List<Role> >.Success(roles);
 
         }
 
-        public async Task<Role> UpdateARole(int Id, String newRoleName) 
+        public async Task<GeneralResult<Role>> UpdateARole(byte Id, String newRoleName) 
         {
-            Role foundRole = await roleRepo.GetById(Id);
-            if (foundRole == null) return null;
+            var foundRole = await roleRepo.GetById(Id);
+            if (foundRole == null) return GeneralResult<Role>.Error(
+                204, "Role not found with Id:" +Id);
 
             foundRole.Name = newRoleName;
             roleRepo.Update(foundRole);
             await roleRepo.SaveAsync();
 
-            return foundRole;
+            return GeneralResult<Role>.Success(foundRole);
         }
 
-        public async Task<Role> RemoveARole(int roleId) 
+        public async Task<GeneralResult<Role>> RemoveARole(byte roleId) 
         {
-            Role foundRole = await roleRepo.GetById(roleId);
-            if (foundRole == null) return null;
+            var foundRole = await roleRepo.GetById(roleId);
+            if (foundRole == null) return GeneralResult<Role>.Error(
+                204, "Role not found with Id:" + roleId); ;
 
             roleRepo.Delete(foundRole);
             await roleRepo.SaveAsync();
             
-            return foundRole;
+            return GeneralResult<Role>.Success(foundRole);
         }
 
     }
