@@ -12,7 +12,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
     [Route("api/zone-slots")]
     [ApiController]
-    [Authorize(Roles ="Field Manager")]
+    [Authorize]
     public class ZoneSlotsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -41,7 +41,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZoneSlot(ZoneSlotCreatePayload NewZoneSlotInfo)
         {
@@ -56,7 +56,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedZoneSlot.StatusCode, response);
         }
-
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAZone(int id,
             ZoneSlotUpdatePayload NewZoneSlotInfo)
@@ -88,7 +88,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedZoneSlot.StatusCode, response);
         }
-
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAZoneSlot(int id)
         {

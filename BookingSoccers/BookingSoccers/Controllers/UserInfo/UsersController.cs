@@ -16,7 +16,7 @@ namespace BookingSoccers.Controllers.UserInfo
 {
     [Route("api/users")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -45,7 +45,7 @@ namespace BookingSoccers.Controllers.UserInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+         [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewUser(UserCreatePayload userInfo)
         {
@@ -60,7 +60,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
             return StatusCode(AddedUser.StatusCode, response);
         }
-
+         [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateARole(int id, UserUpdatePayload NewUserInfo)
         {
@@ -92,7 +92,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
             return StatusCode(retrievedUser.StatusCode, response);
         }
-
+         [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAUser(int id)
         {

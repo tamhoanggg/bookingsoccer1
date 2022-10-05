@@ -10,6 +10,7 @@ namespace BookingSoccers.Controllers
 {
     [Route("api/authen")]
     [ApiController]
+     [Authorize(Roles ="Admin")]
     public class AuthenController : ControllerBase
     {
         private readonly IMapper mapper;

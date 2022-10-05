@@ -40,7 +40,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-        [Authorize(Roles ="FieldManager")]
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZoneType(ZoneTypeCreatePayload NewZoneTypeInfo)
         {
@@ -55,7 +55,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedZoneType.StatusCode, response);
         }
-        [Authorize(Roles ="FieldManager")]
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAZone(byte id,
             ZoneTypeUpdatePayload NewZoneTypeInfo)
@@ -87,7 +87,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedZoneType.StatusCode, response);
         }
-        [Authorize(Roles ="FieldManager")]
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAZoneType(byte id)
         {

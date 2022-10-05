@@ -12,7 +12,7 @@ namespace BookingSoccers.Controllers.UserInfo
 {
     [Route("api/roles")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize]
     public class RolesController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -41,7 +41,7 @@ namespace BookingSoccers.Controllers.UserInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+         [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewRole(string RoleName)
         {
@@ -55,7 +55,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
             return StatusCode(AddedRole.StatusCode, response);
         }
-
+         [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateARole(byte id, string NewRoleName)
         {
@@ -87,7 +87,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
             return StatusCode(retrievedRole.StatusCode, response);
         }
-
+         [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteARole(byte id)
         {

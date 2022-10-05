@@ -13,7 +13,7 @@ namespace BookingSoccers.Controllers.BookingInfo
     [Route("api/payments")]
   
     [ApiController]
-    [Authorize(Roles ="User")]
+    [Authorize]
     public class PaymentsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -42,7 +42,7 @@ namespace BookingSoccers.Controllers.BookingInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+        [Authorize(Roles ="User,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPayment(PaymentCreatePayload newPaymentInfo)
         {
@@ -57,7 +57,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(AddedPayment.StatusCode, response);
         }
-
+        [Authorize(Roles ="User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAPayment(int id,
             PaymentUpdatePayload NewPaymentInfo)
@@ -90,7 +90,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(retrievedPayment.StatusCode, response);
         }
-
+        [Authorize(Roles ="User,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAPayment(int id)
         {

@@ -11,7 +11,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 {
     [Route("api/zones")]
     [ApiController]
-    [Authorize(Roles ="Field Manager")]
+    [Authorize]
     public class ZonesController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
@@ -40,7 +40,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZone(ZoneCreatePayload newZoneInfo)
         {
@@ -55,7 +55,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
             return StatusCode(AddedZone.StatusCode, response);
         }
-
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAZone(int id,
             ZoneUpdatePayload NewZoneInfo)
@@ -87,7 +87,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
             return StatusCode(retrievedZone.StatusCode, response);
         }
-
+         [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAZone(int id)
         {
