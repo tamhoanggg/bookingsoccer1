@@ -997,26 +997,6 @@
           }
         }
       },
-      "Refit/6.3.2": {
-        "type": "package",
-        "dependencies": {
-          "System.Net.Http.Json": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Refit.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Refit.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netstandard2.0/refit.props": {},
-          "buildTransitive/netstandard2.0/refit.targets": {}
-        }
-      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
         "runtimeTargets": {
@@ -1862,25 +1842,6 @@
             "assetType": "runtime",
             "rid": "win"
           }
-        }
-      },
-      "System.Net.Http.Json/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Text.Json": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/System.Net.Http.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Net.Http.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
       "System.Net.NameResolution/4.0.0": {
@@ -2823,21 +2784,6 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
-        }
-      },
-      "BookingSoccers.ConsoleApp/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "FirebaseAuthentication.net": "3.7.2",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.9",
-          "Refit": "6.3.2"
-        },
-        "compile": {
-          "bin/placeholder/BookingSoccers.ConsoleApp.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/BookingSoccers.ConsoleApp.dll": {}
         }
       },
       "BookingSoccers.Repo/1.0.0": {
@@ -4149,33 +4095,6 @@
         "lib/net6.0/Pomelo.EntityFrameworkCore.MySql.xml",
         "pomelo.entityframeworkcore.mysql.6.0.2.nupkg.sha512",
         "pomelo.entityframeworkcore.mysql.nuspec"
-      ]
-    },
-    "Refit/6.3.2": {
-      "sha512": "HxysoLBknW2FdxNXr56NjnfuxbgNh9z2QsUc9y5QtPkXSAWmShpUWDM1G+3Ls2yTyb4sItOii4gZ+GjxKkR7+A==",
-      "type": "package",
-      "path": "refit/6.3.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "analyzers/dotnet/roslyn3.8/cs/InterfaceStubGeneratorV1.dll",
-        "analyzers/dotnet/roslyn4.0/cs/InterfaceStubGeneratorV2.dll",
-        "build/netstandard2.0/refit.targets",
-        "buildTransitive/netstandard2.0/refit.props",
-        "buildTransitive/netstandard2.0/refit.targets",
-        "lib/net461/Refit.dll",
-        "lib/net461/Refit.xml",
-        "lib/net5.0/Refit.dll",
-        "lib/net5.0/Refit.xml",
-        "lib/net6.0/Refit.dll",
-        "lib/net6.0/Refit.xml",
-        "lib/netstandard2.0/Refit.dll",
-        "lib/netstandard2.0/Refit.xml",
-        "lib/netstandard2.1/Refit.dll",
-        "lib/netstandard2.1/Refit.xml",
-        "refit.6.3.2.nupkg.sha512",
-        "refit.nuspec",
-        "refit_logo.png"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -6007,31 +5926,6 @@
         "runtimes/win/lib/netstandard1.3/System.Net.Http.dll",
         "system.net.http.4.3.0.nupkg.sha512",
         "system.net.http.nuspec"
-      ]
-    },
-    "System.Net.Http.Json/6.0.0": {
-      "sha512": "GbIV4y344kGOKjshAKCIDCMUTTW/hyUC42wV0Y5SXEdIbaKBIHBUxZ2MOe4/ZiV2svUAGfQ0c8LGtUExpOI8tg==",
-      "type": "package",
-      "path": "system.net.http.json/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/netcoreapp2.0/System.Net.Http.Json.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/System.Net.Http.Json.dll",
-        "lib/net461/System.Net.Http.Json.xml",
-        "lib/net5.0/System.Net.Http.Json.dll",
-        "lib/net5.0/System.Net.Http.Json.xml",
-        "lib/net6.0/System.Net.Http.Json.dll",
-        "lib/net6.0/System.Net.Http.Json.xml",
-        "lib/netstandard2.0/System.Net.Http.Json.dll",
-        "lib/netstandard2.0/System.Net.Http.Json.xml",
-        "system.net.http.json.6.0.0.nupkg.sha512",
-        "system.net.http.json.nuspec",
-        "useSharedDesignerContext.txt"
       ]
     },
     "System.Net.NameResolution/4.0.0": {
@@ -8480,11 +8374,6 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "BookingSoccers.ConsoleApp/1.0.0": {
-      "type": "project",
-      "path": "../BookingSoccers.ConsoleApp/BookingSoccers.ConsoleApp.csproj",
-      "msbuildProject": "../BookingSoccers.ConsoleApp/BookingSoccers.ConsoleApp.csproj"
-    },
     "BookingSoccers.Repo/1.0.0": {
       "type": "project",
       "path": "../BookingSoccers.Repo/BookingSoccers.Repo.csproj",
@@ -8499,7 +8388,6 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.0",
-      "BookingSoccers.ConsoleApp >= 1.0.0",
       "BookingSoccers.Repo >= 1.0.0",
       "BookingSoccers.Service >= 1.0.0",
       "FirebaseAdmin >= 2.3.0",
@@ -8545,9 +8433,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj"
-            },
             "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj": {
               "projectPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj"
             },
