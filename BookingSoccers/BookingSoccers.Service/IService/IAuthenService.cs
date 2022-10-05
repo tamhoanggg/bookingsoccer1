@@ -1,4 +1,6 @@
-﻿using BookingSoccers.Service.Models.DTO.User;
+﻿using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO.User;
+using BookingSoccers.Service.Models.Payload;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,8 @@ namespace BookingSoccers.Service.IService
 {
     public interface IAuthenService
     {
-        public Task<LoginUserInfo> Authentication(string IdToken);
+        public Task<GeneralResult<LoginUserInfo>> Authentication(string IdToken);
 
-        public Task<IActionResult> RefreshToken(string AccessToken, string RefreshToken,
-            DateTime refreshTokenExpiryDate);
+        public Task<GeneralResult<APIToken>> RefreshToken(TokenRefresh tokenInfo);
     }
 }

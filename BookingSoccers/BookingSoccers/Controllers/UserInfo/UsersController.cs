@@ -16,7 +16,7 @@ namespace BookingSoccers.Controllers.UserInfo
 {
     [Route("api/users")]
     [ApiController]
-    [Authorize(Roles ="ADMIN")]
+    [Authorize(Roles ="Admin")]
     public class UsersController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;

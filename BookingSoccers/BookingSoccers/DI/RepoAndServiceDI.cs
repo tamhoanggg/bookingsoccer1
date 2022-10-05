@@ -6,9 +6,11 @@ using BookingSoccers.Repo.Repository;
 using BookingSoccers.Repo.Repository.BookingInfo;
 using BookingSoccers.Repo.Repository.SoccerFieldInfo;
 using BookingSoccers.Repo.Repository.UserInfo;
+using BookingSoccers.Service.IService;
 using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.IService.UserInfo;
+using BookingSoccers.Service.Service;
 using BookingSoccers.Service.Service.BookingInfo;
 using BookingSoccers.Service.Service.SoccerFieldInfo;
 using BookingSoccers.Service.Service.UserInfo;
@@ -21,6 +23,8 @@ namespace BookingSoccers.DI
         public static void ConfigServiceDI(this IServiceCollection services) 
         {
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+            services.AddScoped<IAuthenService, AuthenService>();
 
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IUserService, UserService>();

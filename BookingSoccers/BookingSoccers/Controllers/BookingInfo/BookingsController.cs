@@ -5,6 +5,7 @@ using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 {
    [Route("api/bookings")]
    [ApiController]
-   [Authorize(Roles ="Users")]
+   [Authorize(Roles ="User")]
     public class BookingsController : ControllerBase
     {
         private readonly BookingSoccersContext bookingSoccersContext;
