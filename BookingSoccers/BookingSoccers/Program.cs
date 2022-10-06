@@ -88,19 +88,19 @@ builder.Services.AddDbContext<BookingSoccersContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-<<<<<<< HEAD
+
 //if (app.Environment.IsDevelopment())
 //{
    // app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
-=======
+
 
     app.UseSwagger();
     app.UseSwaggerUI();
 
->>>>>>> ec34555caaafb63040a815c351a0e30a28d352c6
+
 
 
 

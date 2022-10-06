@@ -13,3 +13,18 @@ C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.S
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\refint\BookingSoccers.Service.dll
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.pdb
 C:\Users\Admin\Visual Studio Repo\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\ref\BookingSoccers.Service.dll
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\bin\Debug\net6.0\BookingSoccers.Service.deps.json
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\bin\Debug\net6.0\BookingSoccers.Service.dll
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\bin\Debug\net6.0\BookingSoccers.Service.pdb
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\bin\Debug\net6.0\BookingSoccers.Repo.dll
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\bin\Debug\net6.0\BookingSoccers.Repo.pdb
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.AssemblyInfoInputs.cache
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.AssemblyInfo.cs
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.csproj.CopyComplete
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.dll
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\refint\BookingSoccers.Service.dll
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\BookingSoccers.Service.pdb
+C:\Users\Admin\source\repos\tamhoanggg\bookingsoccer1\BookingSoccers\BookingSoccers.Service\obj\Debug\net6.0\ref\BookingSoccers.Service.dll

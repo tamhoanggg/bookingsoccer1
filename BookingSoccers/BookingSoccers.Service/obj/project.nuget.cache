@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HGe5s/BcrplCpU3g876hzIoO0xjeBRTW2QglGbfnQlNQTiApQMp3yN2njb0B4cCFhSai3yt4EK6QE71pMnS4OA==",
+  "dgSpecHash": "Gh654WBLQqyKTkbkuq8mfgRescDX2gtughhcpebP4yjSA8AMNPtlgkNU2xa/ZoYGg67CBRINWggkAGLg78QvTA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\firebaseadmin\\2.3.0\\firebaseadmin.2.3.0.nupkg.sha512",

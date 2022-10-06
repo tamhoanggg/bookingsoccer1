@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r5aRvxLpU+IagEJA/q3Hu0hoNEYC8zEc5sUDWZmcfk199bvwby5h9Z5SE9OblSqm04ff7N5iJR6XyNPDG5JgMA==",
+  "dgSpecHash": "kjRgCLiUb0Sr+Ic38gWgwylz3hzTXG4LTZCYaxcXR/losaBrfTUnYjZmOlkJF4btZiUus9HCoyS2PXHC77Ki+A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers\\BookingSoccers.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers\\BookingSoccers.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

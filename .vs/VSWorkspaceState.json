@@ -3,10 +3,10 @@
     "",
     "\\BookingSoccers",
     "\\BookingSoccers\\BookingSoccers",
-    "\\BookingSoccers\\BookingSoccers\\Controllers",
-    "\\BookingSoccers\\BookingSoccers\\Controllers\\BookingInfo",
-    "\\BookingSoccers\\BookingSoccers\\Controllers\\UserInfo"
+    "\\BookingSoccers\\BookingSoccers.Repo",
+    "\\BookingSoccers\\BookingSoccers.Repo\\IRepository",
+    "\\BookingSoccers\\BookingSoccers\\Controllers"
   ],
-  "SelectedNode": "\\BookingSoccers\\BookingSoccers\\Program.cs",
+  "SelectedNode": "\\BookingSoccers\\BookingSoccers\\Controllers\\AuthenController.cs",
   "PreviewInSolutionExplorer": false
 }
