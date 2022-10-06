@@ -20,11 +20,15 @@ namespace BookingSoccers.ConsoleApp
                 new FirebaseAuthProvider(new FirebaseConfig(API_KEY));
 
             //FirebaseAuthLink firebaseAuthLink =
-            //    await firebaseAuthProvider.CreateUserWithEmailAndPasswordAsync
-            //    ("maithanhhoang.08032001@gmail.com", "hoang123", "MTHoang");
+                //await firebaseAuthProvider.SignInWithEmailAndPasswordAsync
+                //("hoang.nqm45@gmail.com", "123456");
+
+            //FirebaseAuthLink firebaseAuthLink =
+                //await firebaseAuthProvider.SignInWithEmailAndPasswordAsync
+                //("zidanedautroc@gmail.com", "123456");
 
             FirebaseAuthLink firebaseAuthLink =
-                await firebaseAuthProvider.SignInWithEmailAndPasswordAsync(
+              await firebaseAuthProvider.SignInWithEmailAndPasswordAsync(
                     "maithanhhoang.08032001@gmail.com", "hoang123");
 
             Console.WriteLine(firebaseAuthLink.FirebaseToken);
