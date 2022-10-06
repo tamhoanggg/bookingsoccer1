@@ -23,7 +23,7 @@ namespace BookingSoccers.Controllers
             this.authenService = authenService;
         }
 
-        [HttpGet("/login")]
+        [HttpPost("/login")]
         public async Task<IActionResult> Login(string AccessToken)
         {
             var result =  await authenService.Authentication(AccessToken);
