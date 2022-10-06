@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookingSoccers.ConsoleApp\BookingSoccers.ConsoleApp.csproj" />
     <ProjectReference Include="..\BookingSoccers.Repo\BookingSoccers.Repo.csproj" />
     <ProjectReference Include="..\BookingSoccers.Service\BookingSoccers.Service.csproj" />
   </ItemGroup>

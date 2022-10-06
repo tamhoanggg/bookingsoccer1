@@ -68,7 +68,8 @@ namespace BookingSoccers.Service.Service
         public async Task<GeneralResult<LoginUserInfo>> Authentication(string IdToken)
         {
 
-            string API_key = "AIzaSyCSYPWwr8YTJ3_vYAynxeZr37OKSC9VQng";
+            //string API_key = "AIzaSyCSYPWwr8YTJ3_vYAynxeZr37OKSC9VQng";
+            string API_key = "AIzaSyCxl4kbzsuDoDDJvz8In5fFQDHww97qr_s";
             string RoleName = "";
             string tokenString = "";
             string RefreshToken = "";
@@ -79,6 +80,7 @@ namespace BookingSoccers.Service.Service
             {
                 FirebaseToken decodedToken = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance
                             .VerifyIdTokenAsync(IdToken);
+                Console.WriteLine("Decoded token" + decodedToken);
                 string uid = decodedToken.Uid;
                 var authUser = new FirebaseAuthProvider(new FirebaseConfig(API_key));
                 var auth = authUser.GetUserAsync(IdToken);
@@ -86,7 +88,11 @@ namespace BookingSoccers.Service.Service
                 var UserWithEmail = await userRepo.Get().Where(x =>
                 x.Email == user.Email.ToLower()).FirstOrDefaultAsync();
 
-                if (UserWithEmail == null) return null;
+                if (UserWithEmail == null)
+                {
+                    Console.WriteLine("No user found with email " + UserWithEmail);
+                    return null;
+                }
 
                 userInfo.UserName = UserWithEmail.UserName;
                 userInfo.Email = UserWithEmail.Email;
