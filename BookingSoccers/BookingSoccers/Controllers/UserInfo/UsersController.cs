@@ -45,7 +45,7 @@ namespace BookingSoccers.Controllers.UserInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
-         [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewUser(UserCreatePayload userInfo)
         {
