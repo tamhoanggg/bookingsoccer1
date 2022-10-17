@@ -199,6 +199,11 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     403, "Soccer field name or address already exists");
 
             var toCreateSoccerField = mapper.Map<SoccerField>(SoccerFieldinfo);
+            toCreateSoccerField.OpenHour = new TimeSpan
+                (SoccerFieldinfo.OpenHour, SoccerFieldinfo.OpenMinute, 0);
+
+            toCreateSoccerField.CloseHour = new TimeSpan
+                (SoccerFieldinfo.CloseHour, SoccerFieldinfo.CloseMinute, 0);
 
             soccerFieldRepo.Create(toCreateSoccerField);
             await soccerFieldRepo.SaveAsync();

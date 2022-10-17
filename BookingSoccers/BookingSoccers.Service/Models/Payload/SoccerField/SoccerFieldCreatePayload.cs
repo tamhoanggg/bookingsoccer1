@@ -22,10 +22,16 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         public string ImageFolderPath { get; set; }
 
         [Required]
-        public TimeSpan OpenHour { get; set; }
+        public int OpenHour { get; set; }
 
         [Required]
-        public TimeSpan CloseHour { get; set; }
+        public int OpenMinute { get; set; }
+
+        [Required]
+        public int CloseHour { get; set; }
+
+        [Required]
+        public int CloseMinute { get; set; }
 
         [Required]
         [StringLength(100)]
