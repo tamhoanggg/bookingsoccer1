@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
+using BookingSoccers.Service.Models.DTO.PriceItem;
 using BookingSoccers.Service.Models.Payload.PriceItem;
 using BookingSoccers.Service.Models.Payload.PriceMenu;
 
@@ -11,6 +12,7 @@ namespace BookingSoccers.MapperProfile
         {
             CreateMap<PriceItem, PriceItemCreatePayload>().ReverseMap();
             CreateMap<PriceItem, PriceItemUpdatePayload>().ReverseMap();
+            CreateMap<PriceItem, PriceItemView>().ReverseMap();
         }
     }
 }

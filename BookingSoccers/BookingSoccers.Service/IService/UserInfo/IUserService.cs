@@ -1,5 +1,6 @@
 ﻿using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO.User;
 using BookingSoccers.Service.Models.Payload.User;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,13 @@ namespace BookingSoccers.Service.IService.UserInfo
 
         Task< GeneralResult<User> > RetrieveAUserById(int UserId);
 
+        Task<GeneralResult<BasicUserInfo>> RetrieveAUserForUpdate(string UserName);
+
         Task< GeneralResult< List<User> > > RetrieveAllUsers();
 
         Task< GeneralResult<User> > UpdateAUser(int Id, UserUpdatePayload newUserInfo);
+
+        Task< GeneralResult<BasicUserInfo>> UpdateUserInfoForUser(int id,UserUpdatePayload newUserInfo);
 
         Task< GeneralResult<User> > RemoveAUser(int UserId);
     }

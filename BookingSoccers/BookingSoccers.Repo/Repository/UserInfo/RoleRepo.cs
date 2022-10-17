@@ -26,5 +26,16 @@ namespace BookingSoccers.Repo.Repository.UserInfo
             var returnedRole = await Get().Where(x => x.Name == RoleName).FirstOrDefaultAsync();
             return returnedRole;
         }
+
+        public async Task<Role> GetUsersByRoleId(byte RoleId)
+        {
+            var UsersForRole = await Get()
+                .Include(x => x.Users)
+                .Where(y => y.Id == RoleId)
+                .OrderBy(order => order.Id)
+                .FirstOrDefaultAsync();
+
+            return UsersForRole;
+        }
     }
 }

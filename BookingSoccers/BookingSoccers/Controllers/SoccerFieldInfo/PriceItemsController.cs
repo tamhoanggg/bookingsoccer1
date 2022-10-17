@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
-    [Route("api/price-items")]
+    [Route("api/v1/price-items")]
     [ApiController]
     [Authorize]
     public class PriceItemsController : ControllerBase
@@ -26,6 +26,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetPriceItems()
         {
@@ -40,6 +41,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPriceItem(PriceItemCreatePayload newPriceItemInfo)
@@ -55,13 +57,15 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedPriceItem.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAPriceMenu(int id,
             PriceItemUpdatePayload NewPriceItemInfo)
         {
 
-            var updatedPriceItem = await priceItemService.UpdateAPriceItem(id, NewPriceItemInfo);
+            var updatedPriceItem = await priceItemService
+                .UpdateAPriceItem1(id, NewPriceItemInfo);
 
             if (updatedPriceItem.IsSuccess)
                 return Ok(updatedPriceItem);
@@ -73,6 +77,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedPriceItem.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificPriceItem(int id)
         {
@@ -87,6 +92,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedPriceItem.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAPriceItem(int id)

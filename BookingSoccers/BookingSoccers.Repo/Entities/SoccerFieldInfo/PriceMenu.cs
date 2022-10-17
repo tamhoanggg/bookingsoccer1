@@ -21,6 +21,8 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [ForeignKey("FieldId")]
         public SoccerField Field { get; set; }
 
+        public ICollection<PriceItem> PriceItems { get; set; }
+
         [Required]
         public int FieldId { get; set; }
 

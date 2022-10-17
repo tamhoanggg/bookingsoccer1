@@ -1,5 +1,6 @@
 ﻿using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO.Zone;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.Zone;
 using System;
@@ -15,6 +16,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<Zone>> AddANewZone(
             ZoneCreatePayload zoneInfo);
 
+        Task<GeneralResult<Zone>> AddNewZone(ZoneCreatePayload zoneInfo);
+
         Task<GeneralResult<Zone>> RetrieveAZoneById(int ZoneId);
 
         Task<GeneralResult<List<Zone>>> RetrieveAllZones();
@@ -22,5 +25,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<Zone>> UpdateAZone(int Id, ZoneUpdatePayload newZoneInfo);
 
         Task<GeneralResult<Zone>> RemoveAZone(int zoneId);
+
+        Task<GeneralResult<List<ZoneView>>> GetFieldAvailZoneSlotsForADate
+            (int FieldId, DateTime Date);
     }
 }

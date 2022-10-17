@@ -20,6 +20,16 @@ public BaseRepository(BookingSoccersContext bookingSoccersContext)
             this.dbSet = bookingSoccersContext.Set<T>();
         }
 
+        public void BulkCreate(List<T> TypeList)
+        {
+            dbSet.AddRange(TypeList);
+        }
+
+        public void BulkUpdate(List<T> TypeList)
+        {
+            dbSet.UpdateRange(TypeList);
+        }
+
         public virtual void Create(T type)
         {
             dbSet.Add(type);

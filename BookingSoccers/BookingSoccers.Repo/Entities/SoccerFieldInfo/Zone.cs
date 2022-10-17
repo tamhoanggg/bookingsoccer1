@@ -19,6 +19,8 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [Required]
         public int FieldId { get; set; }
 
+        public ICollection<ZoneSlot> ZoneSlots { get; set; }
+
         [ForeignKey("ZoneTypeId")]
         public ZoneType ZoneCate { get; set; }
 
@@ -28,11 +30,11 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [Required]
         public byte Number { get; set; }
 
-        public int Width { get; set; }
+        public int? Width { get; set; }
 
-        public int Length { get; set; }
+        public int? Length { get; set; }
 
-        public int Area { get; set; }
+        public int? Area { get; set; }
     }
 }
 

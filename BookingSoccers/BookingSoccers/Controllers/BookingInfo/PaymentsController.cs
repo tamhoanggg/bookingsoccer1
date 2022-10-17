@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.BookingInfo
 {
-    [Route("api/payments")]
+    [Route("api/v1/payments")]
   
     [ApiController]
     [Authorize]
@@ -28,6 +28,7 @@ namespace BookingSoccers.Controllers.BookingInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetPayments()
         {
@@ -42,6 +43,7 @@ namespace BookingSoccers.Controllers.BookingInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
         [Authorize(Roles ="User,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPayment(PaymentCreatePayload newPaymentInfo)
@@ -57,6 +59,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(AddedPayment.StatusCode, response);
         }
+
         [Authorize(Roles ="User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAPayment(int id,
@@ -76,6 +79,7 @@ namespace BookingSoccers.Controllers.BookingInfo
             return StatusCode(updatedPayment.StatusCode, response);
         }
 
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificPayment(int id)
         {
@@ -90,6 +94,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
             return StatusCode(retrievedPayment.StatusCode, response);
         }
+
         [Authorize(Roles ="User,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAPayment(int id)

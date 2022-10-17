@@ -31,7 +31,6 @@ namespace BookingSoccers.Repo.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -59,7 +58,8 @@ namespace BookingSoccers.Repo.Migrations
                     b.Property<int>("TotalPrice")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ZoneId")
+                    b.Property<int?>("ZoneId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<byte>("ZoneTypeId")
@@ -131,7 +131,8 @@ namespace BookingSoccers.Repo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FieldId");
+                    b.HasIndex("FieldId")
+                        .IsUnique();
 
                     b.ToTable("ImageFolders");
                 });
@@ -155,9 +156,6 @@ namespace BookingSoccers.Repo.Migrations
 
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("interval");
-
-                    b.Property<byte>("TimeAmount")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -214,9 +212,6 @@ namespace BookingSoccers.Repo.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("BaseTimeInterval")
-                        .HasColumnType("integer");
-
                     b.Property<TimeSpan>("CloseHour")
                         .HasColumnType("interval");
 
@@ -259,19 +254,19 @@ namespace BookingSoccers.Repo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Area")
+                    b.Property<int?>("Area")
                         .HasColumnType("integer");
 
                     b.Property<int>("FieldId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Length")
+                    b.Property<int?>("Length")
                         .HasColumnType("integer");
 
                     b.Property<byte>("Number")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("Width")
+                    b.Property<int?>("Width")
                         .HasColumnType("integer");
 
                     b.Property<byte>("ZoneTypeId")
@@ -407,7 +402,7 @@ namespace BookingSoccers.Repo.Migrations
                         .IsRequired();
 
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "FieldInfo")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -436,7 +431,7 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.BookingInfo.Payment", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.BookingInfo.Booking", "BookingInfo")
-                        .WithMany()
+                        .WithMany("payments")
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -455,8 +450,8 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ImageFolder", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
-                        .WithMany()
-                        .HasForeignKey("FieldId")
+                        .WithOne("ImageFolder")
+                        .HasForeignKey("BookingSoccers.Repo.Entities.SoccerFieldInfo.ImageFolder", "FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -466,7 +461,7 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceItem", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceMenu", "Menu")
-                        .WithMany()
+                        .WithMany("PriceItems")
                         .HasForeignKey("PriceMenuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -477,7 +472,7 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceMenu", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
-                        .WithMany()
+                        .WithMany("PriceMenus")
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -496,7 +491,7 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.UserInfo.User", "user")
-                        .WithMany()
+                        .WithMany("SoccerFields")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -507,13 +502,13 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
-                        .WithMany()
+                        .WithMany("Zones")
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneType", "ZoneCate")
-                        .WithMany()
+                        .WithMany("Zones")
                         .HasForeignKey("ZoneTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -526,7 +521,7 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneSlot", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", "FieldZone")
-                        .WithMany()
+                        .WithMany("ZoneSlots")
                         .HasForeignKey("ZoneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -537,12 +532,54 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.UserInfo.User", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.UserInfo.Role", "role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("role");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.BookingInfo.Booking", b =>
+                {
+                    b.Navigation("payments");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.PriceMenu", b =>
+                {
+                    b.Navigation("PriceItems");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("ImageFolder")
+                        .IsRequired();
+
+                    b.Navigation("PriceMenus");
+
+                    b.Navigation("Zones");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.Zone", b =>
+                {
+                    b.Navigation("ZoneSlots");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ZoneType", b =>
+                {
+                    b.Navigation("Zones");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.UserInfo.Role", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BookingSoccers.Repo.Entities.UserInfo.User", b =>
+                {
+                    b.Navigation("SoccerFields");
                 });
 #pragma warning restore 612, 618
         }

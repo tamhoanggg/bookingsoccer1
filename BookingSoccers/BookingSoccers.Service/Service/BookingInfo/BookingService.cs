@@ -4,6 +4,8 @@ using BookingSoccers.Repo.IRepository.BookingInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO.Booking;
+using BookingSoccers.Service.Models.DTO.Payment;
 using BookingSoccers.Service.Models.Payload.Booking;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,7 +27,8 @@ namespace BookingSoccers.Service.Service.BookingInfo
             this.mapper = mapper;
         }
 
-        public async Task<GeneralResult<Booking>> AddANewBooking(BookingCreatePayload bookinginfo)
+        public async Task<GeneralResult<Booking>> AddANewBooking
+            (BookingCreatePayload bookinginfo)
         {
             var newBooking = mapper.Map<Booking>(bookinginfo);
 
@@ -33,6 +36,30 @@ namespace BookingSoccers.Service.Service.BookingInfo
             await bookingRepo.SaveAsync();
 
             return GeneralResult<Booking>.Success(newBooking);
+        }
+
+        public async Task<GeneralResult<BookingView>> GetBookingAndPaymentsByUserId
+            (int UserId)
+        {
+            var retrievedBookingPayments = 
+                await bookingRepo.GetPaymentsAndBookingByUserId(UserId);
+
+            if (retrievedBookingPayments == null) return GeneralResult<BookingView>.Error(
+                204, "Booking not found with User Id:" + UserId);
+
+            var BookingResult = mapper.Map<BookingView>(retrievedBookingPayments);
+
+            List<PaymentView> paymentList = new List<PaymentView>();
+
+            foreach (Payment payment in retrievedBookingPayments.payments)
+            {
+                var pay = mapper.Map<PaymentView>(payment);
+                paymentList.Add(pay);
+            }
+
+            BookingResult.paymentsList = paymentList;
+
+            return GeneralResult<BookingView>.Success(BookingResult);
         }
 
         public async Task<GeneralResult<Booking>> RemoveABooking(int BookingId)
@@ -50,7 +77,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
 
         public async Task<GeneralResult<Booking>> RetrieveABookingById(int BookingId)
         {
-            var foundBooking = await bookingRepo.GetById(BookingId);
+            var foundBooking = await bookingRepo.GetBookingDetailsById(BookingId);
 
             if (foundBooking == null) return GeneralResult<Booking>.Error(
                 204, "Booking not found with Id:" + BookingId);
@@ -68,7 +95,8 @@ namespace BookingSoccers.Service.Service.BookingInfo
             return GeneralResult<List<Booking>>.Success(BookingList);
         }
 
-        public async Task<GeneralResult<Booking>> UpdateABooking(int Id, BookingUpdatePayload newBookingInfo)
+        public async Task<GeneralResult<Booking>> UpdateABooking(int Id,
+            BookingUpdatePayload newBookingInfo)
         {
             var toUpdateBooking = await bookingRepo.GetById(Id);
 
@@ -81,6 +109,39 @@ namespace BookingSoccers.Service.Service.BookingInfo
             await bookingRepo.SaveAsync();
 
             return GeneralResult<Booking>.Success(toUpdateBooking);
+        }
+
+        public async Task<GeneralResult<Booking>> UpdateABookingZoneId(int Id, int ZoneId)
+        {
+            var toUpdateBookingZoneId = await bookingRepo.GetById(Id);
+
+            if (toUpdateBookingZoneId == null) return GeneralResult<Booking>.Error(
+                204, "No booking found with Id:" + Id);
+
+            toUpdateBookingZoneId.ZoneId = ZoneId;
+
+            bookingRepo.Update(toUpdateBookingZoneId);
+            await bookingRepo.SaveAsync();
+
+            return GeneralResult<Booking>.Success(toUpdateBookingZoneId);
+        }
+
+        public async Task<GeneralResult<BookingView>> UpdateBookingStatusForUser(int Id,
+            StatusEnum newStatus)
+        {
+            var toUpdateBookingStatus = await bookingRepo.GetById(Id);
+
+            if (toUpdateBookingStatus == null) return GeneralResult<BookingView>.Error(
+                204, "No booking found with Id:" + Id);
+
+            toUpdateBookingStatus.Status = newStatus;
+
+            bookingRepo.Update(toUpdateBookingStatus);
+            await bookingRepo.SaveAsync();
+
+            var updatedBooking = mapper.Map<BookingView>(toUpdateBookingStatus);
+
+            return GeneralResult<BookingView>.Success(updatedBooking);
         }
     }
 }

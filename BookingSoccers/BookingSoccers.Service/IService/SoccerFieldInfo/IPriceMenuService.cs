@@ -21,6 +21,9 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<PriceMenu>> UpdateAPriceMenu(int Id, PriceMenuUpdatePayload newPriceMenuInfo);
 
+        Task<GeneralResult<PriceMenu>> UpdatePriceMenu1
+            (int Id, PriceMenuUpdatePayload updateInfo);
+
         Task<GeneralResult<PriceMenu>> RemoveAPriceMenu(int PriceMenuId);
     }
 }

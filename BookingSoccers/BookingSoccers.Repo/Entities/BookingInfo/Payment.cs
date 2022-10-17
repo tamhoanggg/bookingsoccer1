@@ -16,6 +16,7 @@ namespace BookingSoccers.Repo.Entities.BookingInfo
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [ForeignKey("BookingId")]
         public Booking BookingInfo { get; set; }
 
         [Required]

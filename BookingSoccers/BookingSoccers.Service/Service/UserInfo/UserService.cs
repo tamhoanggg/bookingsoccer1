@@ -3,6 +3,7 @@ using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO.User;
 using BookingSoccers.Service.Models.Payload.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -81,6 +82,19 @@ namespace BookingSoccers.Service.Service.UserInfo
             return GeneralResult<User>.Success(userById);
         }
 
+        public async Task<GeneralResult<BasicUserInfo>> RetrieveAUserForUpdate(string UserName)
+        {
+            var toUpdateUser = await userRepo.GetByUserName(UserName);
+
+            if(toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
+                204, "User not found with username:" + UserName);
+
+            var returnedUser = new BasicUserInfo();
+            mapper.Map(toUpdateUser, returnedUser);
+
+            return GeneralResult<BasicUserInfo>.Success(returnedUser);
+        }
+
         public async Task<GeneralResult<User>> UpdateAUser(int Id, UserUpdatePayload newUserInfo)
         {
             var toUpdateUser = await userRepo.GetById(Id);
@@ -94,6 +108,23 @@ namespace BookingSoccers.Service.Service.UserInfo
             await userRepo.SaveAsync();
 
             return GeneralResult<User>.Success(toUpdateUser);
+        }
+
+        public async Task<GeneralResult<BasicUserInfo>> UpdateUserInfoForUser(int id, UserUpdatePayload newUserInfo)
+        {
+            var toUpdateUser = await userRepo.GetById(id);
+
+            if (toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
+                204, "User not found with Id:" + id);
+
+            mapper.Map(newUserInfo, toUpdateUser);
+
+            userRepo.Update(toUpdateUser);
+            await userRepo.SaveAsync();
+
+            var UpdatedUser = mapper.Map<BasicUserInfo>(newUserInfo);
+
+            return GeneralResult<BasicUserInfo>.Success(UpdatedUser);
         }
     }
 }

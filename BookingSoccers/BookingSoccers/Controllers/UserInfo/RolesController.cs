@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.UserInfo
 {
-    [Route("api/roles")]
+    [Route("api/v1/roles")]
     [ApiController]
     [Authorize]
     public class RolesController : ControllerBase
@@ -27,6 +27,7 @@ namespace BookingSoccers.Controllers.UserInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
@@ -41,6 +42,22 @@ namespace BookingSoccers.Controllers.UserInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
+        [HttpGet("{id}/users")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetUsersOfARole(byte id) 
+        {
+            var result = await roleService.GetUsersByRoleId(id);
+
+            if (result.IsSuccess)
+                return Ok(result);
+
+            Response.StatusCode = result.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(result);
+            return StatusCode(result.StatusCode, response);
+        }
+
          [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewRole(string RoleName)
@@ -73,6 +90,7 @@ namespace BookingSoccers.Controllers.UserInfo
             return StatusCode(updatedRole.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificRole(byte id)
         {

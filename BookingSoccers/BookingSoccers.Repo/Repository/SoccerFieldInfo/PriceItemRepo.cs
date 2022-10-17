@@ -1,6 +1,7 @@
 ﻿using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,15 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<PriceItem> getFieldViaPriceItem(int Id)
+        {
+            var returnPriceItem = await Get()
+                .Include(x => x.Menu)
+                .ThenInclude(y => y.Field)
+                .Where(x => x.Id == Id)
+                .FirstOrDefaultAsync();
+
+            return returnPriceItem;
+        }
     }
 }

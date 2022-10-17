@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingSoccers.Service.Models.DTO.User
+namespace BookingSoccers.Service.Models.Payload.SoccerField
 {
-    public class HomePageUserInfo
+    public class BookingSchedule
     {
         public int Id { get; set; }
 
-        public string UserName { get; set; }
+        public DateTime Date { get; set; }
     }
 }

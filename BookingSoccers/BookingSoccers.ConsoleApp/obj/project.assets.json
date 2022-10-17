@@ -5242,11 +5242,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj",
       "projectName": "BookingSoccers.ConsoleApp",
-      "projectPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj",
+      "projectPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

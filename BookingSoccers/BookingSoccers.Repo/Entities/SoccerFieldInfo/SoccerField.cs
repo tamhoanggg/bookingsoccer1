@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.Entities.UserInfo;
 
 namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
@@ -15,6 +16,14 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
 
         [ForeignKey("ManagerId")]
         public User user { get; set; }
+
+        public ImageFolder ImageFolder { get; set; }
+
+        public ICollection<PriceMenu> PriceMenus { get; set; }
+
+        public  ICollection<Booking> Bookings { get; set; }
+
+        public ICollection<Zone> Zones { get; set; }
 
         [Required]
         public int ManagerId { get; set; }
@@ -45,8 +54,6 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [Required]
         public int ReviewScoreSum { get; set; }
 
-        [Required]
-        public int BaseTimeInterval { get; set; }
     }
 }
 

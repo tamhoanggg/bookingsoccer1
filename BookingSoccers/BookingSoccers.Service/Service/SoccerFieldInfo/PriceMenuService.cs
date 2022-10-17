@@ -25,19 +25,23 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             this.mapper = mapper;
         }
 
-        public async Task<GeneralResult<PriceMenu>> AddANewPriceMenu(PriceMenuCreatePayload priceMenuInfo)
+        public async Task<GeneralResult<PriceMenu>> AddANewPriceMenu(PriceMenuCreatePayload Info)
         {
-            var PriceMenuExistCheck = await priceMenuRepo.Get().Where(x =>
-             x.FieldId == priceMenuInfo.FieldId &&
-             x.ZoneTypeId == priceMenuInfo.ZoneTypeId &&
-             x.DayType == priceMenuInfo.DayType && 
-             x.StartDate == priceMenuInfo.StartDate && 
-             x.EndDate == priceMenuInfo.EndDate).ToListAsync();
+            var PriceMenuExistCheck = await priceMenuRepo.Get()
+                .Where(x =>  x.FieldId == Info.FieldId && x.ZoneTypeId == Info.ZoneTypeId &&
+                x.DayType == Info.DayType
+                 ).ToListAsync();
 
-            if (PriceMenuExistCheck != null) return
+            var FilteredCheckList = PriceMenuExistCheck
+                .Where(x =>
+             (Info.StartDate < x.StartDate && x.EndDate < Info.EndDate) ||
+             (x.StartDate <= Info.StartDate && Info.StartDate <= x.EndDate) ||
+             (x.StartDate <= Info.EndDate && Info.EndDate <= x.EndDate)).FirstOrDefault();
+
+            if (FilteredCheckList != null) return
                     GeneralResult<PriceMenu>.Error(403, "Price menu already exists");
 
-            var newPriceMenu = mapper.Map<PriceMenu>(priceMenuInfo);
+            var newPriceMenu = mapper.Map<PriceMenu>(Info);
 
             priceMenuRepo.Create(newPriceMenu);
             await priceMenuRepo.SaveAsync();
@@ -86,6 +90,39 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 204, "No price item found with Id:" + Id);
 
             mapper.Map(newPriceMenuInfo, toUpdatePriceMenu);
+
+            priceMenuRepo.Update(toUpdatePriceMenu);
+            await priceMenuRepo.SaveAsync();
+
+            return GeneralResult<PriceMenu>.Success(toUpdatePriceMenu);
+        }
+
+        public async Task<GeneralResult<PriceMenu>> UpdatePriceMenu1
+            (int Id, PriceMenuUpdatePayload updateInfo)
+        {
+            var toUpdatePriceMenu = await priceMenuRepo.GetById(Id);
+
+            List<PriceMenu> ValidatePriceMenu = new List<PriceMenu>();
+
+            if (toUpdatePriceMenu.StartDate != updateInfo.StartDate ||
+                toUpdatePriceMenu.EndDate != updateInfo.EndDate)
+            {
+                ValidatePriceMenu = await priceMenuRepo
+                    .Get()
+                    .Where(x => x.FieldId == updateInfo.FieldId && x.Id != Id &&
+                    x.ZoneTypeId == updateInfo.ZoneTypeId && x.DayType == updateInfo.DayType)
+                    .ToListAsync();
+
+                var FilteredList = ValidatePriceMenu
+                 .Where(x => (updateInfo.StartDate < x.StartDate && x.EndDate < updateInfo.EndDate) ||
+                 (x.StartDate <= updateInfo.StartDate && updateInfo.StartDate <= x.EndDate) ||
+                 (x.StartDate <= updateInfo.EndDate && updateInfo.EndDate <= x.EndDate)).ToList();
+
+                if (FilteredList != null) return GeneralResult<PriceMenu>.Error
+                        (400, "This price menu duration is overlapping 1 or more other price menus");
+            }
+
+            mapper.Map(updateInfo, toUpdatePriceMenu);
 
             priceMenuRepo.Update(toUpdatePriceMenu);
             await priceMenuRepo.SaveAsync();

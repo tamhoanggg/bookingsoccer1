@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
-    [Route("api/price-menus")]
+    [Route("api/v1/price-menus")]
     [ApiController]
     [Authorize]
     public class PriceMenusController : ControllerBase
@@ -26,6 +26,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetPriceMenus()
         {
@@ -40,6 +41,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPriceMenu(PriceMenuCreatePayload newPriceMenuInfo)
@@ -55,13 +57,32 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedPriceMenu.StatusCode, response);
         }
-         [Authorize(Roles ="FieldManager,Admin")]
+        // [Authorize(Roles ="FieldManager,Admin")]
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateAPriceMenu(int id,
+        //    PriceMenuUpdatePayload NewPriceMenuInfo)
+        //{
+
+        //    var updatedPriceMenu = await priceMenuService.UpdateAPriceMenu(id, NewPriceMenuInfo);
+
+        //    if (updatedPriceMenu.IsSuccess)
+        //        return Ok(updatedPriceMenu);
+
+        //    Response.StatusCode = updatedPriceMenu.StatusCode;
+
+        //    var response = mapper.Map<ErrorResponse>(updatedPriceMenu);
+
+        //    return StatusCode(updatedPriceMenu.StatusCode, response);
+        //}
+
+        [Authorize(Roles = "FieldManager,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAPriceMenu(int id,
+        public async Task<IActionResult> UpdatePriceMenu(int id,
             PriceMenuUpdatePayload NewPriceMenuInfo)
         {
 
-            var updatedPriceMenu = await priceMenuService.UpdateAPriceMenu(id, NewPriceMenuInfo);
+            var updatedPriceMenu = await priceMenuService.UpdatePriceMenu1
+                (id, NewPriceMenuInfo);
 
             if (updatedPriceMenu.IsSuccess)
                 return Ok(updatedPriceMenu);
@@ -73,6 +94,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedPriceMenu.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificPriceMenu(int id)
         {

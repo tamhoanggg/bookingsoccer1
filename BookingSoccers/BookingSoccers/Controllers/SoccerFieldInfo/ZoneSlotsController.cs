@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
-    [Route("api/zone-slots")]
+    [Route("api/v1/zone-slots")]
     [ApiController]
     [Authorize]
     public class ZoneSlotsController : ControllerBase
@@ -27,10 +27,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetZoneSlots()
         {
-
             var result = await zoneSlotService.RetrieveAllZoneSlots();
 
             if (result.IsSuccess)
@@ -41,6 +41,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZoneSlot(ZoneSlotCreatePayload NewZoneSlotInfo)
@@ -56,6 +57,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedZoneSlot.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAZone(int id,
@@ -74,6 +76,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedZoneSlot.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificZoneSlot(int id)
         {
@@ -88,6 +91,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedZoneSlot.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAZoneSlot(int id)

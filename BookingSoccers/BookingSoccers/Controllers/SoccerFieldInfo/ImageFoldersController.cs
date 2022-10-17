@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
-    [Route("api/image-folders")]
+    [Route("api/v1/image-folders")]
     [ApiController]
     [Authorize]
     public class ImageFoldersController : ControllerBase
@@ -27,6 +27,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetImageFolders()
         {
@@ -41,6 +42,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewImageFolder(ImageFolderCreatePayload newImageFolderInfo)
@@ -56,6 +58,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedImageFolder.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateABooking(int id,
@@ -74,6 +77,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedImageFolder.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificImageFolder(int id)
         {
@@ -88,6 +92,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(retrievedImageFolder.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAImageFolder(int id)

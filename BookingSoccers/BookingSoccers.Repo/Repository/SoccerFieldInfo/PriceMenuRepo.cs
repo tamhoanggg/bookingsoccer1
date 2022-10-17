@@ -1,6 +1,7 @@
 ﻿using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,35 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<PriceMenu> GetAPriceMenu(int FieldId, DateTime date, byte ZoneTypeId)
+        {
+            var HolidayPriceMenu = await Get()
+                .Include(x => x.PriceItems)
+                .Where(x => x.FieldId == FieldId && x.ZoneTypeId == ZoneTypeId && 
+                x.DayType == DayTypeEnum.Holidays &&
+                x.StartDate.Date <= date.Date && date.Date <= x.EndDate.Date )
+                .FirstOrDefaultAsync();
+
+            if (HolidayPriceMenu != null) return HolidayPriceMenu;
+
+            var PriceMenu = await Get()
+                .Include(x => x.PriceItems)
+                .Where(x => x.FieldId == FieldId && x.ZoneTypeId == ZoneTypeId &&
+                x.StartDate.Date <= date.Date && date.Date <= x.EndDate.Date)
+                .FirstOrDefaultAsync();
+
+            return PriceMenu;
+        }
+
+        public async Task<List<PriceMenu>> GetPriceMenusForAField(int FieldId)
+        {
+            var PriceMenuList =
+                await Get()
+                .Include(x => x.PriceItems)
+                .Where(x => x.FieldId == FieldId)
+                .ToListAsync();
+
+            return PriceMenuList;
+        }
     }
 }

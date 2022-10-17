@@ -1,6 +1,7 @@
 ﻿using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,22 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<List<Zone>> getFieldZonesByFieldId(int FieldId)
+        {
+            var IdList = await Get()
+                        .Where(x => x.FieldId == FieldId)
+                        .ToListAsync();
+
+            return IdList;        
+        }
+
+        public async Task<List<Zone>> getZonesByZoneType(int FieldId, byte ZoneType)
+        {
+            var ZoneList = await Get()
+                .Where(x => x.ZoneTypeId == ZoneType && x.FieldId == FieldId)
+                .ToListAsync();
+
+            return ZoneList;
+        }
     }
 }

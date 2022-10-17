@@ -37,7 +37,5 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         [Required]
         public int ReviewScoreSum { get; set; }
 
-        [Required]
-        public int BaseTimeInterval { get; set; }
     }
 }

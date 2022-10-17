@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.ZoneInfo
 {
-    [Route("api/zones")]
+    [Route("api/v1/zones")]
     [ApiController]
     [Authorize]
     public class ZonesController : ControllerBase
@@ -26,6 +26,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetZones()
         {
@@ -40,6 +41,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZone(ZoneCreatePayload newZoneInfo)
@@ -55,6 +57,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
             return StatusCode(AddedZone.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAZone(int id,
@@ -87,6 +90,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
             return StatusCode(retrievedZone.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAZone(int id)

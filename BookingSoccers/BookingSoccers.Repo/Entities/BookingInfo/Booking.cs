@@ -36,14 +36,15 @@ namespace BookingSoccers.Repo.Entities.BookingInfo
         [ForeignKey("ZoneId")]
         public Zone ZoneInfo { get; set; }
 
-        [Required]
-        public int ZoneId { get; set; }
+        public int? ZoneId { get; set; }
 
         [ForeignKey("FieldId")]
         public SoccerField FieldInfo { get; set; }
 
         [Required]
         public int FieldId { get; set; }
+
+        public ICollection<Payment> payments { get; set; }
 
         [Required]
         public int TotalPrice { get; set; }
@@ -60,10 +61,11 @@ namespace BookingSoccers.Repo.Entities.BookingInfo
         [Required]
         public StatusEnum Status { get; set; }
 
+        [Required]
         public byte Rating { get; set; }
 
         [StringLength(1000)]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
     }
 
 }

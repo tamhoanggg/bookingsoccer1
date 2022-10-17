@@ -1,6 +1,7 @@
 ﻿using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,27 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
         public ZoneSlotRepo(BookingSoccersContext _bookingSoccersContext) : base(_bookingSoccersContext)
         {
             bookingSoccersContext = _bookingSoccersContext;
+        }
+
+        public async Task<List<ZoneSlot>> getZoneSlots(int ZoneId, DateTime date)
+        {
+            var resultList = await Get()
+                    .Where(x => x.ZoneId == ZoneId && x.StartTime.Date == date.Date)
+                    .OrderBy(x => x.StartTime.TimeOfDay)
+                    .ToListAsync();
+
+            return resultList;
+        }
+
+        public async Task<List<ZoneSlot>> getZoneSlotsByZoneId
+            (int ZoneId, DateTime date)
+        {
+            var resultList = await Get()
+                    .Where(x => x.ZoneId == ZoneId && x.StartTime.Date == date.Date 
+                    && x.Status ==0)
+                    .ToListAsync();
+
+            return resultList;
         }
 
     }

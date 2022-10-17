@@ -17,7 +17,11 @@ namespace BookingSoccers.Repo.IRepository
             Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null,
             string includeProperties = "");
 
+        void BulkCreate(List<T> TypeList);
+
         void Create(T type);
+
+        void BulkUpdate(List<T> TypeList);
 
         void Update(T type);
 

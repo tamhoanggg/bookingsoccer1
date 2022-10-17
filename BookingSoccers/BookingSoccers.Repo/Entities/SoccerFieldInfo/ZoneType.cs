@@ -17,6 +17,8 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [StringLength(15)]
         public string Name { get; set; }
 
+        public ICollection<Zone> Zones { get; set; }
+
         [Required]
         public byte DepositPercent { get; set; }
     }

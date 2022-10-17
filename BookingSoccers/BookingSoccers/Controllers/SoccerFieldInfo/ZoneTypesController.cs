@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
-    [Route("api/zone-types")]
+    [Route("api/v1/zone-types")]
     [ApiController]
     [Authorize]
     public class ZoneTypesController : ControllerBase
@@ -26,6 +26,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetZoneTypes()
         {
@@ -73,6 +74,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedZoneType.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneSpecificZoneType(byte id)
         {

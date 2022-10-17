@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Gh654WBLQqyKTkbkuq8mfgRescDX2gtughhcpebP4yjSA8AMNPtlgkNU2xa/ZoYGg67CBRINWggkAGLg78QvTA==",
+  "dgSpecHash": "6dmy1vAdn2KKY3kI/JVLGGcV7DWuBp3i6ZpqsmP5e/wFh2BL+KByXmhleLkWdBSa0xnDa9bCnaRGIUZ1++340w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\firebaseadmin\\2.3.0\\firebaseadmin.2.3.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\firebaseauthentication.net\\3.7.2\\firebaseauthentication.net.3.7.2.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\firebasestorage.net\\1.0.3\\firebasestorage.net.1.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.api.gax\\3.2.0\\google.api.gax.3.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.api.gax.rest\\3.2.0\\google.api.gax.rest.3.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis\\1.49.0\\google.apis.1.49.0.nupkg.sha512",

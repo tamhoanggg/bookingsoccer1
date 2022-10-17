@@ -19,6 +19,9 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         public string Description { get; set; }
 
         [Required]
+        public string ImageFolderPath { get; set; }
+
+        [Required]
         public TimeSpan OpenHour { get; set; }
 
         [Required]
@@ -31,13 +34,7 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         [Required]
         public byte Status { get; set; }
 
-        [Required]
-        public int TotalReviews { get; set; }
+        public string IdToken { get; set; }
 
-        [Required]
-        public int ReviewScoreSum { get; set; }
-
-        [Required]
-        public int BaseTimeInterval { get; set; }
     }
 }

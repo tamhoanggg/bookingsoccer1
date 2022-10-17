@@ -81,5 +81,14 @@ namespace BookingSoccers.Service.UserInfo
             return GeneralResult<Role>.Success(foundRole);
         }
 
+        public async Task<GeneralResult<Role>> GetUsersByRoleId(byte RoleId)
+        {
+            var finalresult = await roleRepo.GetUsersByRoleId(RoleId);
+
+            if(finalresult.Users == null) return GeneralResult<Role>.Error(
+                204, "No users associated with role Id:" + RoleId);
+
+            return GeneralResult<Role>.Success(finalresult);
+        }
     }
 }

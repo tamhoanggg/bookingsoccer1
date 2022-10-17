@@ -9,5 +9,9 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 {
     public interface IZoneSlotRepo : IBaseRepository<ZoneSlot>
     {
+        Task<List<ZoneSlot>> getZoneSlotsByZoneId(int Id, DateTime date);
+
+        Task<List<ZoneSlot>> getZoneSlots(int Id, DateTime date);
+
     }
 }

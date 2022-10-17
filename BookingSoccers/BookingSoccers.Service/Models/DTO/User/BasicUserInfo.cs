@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace BookingSoccers.Service.Models.DTO.User
 {
-    public class BasicUserInfo : HomePageUserInfo
+    public class BasicUserInfo
     {
-        
-        public string RoleName { get; set; }
+        public int Id { get; set; }
+
+        public byte RoleId { get; set; }
+
+        public string UserName { get; set; }
 
         public string FirstName { get; set; }
 

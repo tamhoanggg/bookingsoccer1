@@ -23,15 +23,19 @@ namespace BookingSoccers.Service.Service
     public class AuthenService : IAuthenService
     {
         private IUserRepo userRepo;
+        private IRoleRepo roleRepo;
+
         private string secret_key = "This is a sample secret key - please don't use in production environment.'";
         private string issuer = "http://localhost:5000";
         private string audience = "http://localhost:5000";
+
         private int tokenValidityInHours = 6;
         private int refreshTokenValidityInDays = 15;
 
-        public AuthenService(IUserRepo userRepo)
+        public AuthenService(IUserRepo userRepo, IRoleRepo roleRepo)
         {
             this.userRepo = userRepo;
+            this.roleRepo = roleRepo;
         }
 
         private static string GenerateRefreshToken()
@@ -79,7 +83,7 @@ namespace BookingSoccers.Service.Service
             try
             {
                 FirebaseToken decodedToken = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance
-                            .VerifyIdTokenAsync(IdToken);
+                            .VerifyIdTokenAsync(IdToken); 
                 Console.WriteLine("Decoded token" + decodedToken);
                 string uid = decodedToken.Uid;
                 var authUser = new FirebaseAuthProvider(new FirebaseConfig(API_key));
@@ -97,22 +101,10 @@ namespace BookingSoccers.Service.Service
                 userInfo.UserName = UserWithEmail.UserName;
                 userInfo.Email = UserWithEmail.Email;
 
+                var UserRole = await roleRepo.GetById(UserWithEmail.RoleId);
 
-                if (UserWithEmail.RoleId == 1)
-                {
-                    userInfo.Role = "Admin";
-                    RoleName = "Admin";
-                }
-                else if (UserWithEmail.RoleId == 2)
-                {
-                    userInfo.Role = "Manager";
-                    RoleName = "Manager";
-                }
-                else if (UserWithEmail.RoleId == 3)
-                {
-                    userInfo.Role = "User";
-                    RoleName = "User";
-                }
+                    userInfo.Role = UserRole.Name;
+                    RoleName = UserRole.Name;
 
                 var claims = new[]
                 {

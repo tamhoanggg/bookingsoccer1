@@ -18,5 +18,12 @@ namespace BookingSoccers.Repo.Repository.UserInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<User> GetByUserName(string UserName)
+        {
+            var returnedUser = await Get().
+                Where(x => x.UserName == UserName)
+                .FirstOrDefaultAsync();
+            return returnedUser;
+        }
     }
 }

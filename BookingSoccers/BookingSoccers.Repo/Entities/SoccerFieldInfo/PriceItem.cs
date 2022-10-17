@@ -28,8 +28,6 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [Required]
         public int Price { get; set; }
 
-        [Required]
-        public byte TimeAmount { get; set; }
     }
 }
 

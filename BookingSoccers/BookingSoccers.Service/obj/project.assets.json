@@ -49,6 +49,19 @@
           "lib/netstandard1.1/Firebase.Auth.dll": {}
         }
       },
+      "FirebaseStorage.net/1.0.3": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/Firebase.Storage.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Firebase.Storage.dll": {}
+        }
+      },
       "Google.Api.Gax/3.2.0": {
         "type": "package",
         "dependencies": {
@@ -2085,6 +2098,18 @@
         "firebaseauthentication.net.3.7.2.nupkg.sha512",
         "firebaseauthentication.net.nuspec",
         "lib/netstandard1.1/Firebase.Auth.dll"
+      ]
+    },
+    "FirebaseStorage.net/1.0.3": {
+      "sha512": "SupDHNUwNqcVwEo/HdFEWAXveQe3fU16q4wrrCxUVwP0a77zaddKp7vo2sHIW56DAsJn/gUfjDK3w0MuBhvzjQ==",
+      "type": "package",
+      "path": "firebasestorage.net/1.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "firebasestorage.net.1.0.3.nupkg.sha512",
+        "firebasestorage.net.nuspec",
+        "lib/netstandard1.1/Firebase.Storage.dll"
       ]
     },
     "Google.Api.Gax/3.2.0": {
@@ -6362,6 +6387,7 @@
       "BookingSoccers.Repo >= 1.0.0",
       "FirebaseAdmin >= 2.3.0",
       "FirebaseAuthentication.net >= 3.7.2",
+      "FirebaseStorage.net >= 1.0.3",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.9"
     ]
   },
@@ -6371,11 +6397,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
       "projectName": "BookingSoccers.Service",
-      "projectPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
+      "projectPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6392,8 +6418,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj": {
-              "projectPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj"
+            "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj"
             }
           }
         }
@@ -6419,6 +6445,10 @@
           "FirebaseAuthentication.net": {
             "target": "Package",
             "version": "[3.7.2, )"
+          },
+          "FirebaseStorage.net": {
+            "target": "Package",
+            "version": "[1.0.3, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",

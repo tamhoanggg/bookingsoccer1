@@ -12,6 +12,7 @@ using System.Text;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 //var connString = "Server=soccerfieldbookingmanagement.cunlmjsiwbxl.ap-northeast-1.rds.amazonaws.com;Port=3306;Database=soccer_fields_management;Uid=adminuser;Pwd=booking123456";
 //Add services to the container.
@@ -19,7 +20,11 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseConnec
     throw new InvalidOperationException("Connection string 'DatabaseConnectionString' not found.");
 
 //var ServerVer = new MySqlServerVersion(ServerVersion.AutoDetect(connectionString));
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson( options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = 
+        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -95,12 +100,6 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
-
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
-
 
 
 

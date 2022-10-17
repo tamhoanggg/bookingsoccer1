@@ -9,5 +9,8 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 {
     public interface IPriceMenuRepo : IBaseRepository<PriceMenu>
     {
+        Task<List<PriceMenu>> GetPriceMenusForAField(int FieldId);
+
+        Task<PriceMenu> GetAPriceMenu(int FieldId, DateTime date, byte ZoneTypeId);
     }
 }

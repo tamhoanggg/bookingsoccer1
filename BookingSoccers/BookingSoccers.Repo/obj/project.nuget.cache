@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ULMhKjdPNgetFqjw3P8IzLP1PNqdDboPNoswF+y3wsDDKw5g8jgIlrVUQOK1W2CTHGpkWsMG97a3clU4p9Tq3Q==",
+  "dgSpecHash": "4+f3Go3RXIUmNp1mP3oExshl72nJdOxzBkOahlPt8em2xHSe/kW9CRGxu8G0WyhUE5MzZyl5QBzYUuTSZ5tR9w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.9\\microsoft.entityframeworkcore.6.0.9.nupkg.sha512",
