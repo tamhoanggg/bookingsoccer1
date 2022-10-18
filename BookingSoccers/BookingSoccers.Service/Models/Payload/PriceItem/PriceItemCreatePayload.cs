@@ -12,17 +12,20 @@ namespace BookingSoccers.Service.Models.Payload.PriceItem
         public int PriceMenuId { get; set; }
 
         [Required]
-        public TimeSpan StartTime { get; set; }
+        public int StartTimeHour { get; set; }
 
         [Required]
-        public TimeSpan EndTime { get; set; }
+        public int StartTimeMinute { get; set; }
 
         [Required]
-        [Range(10000, 500000, 
+        public int EndTimeHour { get; set; }
+
+        [Required]
+        public int EndTimeMinute { get; set; }
+
+        [Required]
+        [Range(50000, 500000, 
         ErrorMessage = "Hiring price must be greater than 10k VND and less than 500k VND")]
         public int Price { get; set; }
-
-        [Required]
-        public byte TimeAmount { get; set; }
     }
 }

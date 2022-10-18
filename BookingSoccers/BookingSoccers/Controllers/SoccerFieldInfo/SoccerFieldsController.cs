@@ -4,9 +4,11 @@ using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.SoccerField;
+using BookingSoccers.Service.Models.Payload.Zone;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.X9;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
@@ -63,10 +65,11 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("{id}/booking-schedule")]
-        public async Task<IActionResult> GetFieldBookingScheduleOnDate(BookingSchedule info) 
+        public async Task<IActionResult> GetFieldBookingScheduleOnDate
+            (int id, DateTime date) 
         {
             var retrievedFieldSchedule =
-                await soccerFieldService.GetFieldScheduleOfADateById(info.Id, info.Date);
+                await soccerFieldService.GetFieldScheduleOfADateById(id, date);
 
             if (retrievedFieldSchedule.IsSuccess)
                 return Ok(retrievedFieldSchedule);
@@ -97,10 +100,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("field-manager/{id}")]
-        public async Task<IActionResult> GetSoccerFieldsInfoForManager(int ManagerId) 
+        public async Task<IActionResult> GetSoccerFieldsInfoForManager(int id) 
         {
             var retrievedSoccerFieldList = 
-                await soccerFieldService.GetFieldsForManagerByManagerId(ManagerId);
+                await soccerFieldService.GetFieldsForManagerByManagerId(id);
 
             if (retrievedSoccerFieldList.IsSuccess)
                 return Ok(retrievedSoccerFieldList);
@@ -114,10 +117,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("{id}/price-menus")]
-        public async Task<IActionResult> GetFieldPriceMenusByFieldId(int FieldId) 
+        public async Task<IActionResult> GetFieldPriceMenusByFieldId(int id) 
         {
             var retrievedPriceMenusList =
-                await soccerFieldService.GetPriceMenusForManagerByFieldId(FieldId);
+                await soccerFieldService.GetPriceMenusForManagerByFieldId(id);
 
             if (retrievedPriceMenusList.IsSuccess)
                 return Ok(retrievedPriceMenusList);
@@ -131,10 +134,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("{id}/regular-customers")]
-        public async Task<IActionResult> GetRegularGuestsByFieldId(int FieldId)
+        public async Task<IActionResult> GetRegularGuestsByFieldId(int id)
         {
             var returnedRegularGuestList =
-                await soccerFieldService.GetRegularCustomerList(FieldId);
+                await soccerFieldService.GetRegularCustomerList(id);
 
             if (returnedRegularGuestList.IsSuccess)
                 return Ok(returnedRegularGuestList);
@@ -148,10 +151,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [AllowAnonymous]
         [HttpGet("{id}/detail-view")]
-        public async Task<IActionResult> GetFieldDetailsForView(int FieldId) 
+        public async Task<IActionResult> GetFieldDetailsForView(int id) 
         {
             var FieldResult =
-                await soccerFieldService.GetFieldForUserByFieldID(FieldId);
+                await soccerFieldService.GetFieldForUserByFieldID(id);
 
             if (FieldResult.IsSuccess)
                 return Ok(FieldResult);
@@ -164,11 +167,13 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         }
 
         [AllowAnonymous]
-        [HttpGet("{id}/{date}/zone-slots")]
-        public async Task<IActionResult> GetFieldAvailZoneSlots(SoccerFieldZoneSlots info)
+        [HttpGet("{id}/zone-slots-by-date")]
+        public async Task<IActionResult> GetFieldAvailZoneSlots
+            (int id, SoccerFieldZoneSlots info)
         {
             var SlotListResult =
-                await zoneService.GetFieldAvailZoneSlotsForADate(info.FieldId, info.Date);
+                await zoneService.GetFieldAvailZoneSlotsForADate
+                (id, info.Date);
 
             if (SlotListResult.IsSuccess)
                 return Ok(SlotListResult);
@@ -182,7 +187,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [AllowAnonymous]
         [HttpGet("{id}/booking-validate")]
-        public async Task<IActionResult> ValidateBookingForm(BookingValidateForm info)
+        public async Task<IActionResult> ValidateBookingForm(int id, BookingValidateForm info)
         {
             var Result =
                 await soccerFieldService.CheckZonesAndCalculatePrice(info);
@@ -200,7 +205,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [Authorize(Roles = "User")]
         [HttpPost("{id}/booking-payment")]
         public async Task<IActionResult> AddANewBookingAndPayment
-            (BookingCreateForm newBookingInfo)
+            (int id, BookingCreateForm newBookingInfo)
         {
             var AddedBooking = await soccerFieldService.AddANewBooking(newBookingInfo);
 
@@ -216,7 +221,8 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddNewSoccerField(SoccerFieldCreatePayload newSoccerFieldInfo)
+        public async Task<IActionResult> AddNewSoccerField
+            (SoccerFieldCreatePayload newSoccerFieldInfo)
         {
             var AddedSoccerField = await soccerFieldService.AddANewSoccerField(newSoccerFieldInfo);
 
@@ -230,7 +236,24 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(AddedSoccerField.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "FieldManager")]
+        [HttpPost("{id}/zone")]
+        public async Task<IActionResult> AddNewSoccerFieldZone
+            (int id, ZoneCreatePayload Info)
+        {
+            var AddedZone = await zoneService.AddNewZone(id,Info);
+
+            if (AddedZone.IsSuccess)
+                return Ok(AddedZone);
+
+            Response.StatusCode = AddedZone.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(AddedZone);
+
+            return StatusCode(AddedZone.StatusCode, response);
+        }
+
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateASoccerField(int id,
             SoccerFieldUpdatePayload NewSoccerFieldInfo)

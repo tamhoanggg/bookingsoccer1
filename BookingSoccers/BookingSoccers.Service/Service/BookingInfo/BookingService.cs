@@ -45,7 +45,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
                 await bookingRepo.GetPaymentsAndBookingByUserId(UserId);
 
             if (retrievedBookingPayments == null) return GeneralResult<BookingView>.Error(
-                204, "Booking not found with User Id:" + UserId);
+                404, "Booking not found with User Id:" + UserId);
 
             var BookingResult = mapper.Map<BookingView>(retrievedBookingPayments);
 
@@ -67,7 +67,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var foundBooking = await bookingRepo.GetById(BookingId);
 
             if (foundBooking == null) return GeneralResult<Booking>.Error(
-                204, "Booking not found with Id:" + BookingId);
+                404, "Booking not found with Id:" + BookingId);
 
             bookingRepo.Delete(foundBooking);
             await bookingRepo.SaveAsync();
@@ -80,7 +80,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var foundBooking = await bookingRepo.GetBookingDetailsById(BookingId);
 
             if (foundBooking == null) return GeneralResult<Booking>.Error(
-                204, "Booking not found with Id:" + BookingId);
+                404, "Booking not found with Id:" + BookingId);
 
             return GeneralResult<Booking>.Success(foundBooking);
         }
@@ -89,8 +89,8 @@ namespace BookingSoccers.Service.Service.BookingInfo
         {
             var BookingList = await bookingRepo.Get().ToListAsync();
 
-            if (BookingList == null) return GeneralResult<List<Booking>>.Error(
-                204, "No bookings found");
+            if (BookingList.Count == 0) return GeneralResult<List<Booking>>.Error(
+                404, "No bookings found");
 
             return GeneralResult<List<Booking>>.Success(BookingList);
         }
@@ -101,7 +101,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var toUpdateBooking = await bookingRepo.GetById(Id);
 
             if (toUpdateBooking == null) return GeneralResult<Booking>.Error(
-                204, "No booking found with Id:" + Id);
+                404, "No booking found with Id:" + Id);
 
             mapper.Map(newBookingInfo ,toUpdateBooking);
          
@@ -116,7 +116,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var toUpdateBookingZoneId = await bookingRepo.GetById(Id);
 
             if (toUpdateBookingZoneId == null) return GeneralResult<Booking>.Error(
-                204, "No booking found with Id:" + Id);
+                404, "No booking found with Id:" + Id);
 
             toUpdateBookingZoneId.ZoneId = ZoneId;
 
@@ -132,7 +132,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var toUpdateBookingStatus = await bookingRepo.GetById(Id);
 
             if (toUpdateBookingStatus == null) return GeneralResult<BookingView>.Error(
-                204, "No booking found with Id:" + Id);
+                404, "No booking found with Id:" + Id);
 
             toUpdateBookingStatus.Status = newStatus;
 

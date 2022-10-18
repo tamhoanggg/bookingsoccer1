@@ -17,11 +17,11 @@ namespace BookingSoccers.Service.Models.Payload.Booking
 
         public string Address { get; set; }
 
-        public int TotalPrice { get; set; }
-
         public DateTime BookingDate { get; set; }
 
-        public TimeSpan StartTime { get; set; }
+        public int StartTimeHour { get; set; }
+
+        public int StartTimeMinute { get; set; }
 
         public int HireAmount { get; set; }
 

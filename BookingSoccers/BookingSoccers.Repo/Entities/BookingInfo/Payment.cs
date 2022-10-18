@@ -22,6 +22,7 @@ namespace BookingSoccers.Repo.Entities.BookingInfo
         [Required]
         public int BookingId { get; set; }
 
+        [ForeignKey("ReceiverId")]
         public User ReceiverInfo { get; set; }
 
         [Required]

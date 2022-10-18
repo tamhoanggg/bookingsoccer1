@@ -20,9 +20,9 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
 
         public async Task<List<ZoneSlot>> getZoneSlots(int ZoneId, DateTime date)
         {
+
             var resultList = await Get()
                     .Where(x => x.ZoneId == ZoneId && x.StartTime.Date == date.Date)
-                    .OrderBy(x => x.StartTime.TimeOfDay)
                     .ToListAsync();
 
             return resultList;

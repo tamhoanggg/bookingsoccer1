@@ -16,7 +16,7 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<Zone>> AddANewZone(
             ZoneCreatePayload zoneInfo);
 
-        Task<GeneralResult<Zone>> AddNewZone(ZoneCreatePayload zoneInfo);
+        Task<GeneralResult<Zone>> AddNewZone(int FieldId, ZoneCreatePayload zoneInfo);
 
         Task<GeneralResult<Zone>> RetrieveAZoneById(int ZoneId);
 

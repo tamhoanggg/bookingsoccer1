@@ -42,7 +42,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var foundImgFolder = await imageFolderRepo.GetById(ImgFolderId);
 
             if (foundImgFolder == null) return GeneralResult<ImageFolder>.Error(
-                204, "Image folder not found with Id:" + ImgFolderId);
+                404, "Image folder not found with Id:" + ImgFolderId);
 
             imageFolderRepo.Delete(foundImgFolder);
             await imageFolderRepo.SaveAsync();
@@ -54,8 +54,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var ImageFolderList = await imageFolderRepo.Get().ToListAsync();
 
-            if (ImageFolderList == null) return GeneralResult<List<ImageFolder>>.Error(
-                204, "No image folders found");
+            if (ImageFolderList.Count == 0) return GeneralResult<List<ImageFolder>>.Error(
+                404, "No image folders found");
 
             return GeneralResult<List<ImageFolder>>.Success(ImageFolderList);
         }
@@ -66,7 +66,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var foundImgFolder = await imageFolderRepo.GetById(imgFolderId);
 
             if (foundImgFolder == null) return GeneralResult<ImageFolder>.Error(
-                204, "Image folder not found with Id:" + imgFolderId);
+                404, "Image folder not found with Id:" + imgFolderId);
 
             return GeneralResult<ImageFolder>.Success(foundImgFolder);
         }
@@ -76,7 +76,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toUpdateImgFolder = await imageFolderRepo.GetById(Id);
 
             if (toUpdateImgFolder == null) return GeneralResult<ImageFolder>.Error(
-                204, "No image folder found with Id:" + Id);
+                404, "No image folder found with Id:" + Id);
 
             mapper.Map(newImgFolderInfo, toUpdateImgFolder);
 

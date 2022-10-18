@@ -31,7 +31,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 GetZoneTypeByName(zoneTypeInfo.Name);
 
             if (CheckZoneTypeExist != null) return
-                    GeneralResult<ZoneType>.Error(403, "Zone type already exists");
+                    GeneralResult<ZoneType>.Error(409, "Zone type already exists");
 
             var toCreateZoneType = mapper.Map<ZoneType>(zoneTypeInfo);
 
@@ -46,7 +46,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toDeleteZoneType = await zoneTypeRepo.GetById(ZoneTypeId);
 
             if (toDeleteZoneType == null) return GeneralResult<ZoneType>.Error(
-                204, "No zone type found with Id:" + ZoneTypeId);
+                404, "No zone type found with Id:" + ZoneTypeId);
 
             zoneTypeRepo.Delete(toDeleteZoneType);
             await zoneTypeRepo.SaveAsync();
@@ -58,8 +58,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var ZoneTypeList = await zoneTypeRepo.Get().ToListAsync();
 
-            if (ZoneTypeList == null) return GeneralResult<List<ZoneType>>.Error(
-                204, "No zone type found");
+            if (ZoneTypeList.Count == 0) return GeneralResult<List<ZoneType>>.Error(
+                404, "No zone type found");
 
             return GeneralResult<List<ZoneType>>.Success(ZoneTypeList);
         }
@@ -69,7 +69,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var retrievedZoneSlot = await zoneTypeRepo.GetById(zoneTypeId);
 
             if (retrievedZoneSlot == null) return GeneralResult<ZoneType>.Error(
-                204, "No zone type found with Id:" + zoneTypeId);
+                404, "No zone type found with Id:" + zoneTypeId);
 
             return GeneralResult<ZoneType>.Success(retrievedZoneSlot);
         }
@@ -80,7 +80,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toUpdateZoneType = await zoneTypeRepo.GetById(Id);
 
             if (toUpdateZoneType == null) return GeneralResult<ZoneType>.Error(
-                204, "No zone type found with Id:" + Id);
+                404, "No zone type found with Id:" + Id);
 
             mapper.Map(newZoneTypeInfo, toUpdateZoneType);
 

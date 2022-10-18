@@ -67,8 +67,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var ZoneList = await zoneRepo.getZonesByZoneType
                 (createFormInfo.FieldId, createFormInfo.ZoneTypeId);
 
-            if (ZoneList == null) return GeneralResult<PreBookingInfo>.Error
-                    (204, "No zone found for this zone type");
+            if (ZoneList.Count == 0) return GeneralResult<PreBookingInfo>.Error
+                    (404, "No zone found for this zone type");
 
             List<int> ZoneIdList = ZoneList
                 .Select(x => x.Id)
@@ -76,12 +76,23 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             PreBookingInfo result = null;
 
+            var FieldOpeningTime = await soccerFieldRepo.GetById(createFormInfo.FieldId);
+
+            var LocalTime = createFormInfo.BookingDate.ToLocalTime();
+
             var StartTime = new DateTime
-                    (createFormInfo.BookingDate.Year, createFormInfo.BookingDate.Month,
-                    createFormInfo.BookingDate.Day, createFormInfo.StartTime.Hours,
-                    createFormInfo.StartTime.Minutes, createFormInfo.StartTime.Seconds);
+                    (LocalTime.Year, LocalTime.Month,
+                    LocalTime.Day, createFormInfo.StartTimeHour,
+                    createFormInfo.StartTimeMinute, 0);
 
             var EndTime = StartTime.AddMinutes(createFormInfo.HireAmount);
+
+            if (!(FieldOpeningTime.OpenHour <= StartTime.TimeOfDay &&
+                StartTime.TimeOfDay <= FieldOpeningTime.CloseHour) ||
+                !(FieldOpeningTime.OpenHour <= EndTime.TimeOfDay &&
+                EndTime.TimeOfDay <= FieldOpeningTime.CloseHour))
+                return GeneralResult<PreBookingInfo>.Error
+                    (400, "Invalid hire start time or end time");
 
             var FieldResult = await soccerFieldRepo.GetById(createFormInfo.FieldId);
 
@@ -93,18 +104,18 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 (it, createFormInfo.BookingDate);
 
                 var FinalZoneSlotList = ZoneSlotList
-                    .Where(x => x.StartTime.TimeOfDay >= StartTime.TimeOfDay &&
-                    x.StartTime.TimeOfDay < EndTime.TimeOfDay)
+                    .Where(x => x.StartTime.ToLocalTime().TimeOfDay >= StartTime.TimeOfDay &&
+                    x.StartTime.ToLocalTime().TimeOfDay < EndTime.TimeOfDay)
                     .OrderBy(x => x.StartTime)
                     .ToList();
 
-                var SlotCount = FinalZoneSlotList.Count();
+                var SlotCount = FinalZoneSlotList.Count;
 
                 var TimeAmountCheck = 30 * SlotCount;
 
                 if (TimeAmountCheck != createFormInfo.HireAmount) return
                 GeneralResult<PreBookingInfo>.Error(400, "No slots available from " +
-                createFormInfo.StartTime);
+                createFormInfo.StartTimeHour +"h" +createFormInfo.StartTimeMinute);
 
                 List<int> SlotIdList = new List<int>();
 
@@ -117,7 +128,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
            (createFormInfo.FieldId, createFormInfo.BookingDate, createFormInfo.ZoneTypeId);
 
                 if (PriceMenu == null) return GeneralResult<PreBookingInfo>.Error
-                        (204, "No price menu to book");
+                        (404, "No price menu to book");
 
                 var PriceItemList = PriceMenu.PriceItems
                     .OrderBy(x => x.StartTime)
@@ -132,7 +143,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                         item.StartTime <= EndTime.TimeOfDay &&
                         EndTime.TimeOfDay <= item.EndTime)
                     {
-                        Price = (int)(item.Price * (double)(createFormInfo.HireAmount / 60));
+                        Price = (int)(item.Price * (double)createFormInfo.HireAmount / 60);
                         break;
                     }
 
@@ -143,7 +154,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     {
                         var priceItemMinute = (item.EndTime - item.StartTime).Hours * 60 +
                             (item.EndTime - item.StartTime).Minutes;
-                        Price += (int)(item.Price * (double)(priceItemMinute / 60));
+                        Price += (int)(item.Price * (double)priceItemMinute / 60);
                         continue;
                     }
 
@@ -153,7 +164,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     {
                         var priceItemMinute = (item.EndTime - StartTime.TimeOfDay).Hours * 60 +
                             (item.EndTime - StartTime.TimeOfDay).Minutes;
-                        Price += (int)(item.Price * (double)(priceItemMinute / 60));
+                        Price += (int)(item.Price * (double)priceItemMinute / 60);
                         continue;
                     }
 
@@ -163,7 +174,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     {
                         var priceItemMinute = (EndTime.TimeOfDay - item.StartTime).Hours * 60 +
                             (EndTime.TimeOfDay - item.StartTime).Minutes;
-                        Price += (int)(item.Price * (double)(priceItemMinute / 60));
+                        Price += (int)(item.Price * (double)priceItemMinute / 60);
                         continue;
                     }
                 }
@@ -182,6 +193,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     DepositPercent = ZoneTypeResult.DepositPercent,
                     PrepayAmount = Price/100 * ZoneTypeResult.DepositPercent
                 };
+                break;
             }
 
             return GeneralResult<PreBookingInfo>.Success(result);
@@ -190,13 +202,13 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         public async Task<GeneralResult<SoccerField>> AddANewSoccerField(
             SoccerFieldCreatePayload SoccerFieldinfo)
         {
-            var soccerFieldExistCheck = soccerFieldRepo.Get().Where(x =>
+            var soccerFieldExistCheck = await soccerFieldRepo.Get().Where(x =>
             x.FieldName == SoccerFieldinfo.FieldName ||
-            x.Address == SoccerFieldinfo.Address);
+            x.Address == SoccerFieldinfo.Address).FirstOrDefaultAsync();
 
             if (soccerFieldExistCheck != null) return
                 GeneralResult<SoccerField>.Error(
-                    403, "Soccer field name or address already exists");
+                    409, "Soccer field name or address already exists");
 
             var toCreateSoccerField = mapper.Map<SoccerField>(SoccerFieldinfo);
             toCreateSoccerField.OpenHour = new TimeSpan
@@ -247,17 +259,21 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             if (SoccerField == null)
                 return GeneralResult<SoccerFieldView1>.Error(
-                204, "No soccer fields found for UserId:" + FieldId);
+                404, "No soccer fields found for UserId:" + FieldId);
 
             List<PriceItemView>? priceItemViewList = null;
             List<PriceMenuView>? priceMenuViewsList = null;
 
             var SoccerFieldViewItem = mapper.Map<SoccerFieldView1>(SoccerField);
 
-            SoccerFieldViewItem.AverageReviewScore =
-                SoccerField.ReviewScoreSum / SoccerField.TotalReviews;
+            if(SoccerField.ReviewScoreSum > 0 && SoccerField.TotalReviews > 0)
+                SoccerFieldViewItem.AverageReviewScore =
+                    SoccerField.ReviewScoreSum / SoccerField.TotalReviews;
 
-            if (SoccerField.PriceMenus != null)
+            if (SoccerField.ReviewScoreSum == 0 && SoccerField.TotalReviews == 0)
+                SoccerFieldViewItem.AverageReviewScore = 0;
+
+            if (SoccerField.PriceMenus.Count > 0)
             {
                 priceMenuViewsList = new List<PriceMenuView>();
                 foreach (var item in SoccerField.PriceMenus)
@@ -283,12 +299,12 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             var ZoneList = await zoneRepo.getFieldZonesByFieldId(FieldId);
 
-            if(ZoneList != null)
+            if(ZoneList.Count > 0)
             {
                 List<ZoneView> FinalZoneViewList = new List<ZoneView>();
                 foreach (var item in ZoneList)
                 {
-                    var SlotList = await zoneSlotRepo.getZoneSlots(item.Id, DateTime.Now);
+                    var SlotList = await zoneSlotRepo.getZoneSlots(item.Id, DateTime.UtcNow);
 
                     ZoneView ZoneViewItem = new ZoneView();
                     ZoneViewItem.ZoneNumber = item.Number;
@@ -296,21 +312,24 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     List<ZoneSlotView> SlotViewList = new List<ZoneSlotView>();
                     foreach (var it in SlotList) 
                     {
+
                         ZoneSlotView SlotViewItem = new ZoneSlotView()
                         {
-                            SlotStartTime = it.StartTime.TimeOfDay,
-                            SlotEndTime = it.EndTime.TimeOfDay
+                            SlotStartTime = it.StartTime.ToLocalTime().TimeOfDay,
+                            SlotEndTime = it.EndTime.ToLocalTime().TimeOfDay
                         };
 
                         SlotViewList.Add(SlotViewItem);
                     }
+                    var FinalList = SlotViewList.OrderBy(x => x.SlotStartTime).ToList();
+                    
                     ZoneViewItem.ZoneTypeSlots = SlotViewList;
                     FinalZoneViewList.Add(ZoneViewItem);
                 }
 
-                FinalZoneViewList.OrderBy(x => x.ZoneType);
+                var FilterFinalList = FinalZoneViewList.OrderBy(x => x.ZoneType).ToList();
 
-                SoccerFieldViewItem.ZonesList = FinalZoneViewList;
+                SoccerFieldViewItem.ZonesList = FilterFinalList;
             }
             else 
                 SoccerFieldViewItem.ZonesList = null;
@@ -326,7 +345,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             if (soccerFieldSchedule != null) return
                 GeneralResult<SoccerFieldView2>.Error(
-                    204, "No soccer field schedule found for date: "+date);
+                    404, "No soccer field schedule found for date: "+date);
 
             var FinalSoccerField = mapper.Map<SoccerFieldView2>(soccerFieldSchedule);
 
@@ -345,11 +364,12 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         public async Task<GeneralResult<List<SoccerFieldView3>>> 
             GetFieldsForManagerByManagerId(int ManagerId)
         {
-            var FieldsList = await soccerFieldRepo.GetFieldsForManagerByManagerId(ManagerId);
+            var FieldsList = await soccerFieldRepo
+                .GetFieldsForManagerByManagerId(ManagerId);
 
-            if (FieldsList != null) return 
+            if (FieldsList.Count == 0) return 
                     GeneralResult<List<SoccerFieldView3>>.Error(
-                204, "No soccer fields found with manager Id:" + ManagerId);
+                404, "No soccer fields found with manager Id:" + ManagerId);
 
             var FinalFieldsList = mapper.Map<List<SoccerFieldView3>>(FieldsList);
 
@@ -357,14 +377,16 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
         }
 
-        public async Task<GeneralResult<List<PriceMenuView>>> GetPriceMenusForManagerByFieldId
+        public async Task<GeneralResult<List<PriceMenuView>>> 
+            GetPriceMenusForManagerByFieldId
             (int FieldId)
         {
-            var returnedPriceMenusList = await priceMenuRepo.GetPriceMenusForAField(FieldId);
+            var returnedPriceMenusList = await priceMenuRepo
+                .GetPriceMenusForAField(FieldId);
 
-            if(returnedPriceMenusList != null) return
+            if(returnedPriceMenusList.Count == 0) return
                     GeneralResult<List<PriceMenuView>>.Error(
-                204, "No price menus found with field Id:" + FieldId);
+                404, "No price menus found with field Id:" + FieldId);
 
             List<PriceMenuView> FinalPriceMenusList = new List<PriceMenuView>();
 
@@ -393,11 +415,12 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var BookingList = await bookingRepo.GetBookingsByFieldId(FieldId);
 
-            if (BookingList != null) return
+            if (BookingList.Count == 0) return
                     GeneralResult<List<FieldRegularCustomerView>>
-                    .Error(204, "Field with Id:"+FieldId+" has no regular customer");
+                    .Error(404, "Field with Id:"+FieldId+" has no regular customer");
 
-            var DistinctBookingList = await bookingRepo.GetBookingsDistinctByFieldId(FieldId);
+            var DistinctBookingList = await bookingRepo
+                .GetBookingsDistinctByFieldId(FieldId);
 
             int count = 0;
 
@@ -429,7 +452,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 .Success(RegularCustomerList);
         }
 
-        public async Task<GeneralResult<SoccerFieldSalesReport>> GetSalesReportForField(int FieldId)
+        public async Task<GeneralResult<SoccerFieldSalesReport>> 
+            GetSalesReportForField(int FieldId)
         {
             SoccerFieldSalesReport SalesReport = new SoccerFieldSalesReport();
 
@@ -463,7 +487,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             int CurrentMonth = 0;
             int PreviousMonth = 0;
 
-            if (Past6MonthSalesReport != null)
+            if (Past6MonthSalesReport.Count > 0)
             {
                 foreach (var item in Past6MonthSalesReport)
                 {
@@ -526,7 +550,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             int CurrentDay = 0;
             int PreviousDay = 0;
 
-            if (Past14DaysSalesReport != null) 
+            if (Past14DaysSalesReport.Count > 0) 
             {
                 foreach (var item in Past14DaysSalesReport)
                 {
@@ -578,7 +602,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             CustomBookingReportView LastMonthReport = new CustomBookingReportView();
 
-            if (LastMonthBooking != null)
+            if (LastMonthBooking.Count > 0)
             {
                 LastMonthReport.BookingCount = LastMonthBooking.Count;
                 LastMonthReport.TotalIncomeCount = LastMonthBooking.Sum(x => x.TotalPrice);
@@ -596,7 +620,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toDeleteSoccerField = await soccerFieldRepo.GetById(SoccerFieldId);
 
             if (toDeleteSoccerField == null) return GeneralResult<SoccerField>.Error(
-                204, "No soccer field found with Id:" + SoccerFieldId);
+                404, "No soccer field found with Id:" + SoccerFieldId);
 
             soccerFieldRepo.Delete(toDeleteSoccerField);
             await soccerFieldRepo.SaveAsync();
@@ -608,18 +632,19 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var soccerFieldList = await soccerFieldRepo.Get().ToListAsync();
 
-            if (soccerFieldList == null) return GeneralResult<List<SoccerField>>.Error(
-                204, "No soccer fields found");
+            if (soccerFieldList.Count == 0) return GeneralResult<List<SoccerField>>.Error(
+                404, "No soccer fields found");
 
             return GeneralResult<List<SoccerField>>.Success(soccerFieldList); 
         }
 
-        public async Task<GeneralResult<List<SoccerFieldListView>>> RetrieveAllSoccerFieldsForUser()
+        public async Task<GeneralResult<List<SoccerFieldListView>>> 
+            RetrieveAllSoccerFieldsForUser()
         {
             var soccerFieldList = await soccerFieldRepo.Get().ToListAsync();
 
-            if (soccerFieldList == null) return GeneralResult<List<SoccerFieldListView>>.Error(
-                204, "No soccer fields found");
+            if (soccerFieldList.Count == 0) return GeneralResult<List<SoccerFieldListView>>.Error(
+                404, "No soccer fields found");
 
             var resultList = mapper.Map<List<SoccerFieldListView>>(soccerFieldList);
 
@@ -631,7 +656,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var retrievedSoccerField = await soccerFieldRepo.GetById(SoccerFieldId);
 
             if (retrievedSoccerField == null) return GeneralResult<SoccerField>.Error(
-                204, "No soccer field found with Id:"+ SoccerFieldId);
+                404, "No soccer field found with Id:"+ SoccerFieldId);
 
             return GeneralResult<SoccerField>.Success(retrievedSoccerField);
         }
@@ -642,9 +667,18 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toUpdateSoccerField = await soccerFieldRepo.GetById(Id);
 
             if (toUpdateSoccerField == null) return GeneralResult<SoccerField>.Error(
-                204, "No soccer field found with Id:" + Id);
+                404, "No soccer field found with Id:" + Id);
 
             mapper.Map(newSoccerFieldInfo, toUpdateSoccerField);
+
+            var newOpenHour = new TimeSpan
+                (newSoccerFieldInfo.OpenTimeHour, newSoccerFieldInfo.OpenTimeMinute, 0);
+
+            var newCloseHour = new TimeSpan
+                (newSoccerFieldInfo.CloseTimeHour, newSoccerFieldInfo.CloseTimeMinute, 0);
+
+            toUpdateSoccerField.OpenHour = newOpenHour;
+            toUpdateSoccerField.CloseHour = newCloseHour;
 
             soccerFieldRepo.Update(toUpdateSoccerField);
             await soccerFieldRepo.SaveAsync();
@@ -655,21 +689,22 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         public async Task<GeneralResult<AddedBookingView>> AddANewBooking
             (BookingCreateForm bookingInfo)
         {
+
             var StartTime = new DateTime(bookingInfo.HireDate.Year,
                 bookingInfo.HireDate.Month, bookingInfo.HireDate.Day,
-                bookingInfo.StartTime.Hours, bookingInfo.StartTime.Minutes,
-                bookingInfo.StartTime.Seconds);
+                bookingInfo.StartTimeHour, bookingInfo.StartTimeMinute,
+                0);
 
             var EndTime = new DateTime(bookingInfo.HireDate.Year,
                 bookingInfo.HireDate.Month, bookingInfo.HireDate.Day,
-                bookingInfo.EndTime.Hours, bookingInfo.EndTime.Minutes,
-                bookingInfo.EndTime.Seconds);
+                bookingInfo.EndTimeHour, bookingInfo.EndTimeMinute,
+                0);
 
             var CheckBookingExist = await bookingRepo
-                .CheckBookingDuplicate(StartTime, EndTime);
+                .CheckBookingDuplicate(StartTime.ToUniversalTime(), EndTime.ToUniversalTime());
 
             if (CheckBookingExist != null) return GeneralResult<AddedBookingView>
-                    .Error(403, "Can not book, another booking with overlapping slots found");
+                    .Error(409, "Can not book, another booking with overlapping slots found");
 
             List<ZoneSlot> ZoneList = new List<ZoneSlot>();
             foreach(var item in bookingInfo.SlotsIdList) 
@@ -693,9 +728,9 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 ZoneId = bookingInfo.ZoneId,
                 FieldId = Field.Id,
                 TotalPrice = bookingInfo.TotalPrice,
-                StartTime = StartTime,
-                EndTime = EndTime,
-                CreateTime = DateTime.Now,
+                StartTime = StartTime.ToUniversalTime(),
+                EndTime = EndTime.ToUniversalTime(),
+                CreateTime = DateTime.UtcNow,
                 Status = StatusEnum.Waiting,
                 Rating = 0
             };
@@ -709,13 +744,15 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 ReceiverId = Field.ManagerId,
                 Type = PaymentTypeEnum.Deposit,
                 Amount = bookingInfo.PrepayAmount,
-                Time = DateTime.Now
+                Time = DateTime.UtcNow
             };
 
             paymentRepo.Create(newPayment);
             await paymentRepo.SaveAsync();
 
             var ZoneItem = await zoneRepo.GetById(bookingInfo.ZoneId);
+            var LocalStartTime = StartTime.ToLocalTime();
+            var LocalEndTime = EndTime.ToLocalTime();
 
             AddedBookingView AddedBooking = new AddedBookingView()
             {
@@ -725,8 +762,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 FieldName = Field.FieldName,
                 FieldAddress = Field.Address,
                 TotalPrice = bookingInfo.TotalPrice,
-                StartTime = StartTime,
-                EndTime = EndTime,
+                StartTime = LocalStartTime,
+                EndTime = LocalEndTime,
                 CreateTime = DateTime.Now,
                 Status = StatusEnum.Waiting,
                 DepositPercent = ZoneType.DepositPercent,

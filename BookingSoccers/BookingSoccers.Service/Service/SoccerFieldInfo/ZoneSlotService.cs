@@ -41,7 +41,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toDeleteZoneSlot = await zoneSlotRepo.GetById(zoneSLotId);
 
             if (toDeleteZoneSlot == null) return GeneralResult<ZoneSlot>.Error(
-                204, "No zone slot found with Id:" + zoneSLotId);
+                404, "No zone slot found with Id:" + zoneSLotId);
 
             zoneSlotRepo.Delete(toDeleteZoneSlot);
             await zoneSlotRepo.SaveAsync();
@@ -53,8 +53,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var ZoneSlotList = await zoneSlotRepo.Get().ToListAsync();
 
-            if (ZoneSlotList == null) return GeneralResult<List<ZoneSlot>>.Error(
-                204, "No zone slot found");
+            if (ZoneSlotList.Count == 0) return GeneralResult<List<ZoneSlot>>.Error(
+                404, "No zone slot found");
 
             return GeneralResult<List<ZoneSlot>>.Success(ZoneSlotList);
         }
@@ -64,7 +64,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var retrievedZoneSlot = await zoneSlotRepo.GetById(zoneSlotId);
 
             if (retrievedZoneSlot == null) return GeneralResult<ZoneSlot>.Error(
-                204, "No zone slot found with Id:" + zoneSlotId);
+                404, "No zone slot found with Id:" + zoneSlotId);
 
             return GeneralResult<ZoneSlot>.Success(retrievedZoneSlot);
         }
@@ -74,7 +74,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toUpdateZoneSlot = await zoneSlotRepo.GetById(Id);
 
             if (toUpdateZoneSlot == null) return GeneralResult<ZoneSlot>.Error(
-                204, "No zone slot found with Id:" + Id);
+                404, "No zone slot found with Id:" + Id);
 
             mapper.Map(newZoneSlotInfo, toUpdateZoneSlot);
 

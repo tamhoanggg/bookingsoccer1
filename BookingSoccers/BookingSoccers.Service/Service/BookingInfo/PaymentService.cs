@@ -39,7 +39,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var searchPayment = await paymentRepo.GetById(PaymentId);
 
             if (searchPayment == null) return GeneralResult<Payment>.Error(
-                204, "Payment not found with Id:" + PaymentId);
+                404, "Payment not found with Id:" + PaymentId);
 
             paymentRepo.Delete(searchPayment);
             await paymentRepo.SaveAsync();
@@ -52,7 +52,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
             var returnedPayment = await paymentRepo.GetById(PaymentId);
 
             if (returnedPayment == null) return GeneralResult<Payment>.Error(
-                204, "Payment not found with Id:" + PaymentId);
+                404, "Payment not found with Id:" + PaymentId);
 
             return GeneralResult<Payment>.Success(returnedPayment);
         }
@@ -61,8 +61,8 @@ namespace BookingSoccers.Service.Service.BookingInfo
         {
             var PaymentList = await paymentRepo.Get().ToListAsync();
 
-            if (PaymentList == null) return GeneralResult<List<Payment>>.Error(
-                204, "No payment found ");
+            if (PaymentList.Count == 0) return GeneralResult<List<Payment>>.Error(
+                404, "No payment found ");
 
             return GeneralResult <List<Payment>>.Success(PaymentList);
         }
@@ -72,7 +72,7 @@ namespace BookingSoccers.Service.Service.BookingInfo
         {
             var toUpdatePayment = await paymentRepo.GetById(Id);
             if (toUpdatePayment == null) return GeneralResult<Payment>.Error(
-                204, "Payment not found with Id:" + Id);
+                404, "Payment not found with Id:" + Id);
 
             mapper.Map(newPaymentInfo, toUpdatePayment);
 

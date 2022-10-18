@@ -19,10 +19,16 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         public string Description { get; set; }
 
         [Required]
-        public TimeSpan OpenHour { get; set; }
+        public int OpenTimeHour { get; set; }
 
         [Required]
-        public TimeSpan CloseHour { get; set; }
+        public int OpenTimeMinute { get; set; }
+
+        [Required]
+        public int CloseTimeHour { get; set; }
+
+        [Required]
+        public int CloseTimeMinute { get; set; }
 
         [Required]
         [StringLength(100)]

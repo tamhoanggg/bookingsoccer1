@@ -30,7 +30,7 @@ namespace BookingSoccers.Service.Service.UserInfo
                 x.PhoneNumber == userinfo.PhoneNumber).FirstOrDefaultAsync();
 
             if (userExistCheck != null) return 
-                    GeneralResult<User>.Error(403, "User already exists"); 
+                    GeneralResult<User>.Error(409, "User already exists"); 
 
             var toCreateUser = mapper.Map<User>(userinfo);
             userRepo.Create(toCreateUser);
@@ -44,7 +44,7 @@ namespace BookingSoccers.Service.Service.UserInfo
             var User = await userRepo.GetById(email);
 
             if (User == null) return GeneralResult<User>.Error(
-                204, "User not found with Email:" + email); 
+                404, "User not found with Email:" + email); 
 
             return GeneralResult<User>.Success(User);
         }
@@ -54,7 +54,7 @@ namespace BookingSoccers.Service.Service.UserInfo
             var returnedUser = await userRepo.GetById(UserId);
 
             if (returnedUser == null) return GeneralResult<User>.Error(
-                204, "User not found with Id:" + UserId);
+                404, "User not found with Id:" + UserId);
 
             userRepo.Delete(returnedUser);
             await userRepo.SaveAsync();
@@ -66,8 +66,8 @@ namespace BookingSoccers.Service.Service.UserInfo
         {
             var returnedUserList = await userRepo.Get().ToListAsync();
 
-            if (returnedUserList == null) return GeneralResult< List<User>>.Error(
-                204, "No users found ");
+            if (returnedUserList.Count == 0) return GeneralResult< List<User>>.Error(
+                404, "No users found ");
 
             return GeneralResult<List<User>>.Success(returnedUserList);
         }
@@ -77,7 +77,7 @@ namespace BookingSoccers.Service.Service.UserInfo
             var userById = await userRepo.GetById(UserId);
 
             if (userById == null) return GeneralResult<User>.Error(
-                204, "User not found with Id:" + UserId); 
+                404, "User not found with Id:" + UserId); 
 
             return GeneralResult<User>.Success(userById);
         }
@@ -87,7 +87,7 @@ namespace BookingSoccers.Service.Service.UserInfo
             var toUpdateUser = await userRepo.GetByUserName(UserName);
 
             if(toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
-                204, "User not found with username:" + UserName);
+                404, "User not found with username:" + UserName);
 
             var returnedUser = new BasicUserInfo();
             mapper.Map(toUpdateUser, returnedUser);
@@ -100,7 +100,7 @@ namespace BookingSoccers.Service.Service.UserInfo
             var toUpdateUser = await userRepo.GetById(Id);
 
             if (toUpdateUser == null) return GeneralResult<User>.Error(
-                204, "User not found with Id:" + Id);
+                404, "User not found with Id:" + Id);
 
             mapper.Map(newUserInfo, toUpdateUser);
 
@@ -115,7 +115,7 @@ namespace BookingSoccers.Service.Service.UserInfo
             var toUpdateUser = await userRepo.GetById(id);
 
             if (toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
-                204, "User not found with Id:" + id);
+                404, "User not found with Id:" + id);
 
             mapper.Map(newUserInfo, toUpdateUser);
 

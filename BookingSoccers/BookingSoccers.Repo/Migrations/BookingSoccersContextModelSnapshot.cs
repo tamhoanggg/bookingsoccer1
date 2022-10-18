@@ -95,9 +95,6 @@ namespace BookingSoccers.Repo.Migrations
                     b.Property<int>("ReceiverId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ReceiverInfoId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
@@ -108,7 +105,7 @@ namespace BookingSoccers.Repo.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.HasIndex("ReceiverInfoId");
+                    b.HasIndex("ReceiverId");
 
                     b.ToTable("Payments");
                 });
@@ -438,7 +435,7 @@ namespace BookingSoccers.Repo.Migrations
 
                     b.HasOne("BookingSoccers.Repo.Entities.UserInfo.User", "ReceiverInfo")
                         .WithMany()
-                        .HasForeignKey("ReceiverInfoId")
+                        .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

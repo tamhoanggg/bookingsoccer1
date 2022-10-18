@@ -20,22 +20,49 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
 
         public async Task<PriceMenu> GetAPriceMenu(int FieldId, DateTime date, byte ZoneTypeId)
         {
-            var HolidayPriceMenu = await Get()
+            PriceMenu? returnedPriceMenu = new();
+
+                returnedPriceMenu = await Get()
                 .Include(x => x.PriceItems)
                 .Where(x => x.FieldId == FieldId && x.ZoneTypeId == ZoneTypeId && 
                 x.DayType == DayTypeEnum.Holidays &&
                 x.StartDate.Date <= date.Date && date.Date <= x.EndDate.Date )
                 .FirstOrDefaultAsync();
 
-            if (HolidayPriceMenu != null) return HolidayPriceMenu;
+            if (returnedPriceMenu != null) return returnedPriceMenu;
 
-            var PriceMenu = await Get()
+            var dayOfWeek = ((int)date.DayOfWeek);
+
+            if(dayOfWeek <= 5) 
+            {
+                returnedPriceMenu = await Get()
                 .Include(x => x.PriceItems)
                 .Where(x => x.FieldId == FieldId && x.ZoneTypeId == ZoneTypeId &&
+                x.DayType == DayTypeEnum.Weekdays &&
                 x.StartDate.Date <= date.Date && date.Date <= x.EndDate.Date)
                 .FirstOrDefaultAsync();
 
-            return PriceMenu;
+                return returnedPriceMenu;
+            }
+
+            returnedPriceMenu = await Get()
+                .Include(x => x.PriceItems)
+                .Where(x => x.FieldId == FieldId && x.ZoneTypeId == ZoneTypeId &&
+                x.DayType == DayTypeEnum.Weekends &&
+                x.StartDate.Date <= date.Date && date.Date <= x.EndDate.Date)
+                .FirstOrDefaultAsync();
+
+            return returnedPriceMenu;
+        }
+
+        public async Task<PriceMenu> GetFieldOpeningHour(int MenuId)
+        {
+            var ReturnedField = await Get()
+                .Include(x => x.Field)
+                .Where(x => x.Id == MenuId)
+                .FirstOrDefaultAsync();
+
+            return ReturnedField;
         }
 
         public async Task<List<PriceMenu>> GetPriceMenusForAField(int FieldId)
@@ -43,6 +70,7 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             var PriceMenuList =
                 await Get()
                 .Include(x => x.PriceItems)
+                .Include(x=> x.TypeOfZone)
                 .Where(x => x.FieldId == FieldId)
                 .ToListAsync();
 

@@ -38,9 +38,9 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             x.FieldId == zoneInfo.FieldId &&
             x.Number == zoneInfo.Number).ToListAsync();
 
-            if (ZoneExistCheck != null) return
+            if (ZoneExistCheck.Count > 0) return
                 GeneralResult<Zone>.Error(
-                    403, "Field zone number already exists");
+                    409, "Field zone number already exists");
 
             var toCreateSoccerFieldZone = mapper.Map<Zone>(zoneInfo);
 
@@ -50,26 +50,29 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             return GeneralResult<Zone>.Success(toCreateSoccerFieldZone);
         }
 
-        public async Task<GeneralResult<Zone>> AddNewZone(ZoneCreatePayload zoneInfo)
+        public async Task<GeneralResult<Zone>> AddNewZone
+            (int FieldId, ZoneCreatePayload zoneInfo)
         {
             var ZoneExistCheck = await zoneRepo.Get().Where(x =>
             x.FieldId == zoneInfo.FieldId &&
             x.Number == zoneInfo.Number).ToListAsync();
 
-            if (ZoneExistCheck != null) return
+            if (ZoneExistCheck.Count > 0) return
                 GeneralResult<Zone>.Error(
-                    403, "Field zone number already exists");
+                    409, "Field zone number already exists");
 
             var toCreateSoccerFieldZone = mapper.Map<Zone>(zoneInfo);
 
             zoneRepo.Create(toCreateSoccerFieldZone);
             await zoneRepo.SaveAsync();
 
-            var FieldOpeningTime = await soccerFieldRepo.GetById(zoneInfo.FieldId);
+            var FieldOpeningTime = await soccerFieldRepo.GetById(FieldId);
 
             DateTime date = new DateTime(DateTime.Now.Year, DateTime.Now.Month,
                 DateTime.Now.Day, FieldOpeningTime.OpenHour.Hours, 
-                FieldOpeningTime.OpenHour.Minutes, 0);
+                FieldOpeningTime.OpenHour.Minutes, 0, DateTimeKind.Utc);
+
+            DateTime UtcDate = date.AddHours(-7);
 
             TimeSpan StartTime = FieldOpeningTime.OpenHour;
             TimeSpan EndTime = FieldOpeningTime.CloseHour;
@@ -83,7 +86,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             List<ZoneSlot> toCreateZoneSlotList = new List<ZoneSlot>();
 
-            DateTime loopDate = date;
+            DateTime loopDate = UtcDate;
 
             for(int i =0; i <15; i++) 
             { 
@@ -117,16 +120,17 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var ZoneList = await zoneRepo.getFieldZonesByFieldId(FieldId);
 
-            if (ZoneList == null) return GeneralResult<List<ZoneView>>.Error
-                    (204, "No zones and zonesLot found for field id:" + FieldId);
+            if (ZoneList.Count == 0) return GeneralResult<List<ZoneView>>.Error
+                    (404, "No zones and zonesLot found for field id:" + FieldId);
 
+            List<ZoneView> ZoneViewList = new List<ZoneView>();
             List<ZoneView> FinalZoneViewList = new List<ZoneView>();
-
-            if (ZoneList != null)
+            if (ZoneList.Count > 0)
             {
                 foreach (var item in ZoneList)
                 {
-                    var SlotList = await zoneSlotRepo.getZoneSlots(item.Id, DateTime.Now);
+                    var SlotList = await zoneSlotRepo.getZoneSlots(item.Id, 
+                        ParamDate.ToUniversalTime());
 
                     ZoneView ZoneViewItem = new ZoneView();
                     ZoneViewItem.ZoneNumber = item.Number;
@@ -136,21 +140,23 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     {
                         ZoneSlotView SlotViewItem = new ZoneSlotView()
                         {
-                            SlotStartTime = it.StartTime.TimeOfDay,
-                            SlotEndTime = it.EndTime.TimeOfDay
+                            SlotStartTime = it.StartTime.ToLocalTime().TimeOfDay,
+                            SlotEndTime = it.EndTime.ToLocalTime().TimeOfDay
                         };
 
                         SlotViewList.Add(SlotViewItem);
                     }
+
+                    var FinalList = SlotViewList.OrderBy(x => x.SlotStartTime).ToList();
                     ZoneViewItem.ZoneTypeSlots = SlotViewList;
-                    FinalZoneViewList.Add(ZoneViewItem);
+                    ZoneViewList.Add(ZoneViewItem);
                 }
 
-                FinalZoneViewList.OrderBy(x => x.ZoneType);
+                 FinalZoneViewList = ZoneViewList.OrderBy(x => x.ZoneType).ToList();
 
             }
 
-            return GeneralResult<List<ZoneView>>.Success(FinalZoneViewList);
+            return GeneralResult<List<ZoneView>>.Success(ZoneViewList);
             
         }
 
@@ -159,7 +165,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toDeleteSoccerFieldZone = await zoneRepo.GetById(zoneId);
 
             if (toDeleteSoccerFieldZone == null) return GeneralResult<Zone>.Error(
-                204, "No soccer field zone found with Id:" + zoneId);
+                404, "No soccer field zone found with Id:" + zoneId);
 
             zoneRepo.Delete(toDeleteSoccerFieldZone);
             await zoneRepo.SaveAsync();
@@ -171,8 +177,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var soccerFieldZoneList = await zoneRepo.Get().ToListAsync();
 
-            if (soccerFieldZoneList == null) return GeneralResult<List<Zone>>.Error(
-                204, "No soccer field zone found");
+            if (soccerFieldZoneList.Count == 0) return GeneralResult<List<Zone>>.Error(
+                404, "No soccer field zone found");
 
             return GeneralResult<List<Zone>>.Success(soccerFieldZoneList);
         }
@@ -184,7 +190,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var retrievedSoccerFieldZone = await zoneRepo.GetById(ZoneId);
 
             if (retrievedSoccerFieldZone == null) return GeneralResult<Zone>.Error(
-                204, "No soccer field found with Id:" + ZoneId);
+                404, "No soccer field found with Id:" + ZoneId);
 
             return GeneralResult<Zone>.Success(retrievedSoccerFieldZone);
         }
@@ -194,7 +200,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toUpdateSoccerFieldZone = await zoneRepo.GetById(Id);
 
             if (toUpdateSoccerFieldZone == null) return GeneralResult<Zone>.Error(
-                204, "No soccer field zone found with Id:" + Id);
+                404, "No soccer field zone found with Id:" + Id);
 
             mapper.Map(newZoneInfo, toUpdateSoccerFieldZone);
 

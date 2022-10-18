@@ -39,7 +39,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
              (x.StartDate <= Info.EndDate && Info.EndDate <= x.EndDate)).FirstOrDefault();
 
             if (FilteredCheckList != null) return
-                    GeneralResult<PriceMenu>.Error(403, "Price menu already exists");
+                    GeneralResult<PriceMenu>.Error(409, "Price menu already exists");
 
             var newPriceMenu = mapper.Map<PriceMenu>(Info);
 
@@ -54,7 +54,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var foundPriceMenu = await priceMenuRepo.GetById(PriceMenuId);
 
             if (foundPriceMenu == null) return GeneralResult<PriceMenu>.Error(
-                204, "No price menu found with Id:" + PriceMenuId);
+                404, "No price menu found with Id:" + PriceMenuId);
 
             priceMenuRepo.Delete(foundPriceMenu);
             await priceMenuRepo.SaveAsync();
@@ -66,8 +66,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         {
             var PriceMenuList = await priceMenuRepo.Get().ToListAsync();
 
-            if (PriceMenuList == null) return GeneralResult<List<PriceMenu>>.Error(
-                204, "No price menus found");
+            if (PriceMenuList.Count == 0) return GeneralResult<List<PriceMenu>>.Error(
+                404, "No price menus found");
 
             return GeneralResult<List<PriceMenu>>.Success(PriceMenuList);
         }
@@ -77,7 +77,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var foundPriceMenu = await priceMenuRepo.GetById(priceMenuId);
 
             if (foundPriceMenu == null) return GeneralResult<PriceMenu>.Error(
-                204, "No price menu found with Id:" + priceMenuId);
+                404, "No price menu found with Id:" + priceMenuId);
 
             return GeneralResult<PriceMenu>.Success(foundPriceMenu);
         }
@@ -87,7 +87,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var toUpdatePriceMenu = await priceMenuRepo.GetById(Id);
 
             if (toUpdatePriceMenu == null) return GeneralResult<PriceMenu>.Error(
-                204, "No price item found with Id:" + Id);
+                404, "No price item found with Id:" + Id);
 
             mapper.Map(newPriceMenuInfo, toUpdatePriceMenu);
 
@@ -118,7 +118,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                  (x.StartDate <= updateInfo.StartDate && updateInfo.StartDate <= x.EndDate) ||
                  (x.StartDate <= updateInfo.EndDate && updateInfo.EndDate <= x.EndDate)).ToList();
 
-                if (FilteredList != null) return GeneralResult<PriceMenu>.Error
+                if (FilteredList.Count > 0) return GeneralResult<PriceMenu>.Error
                         (400, "This price menu duration is overlapping 1 or more other price menus");
             }
 
