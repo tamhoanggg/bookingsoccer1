@@ -42,7 +42,23 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(result.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificZoneSlot(int id)
+        {
+            var retrievedZoneSlot = await zoneSlotService.RetrieveAZoneSlotById(id);
+
+            if (retrievedZoneSlot.IsSuccess)
+                return Ok(retrievedZoneSlot);
+
+            Response.StatusCode = retrievedZoneSlot.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedZoneSlot);
+
+            return StatusCode(retrievedZoneSlot.StatusCode, response);
+        }
+
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZoneSlot(ZoneSlotCreatePayload NewZoneSlotInfo)
         {
@@ -74,22 +90,6 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(updatedZoneSlot);
 
             return StatusCode(updatedZoneSlot.StatusCode, response);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificZoneSlot(int id)
-        {
-            var retrievedZoneSlot = await zoneSlotService.RetrieveAZoneSlotById(id);
-
-            if (retrievedZoneSlot.IsSuccess)
-                return Ok(retrievedZoneSlot);
-
-            Response.StatusCode = retrievedZoneSlot.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedZoneSlot);
-
-            return StatusCode(retrievedZoneSlot.StatusCode, response);
         }
 
          [Authorize(Roles ="FieldManager,Admin")]

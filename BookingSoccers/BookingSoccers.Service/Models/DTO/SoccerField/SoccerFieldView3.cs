@@ -1,4 +1,5 @@
-﻿using BookingSoccers.Service.Models.DTO.PriceMenu;
+﻿using BookingSoccers.Service.Models.DTO.ImageFolder;
+using BookingSoccers.Service.Models.DTO.PriceMenu;
 using BookingSoccers.Service.Models.DTO.Zone;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace BookingSoccers.Service.Models.DTO.SoccerField
 
         public string Description { get; set; }
 
-        public string ImageFolderPath { get; set; }
+        public List<ImageList> ImageList { get; set; }
 
         public TimeSpan OpenHour { get; set; }
 

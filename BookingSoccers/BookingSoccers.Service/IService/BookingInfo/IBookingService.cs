@@ -17,13 +17,17 @@ namespace BookingSoccers.Service.IService.BookingInfo
 
         Task<GeneralResult<Booking>> RetrieveABookingById(int BookingId);
 
-        Task<GeneralResult<BookingView>> GetBookingAndPaymentsByUserId(int UserId);
+        Task<GeneralResult<List<BookingView2>>> GetBookingsOfAUser(int UserId);
+
+        Task<GeneralResult<BookingView>> GetBookingAndPaymentsById(int Id);
 
         Task<GeneralResult<List<Booking>>> RetrieveAllBookings();
 
         Task<GeneralResult<Booking>> UpdateABooking(int Id, BookingUpdatePayload newBookingInfo);
 
         Task<GeneralResult<Booking>> UpdateABookingZoneId(int Id, int ZoneId);
+
+        Task<GeneralResult<Booking>> CheckOutABooking(int BookingId);
 
         Task<GeneralResult<BookingView>> UpdateBookingStatusForUser(int Id, StatusEnum newStatus);
 

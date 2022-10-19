@@ -42,7 +42,22 @@ namespace BookingSoccers.Controllers.ZoneInfo
             return StatusCode(result.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificZone(int id)
+        {
+            var retrievedZone = await zoneService.RetrieveAZoneById(id);
+
+            if (retrievedZone.IsSuccess)
+                return Ok(retrievedZone);
+
+            Response.StatusCode = retrievedZone.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedZone);
+
+            return StatusCode(retrievedZone.StatusCode, response);
+        }
+
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewZone(ZoneCreatePayload newZoneInfo)
         {
@@ -74,21 +89,6 @@ namespace BookingSoccers.Controllers.ZoneInfo
             var response = mapper.Map<ErrorResponse>(updatedZone);
 
             return StatusCode(updatedZone.StatusCode, response);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificZone(int id)
-        {
-            var retrievedZone = await zoneService.RetrieveAZoneById(id);
-
-            if (retrievedZone.IsSuccess)
-                return Ok(retrievedZone);
-
-            Response.StatusCode = retrievedZone.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedZone);
-
-            return StatusCode(retrievedZone.StatusCode, response);
         }
 
          [Authorize(Roles ="FieldManager,Admin")]

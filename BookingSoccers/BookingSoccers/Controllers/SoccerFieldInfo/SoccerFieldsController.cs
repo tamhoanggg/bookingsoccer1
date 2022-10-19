@@ -187,7 +187,8 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [AllowAnonymous]
         [HttpGet("{id}/booking-validate")]
-        public async Task<IActionResult> ValidateBookingForm(int id, BookingValidateForm info)
+        public async Task<IActionResult> ValidateBookingForm
+            (int id, BookingValidateForm info)
         {
             var Result =
                 await soccerFieldService.CheckZonesAndCalculatePrice(info);

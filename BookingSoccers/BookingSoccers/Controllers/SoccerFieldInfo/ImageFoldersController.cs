@@ -1,12 +1,18 @@
-﻿using AutoMapper;
+﻿using System;
+
+using AutoMapper;
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
+using Firebase.Auth;
+using Firebase.Storage;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using IoFile = System.IO.File;
 
 namespace BookingSoccers.Controllers.SoccerFieldInfo
 {
@@ -15,6 +21,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
     [Authorize]
     public class ImageFoldersController : ControllerBase
     {
+        
         private readonly BookingSoccersContext bookingSoccersContext;
         private readonly IImageFolderService imageFolderService;
         private readonly IMapper mapper;
@@ -43,11 +50,30 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(result.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
-        [HttpPost]
-        public async Task<IActionResult> AddNewImageFolder(ImageFolderCreatePayload newImageFolderInfo)
+        [Authorize(Roles = "Admin, FieldManager")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificImageFolder(int id)
         {
-            var AddedImageFolder = await imageFolderService.AddANewImageFolder(newImageFolderInfo);
+            var retrievedImageFolder = await imageFolderService.RetrieveAnImageFolderById(id);
+
+            if (retrievedImageFolder.IsSuccess)
+                return Ok(retrievedImageFolder);
+
+            Response.StatusCode = retrievedImageFolder.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedImageFolder);
+
+            return StatusCode(retrievedImageFolder.StatusCode, response);
+        }
+
+        [Authorize(Roles = "FieldManager,Admin")]
+        [HttpPost("imageFiles")]
+        public async Task<IActionResult> UploadImageFiles
+            ([FromForm] List<IFormFile> files, [FromForm] ImageListCreateForm info)
+        {
+
+            var AddedImageFolder = await imageFolderService
+                .AddANewImageFolder(files, info);
 
             if (AddedImageFolder.IsSuccess)
                 return Ok(AddedImageFolder);
@@ -57,9 +83,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(AddedImageFolder);
 
             return StatusCode(AddedImageFolder.StatusCode, response);
+
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "FieldManager,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateABooking(int id,
             ImageFolderUpdatePayload NewImageFolderInfo)
@@ -77,23 +104,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedImageFolder.StatusCode, response);
         }
 
-        [Authorize(Roles = "Admin, FieldManager")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificImageFolder(int id)
-        {
-            var retrievedImageFolder = await imageFolderService.RetrieveAnImageFolderById(id);
-
-            if (retrievedImageFolder.IsSuccess)
-                return Ok(retrievedImageFolder);
-
-            Response.StatusCode = retrievedImageFolder.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedImageFolder);
-
-            return StatusCode(retrievedImageFolder.StatusCode, response);
-        }
-
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAImageFolder(int id)
         {

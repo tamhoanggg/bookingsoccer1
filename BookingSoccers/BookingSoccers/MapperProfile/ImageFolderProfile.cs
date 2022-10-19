@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
+using BookingSoccers.Service.Models.DTO.ImageFolder;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.PriceItem;
 
@@ -11,6 +12,7 @@ namespace BookingSoccers.MapperProfile
         {
             CreateMap<ImageFolder, ImageFolderUpdatePayload>().ReverseMap();
             CreateMap<ImageFolder, ImageFolderCreatePayload>().ReverseMap();
+            CreateMap<ImageFolder, ImageList>().ReverseMap();
         }
     }
 }

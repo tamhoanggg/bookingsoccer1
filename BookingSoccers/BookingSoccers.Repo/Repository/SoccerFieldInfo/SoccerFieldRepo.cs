@@ -53,7 +53,7 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
         {
             var SoccerFieldList =
                 await Get()
-                .Include(x => x.ImageFolder)
+                .Include(x => x.ImageList)
                 .Include(x => x.user)
                 .Where(x => x.ManagerId == ManagerId)
                 .ToListAsync();
@@ -65,7 +65,7 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
         {
             var returnedSoccerField =
                 await Get()
-                .Include(x => x.ImageFolder)
+                .Include(x => x.ImageList)
                 .Include(x => x.PriceMenus)
                 .ThenInclude(y => y.PriceItems)
                 .Where(x => x.Id == Id)

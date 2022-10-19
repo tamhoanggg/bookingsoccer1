@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lJPuNxORAu4C6M9YR19I6nQgdE003eOi6/69P9cBe0tGdJBnxd4kVB4yG+ynX7LfVvE+I+/ixQ439/BbzvtQRA==",
+  "dgSpecHash": "fBuvlggVg3ESB0v0NWjvOL/WJZgfwnaGbG/uCszkuwEdT6iLe+v0Oajl4o5Ioc/i0FyYnwT82SZWryKXYbgD7g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers\\BookingSoccers.csproj",
   "expectedPackageFiles": [
@@ -16,6 +16,8 @@
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis.auth\\1.49.0\\google.apis.auth.1.49.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis.core\\1.49.0\\google.apis.core.1.49.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.protobuf\\3.11.4\\google.protobuf.3.11.4.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\grpc.core\\2.46.5\\grpc.core.2.46.5.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\grpc.core.api\\2.46.5\\grpc.core.api.2.46.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\k4os.compression.lz4\\1.1.11\\k4os.compression.lz4.1.1.11.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\k4os.compression.lz4.streams\\1.1.11\\k4os.compression.lz4.streams.1.1.11.nupkg.sha512",

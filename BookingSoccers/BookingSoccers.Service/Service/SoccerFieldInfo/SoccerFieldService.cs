@@ -7,6 +7,7 @@ using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.DTO.Booking;
+using BookingSoccers.Service.Models.DTO.ImageFolder;
 using BookingSoccers.Service.Models.DTO.PriceItem;
 using BookingSoccers.Service.Models.DTO.PriceMenu;
 using BookingSoccers.Service.Models.DTO.SoccerField;
@@ -29,9 +30,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 {
     public class SoccerFieldService : ISoccerFieldService
     {
-        private static string API_Key = "AIzaSyCxl4kbzsuDoDDJvz8In5fFQDHww97qr_s";
-        private static string Bucket = "bookingsoccerfield.appspot.com";
-
+        
         private readonly ISoccerFieldRepo soccerFieldRepo;
         private readonly IPriceMenuRepo priceMenuRepo;
         private readonly IImageFolderRepo imageFolderRepo;
@@ -228,26 +227,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             imageFolderRepo.Create(newImageFolder);
             await imageFolderRepo.SaveAsync();
-            ////FirebaseToken decodedToken = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance
-            ////                .VerifyIdTokenAsync(SoccerFieldinfo.IdToken);
-
-            //var auth = new FirebaseAuthProvider(new FirebaseConfig(API_Key));
-
-            //var CancellationToken = new CancellationTokenSource();
-
-            //var task = new FirebaseStorage(
-            //    Bucket,
-            //    new FirebaseStorageOptions
-            //    {
-            //        AuthTokenAsyncFactory = () => Task.FromResult(SoccerFieldinfo.IdToken),
-            //        ThrowOnCancel = true
-            //    }
-            //    )
-            //    .Child("fieldImage")
-            //    .Child(toCreateSoccerField.Id.ToString())
-            //    .Child(FileName)
-            //    .PutAsync()
-
+            
             return GeneralResult<SoccerField>.Success(toCreateSoccerField);
         }
 
@@ -265,6 +245,10 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             List<PriceMenuView>? priceMenuViewsList = null;
 
             var SoccerFieldViewItem = mapper.Map<SoccerFieldView1>(SoccerField);
+
+            var FieldImageList = mapper.Map<List<ImageList>>(SoccerField.ImageList);
+
+            SoccerFieldViewItem.ImageList = FieldImageList;
 
             if(SoccerField.ReviewScoreSum > 0 && SoccerField.TotalReviews > 0)
                 SoccerFieldViewItem.AverageReviewScore =
@@ -371,10 +355,21 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                     GeneralResult<List<SoccerFieldView3>>.Error(
                 404, "No soccer fields found with manager Id:" + ManagerId);
 
-            var FinalFieldsList = mapper.Map<List<SoccerFieldView3>>(FieldsList);
+            List<SoccerFieldView3> FinalList = new List<SoccerFieldView3>();
 
-            return GeneralResult<List<SoccerFieldView3>>.Success(FinalFieldsList);
-
+            foreach(var item in FieldsList) 
+            {
+                var FieldItem = mapper.Map<SoccerFieldView3>(item);
+                List<ImageList> imageList = new List<ImageList>();
+                if (item.ImageList.Count > 0) 
+                {
+                    imageList = mapper.Map<List<ImageList>>(item.ImageList.ToList());
+                    FieldItem.ImageList = imageList;
+                }
+                FinalList.Add(FieldItem);
+            }
+            
+            return GeneralResult<List<SoccerFieldView3>>.Success(FinalList);
         }
 
         public async Task<GeneralResult<List<PriceMenuView>>> 

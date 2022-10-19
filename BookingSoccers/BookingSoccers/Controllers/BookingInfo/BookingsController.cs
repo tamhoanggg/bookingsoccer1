@@ -48,6 +48,54 @@ namespace BookingSoccers.Controllers.BookingInfo
             return StatusCode(result.StatusCode, response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificBooking(int id)
+        {
+            var retrievedBooking = await bookingService.RetrieveABookingById(id);
+
+            if (retrievedBooking.IsSuccess)
+                return Ok(retrievedBooking);
+
+            Response.StatusCode = retrievedBooking.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedBooking);
+
+            return StatusCode(retrievedBooking.StatusCode, response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetOneBookingsAndItsPayments(int id)
+        {
+            var retrievedBooking = await bookingService.GetBookingAndPaymentsById(id);
+
+            if (retrievedBooking.IsSuccess)
+                return Ok(retrievedBooking);
+
+            Response.StatusCode = retrievedBooking.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedBooking);
+
+            return StatusCode(retrievedBooking.StatusCode, response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("user")]
+        public async Task<IActionResult> GetBookingsOfAUser(int UserId)
+        {
+            var retrievedBookingList = await bookingService
+                .GetBookingsOfAUser(UserId);
+
+            if (retrievedBookingList.IsSuccess)
+                return Ok(retrievedBookingList);
+
+            Response.StatusCode = retrievedBookingList.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedBookingList);
+
+            return StatusCode(retrievedBookingList.StatusCode, response);
+        }
+
         [Authorize(Roles ="User,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddANewBooking
@@ -120,34 +168,21 @@ namespace BookingSoccers.Controllers.BookingInfo
             return StatusCode(updatedBookingZoneId.StatusCode, response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificBooking(int id)
+        [Authorize(Roles = "FieldManager")]
+        [HttpPut("{id}/check-out")]
+        public async Task<IActionResult> CheckOutABooking(int id)
         {
-            var retrievedBooking = await bookingService.RetrieveABookingById(id);
+            var updatedBooking =
+                await bookingService.CheckOutABooking(id);
 
-            if (retrievedBooking.IsSuccess)
-                return Ok(retrievedBooking);
+            if (updatedBooking.IsSuccess)
+                return Ok(updatedBooking);
 
-            Response.StatusCode = retrievedBooking.StatusCode;
+            Response.StatusCode = updatedBooking.StatusCode;
 
-            var response = mapper.Map<ErrorResponse>(retrievedBooking);
+            var response = mapper.Map<ErrorResponse>(updatedBooking);
 
-            return StatusCode(retrievedBooking.StatusCode, response);
-        }
-
-        [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetBookingsAndPaymentsOfAUser(int id)
-        {
-            var retrievedBooking = await bookingService.RetrieveABookingById(id);
-
-            if (retrievedBooking.IsSuccess)
-                return Ok(retrievedBooking);
-
-            Response.StatusCode = retrievedBooking.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedBooking);
-
-            return StatusCode(retrievedBooking.StatusCode, response);
+            return StatusCode(updatedBooking.StatusCode, response);
         }
 
         [Authorize(Roles ="User,Admin")]

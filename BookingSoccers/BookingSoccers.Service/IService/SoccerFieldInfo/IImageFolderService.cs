@@ -3,6 +3,7 @@ using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.Payment;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 {
     public interface IImageFolderService
     {
-        Task<GeneralResult<ImageFolder>> AddANewImageFolder(
-            ImageFolderCreatePayload imageFolderInfo);
+        Task<GeneralResult<List<ImageFolder>>> AddANewImageFolder(List<IFormFile> files,
+            ImageListCreateForm imageFolderInfo);
 
         Task<GeneralResult<ImageFolder>> RetrieveAnImageFolderById(int imgFolderId);
 
@@ -23,5 +24,6 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<ImageFolder>> UpdateAImageFolder(int Id, ImageFolderUpdatePayload newImgFolderInfo);
 
         Task<GeneralResult<ImageFolder>> RemoveAImageFolder(int ImgFolderId);
+
     }
 }

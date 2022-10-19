@@ -12,6 +12,8 @@
           "BookingSoccers.Repo": "1.0.0",
           "BookingSoccers.Service": "1.0.0",
           "FirebaseAdmin": "2.3.0",
+          "FirebaseStorage.net": "1.0.3",
+          "Grpc.Core": "2.46.5",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.9",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.9",
           "Microsoft.EntityFrameworkCore": "6.0.9",
@@ -175,6 +177,56 @@
           "lib/netstandard2.0/Google.Protobuf.dll": {
             "assemblyVersion": "3.11.4.0",
             "fileVersion": "3.11.4.0"
+          }
+        }
+      },
+      "Grpc.Core/2.46.5": {
+        "dependencies": {
+          "Grpc.Core.Api": "2.46.5",
+          "System.Memory": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Grpc.Core.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.46.5.0"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm64/native/libgrpc_csharp_ext.arm64.so": {
+            "rid": "linux-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgrpc_csharp_ext.x64.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgrpc_csharp_ext.x64.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/grpc_csharp_ext.x64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/grpc_csharp_ext.x86.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Grpc.Core.Api/2.46.5": {
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Grpc.Core.Api.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.46.5.0"
           }
         }
       },
@@ -1726,6 +1778,20 @@
       "sha512": "sha512-dajCxjDCiPyZuqwZCkFJTwhn/0TJ5VesIs4fXvs56ez1VUi68JjhYMMsPjnJ9gcPqJwTMtXMU1WqUdXYiG1x4w==",
       "path": "google.protobuf/3.11.4",
       "hashPath": "google.protobuf.3.11.4.nupkg.sha512"
+    },
+    "Grpc.Core/2.46.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bD35LTppXYmRvymX6rV+mqc2wZcZf8o0fYkEJ414cul1RiGRWTeVWOtDC94CaTGG2Ie/XoLTd347bnBB5vHaGQ==",
+      "path": "grpc.core/2.46.5",
+      "hashPath": "grpc.core.2.46.5.nupkg.sha512"
+    },
+    "Grpc.Core.Api/2.46.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y8ZWjt0axK3ApE3OrERivXiIg6aboIq7AXbWAmdZWtHXfj3PkZeihSOaHN+acGkRy5CeSMXgBCj/+kWjyPFiaw==",
+      "path": "grpc.core.api/2.46.5",
+      "hashPath": "grpc.core.api.2.46.5.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",

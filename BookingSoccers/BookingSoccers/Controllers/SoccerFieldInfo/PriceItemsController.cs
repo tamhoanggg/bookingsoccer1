@@ -42,7 +42,23 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(result.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "Admin, FieldManager")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificPriceItem(int id)
+        {
+            var retrievedPriceItem = await priceItemService.RetrieveAPriceItemById(id);
+
+            if (retrievedPriceItem.IsSuccess)
+                return Ok(retrievedPriceItem);
+
+            Response.StatusCode = retrievedPriceItem.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedPriceItem);
+
+            return StatusCode(retrievedPriceItem.StatusCode, response);
+        }
+
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPriceItem(PriceItemCreatePayload newPriceItemInfo)
         {
@@ -75,22 +91,6 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(updatedPriceItem);
 
             return StatusCode(updatedPriceItem.StatusCode, response);
-        }
-
-        [Authorize(Roles = "Admin, FieldManager")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificPriceItem(int id)
-        {
-            var retrievedPriceItem = await priceItemService.RetrieveAPriceItemById(id);
-
-            if (retrievedPriceItem.IsSuccess)
-                return Ok(retrievedPriceItem);
-
-            Response.StatusCode = retrievedPriceItem.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedPriceItem);
-
-            return StatusCode(retrievedPriceItem.StatusCode, response);
         }
 
          [Authorize(Roles ="FieldManager,Admin")]

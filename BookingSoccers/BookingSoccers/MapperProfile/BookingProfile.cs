@@ -23,7 +23,16 @@ namespace BookingSoccers.MapperProfile
                 .ForMember(x => x.FieldAddress, option => option.
                 MapFrom(src => src.FieldInfo.Address))
                .ReverseMap();
-                
+
+            CreateMap<Booking, BookingView2>()
+                .ForMember(x => x.ZoneTypeName, option => option.
+                MapFrom(src => src.TypeZone.Name))
+                .ForMember(x => x.ZoneNumber, option => option.
+                MapFrom(src => src.ZoneInfo.Number))
+                .ForMember(x => x.FieldName, option => option.
+                MapFrom(src => src.FieldInfo.FieldName))
+                .ReverseMap();
+
             CreateMap<Booking, BookingCreatePayload>().ReverseMap();
             CreateMap<Booking, BookingView1>()
                 .ForMember(x => x.CustomerName,

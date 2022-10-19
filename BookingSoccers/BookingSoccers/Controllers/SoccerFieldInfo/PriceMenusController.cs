@@ -42,7 +42,23 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(result.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "Admin, FieldManager")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificPriceMenu(int id)
+        {
+            var retrievedPriceMenu = await priceMenuService.RetrieveAPriceMenuById(id);
+
+            if (retrievedPriceMenu.IsSuccess)
+                return Ok(retrievedPriceMenu);
+
+            Response.StatusCode = retrievedPriceMenu.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedPriceMenu);
+
+            return StatusCode(retrievedPriceMenu.StatusCode, response);
+        }
+
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPriceMenu(PriceMenuCreatePayload newPriceMenuInfo)
         {
@@ -57,6 +73,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedPriceMenu.StatusCode, response);
         }
+
         // [Authorize(Roles ="FieldManager,Admin")]
         //[HttpPut("{id}")]
         //public async Task<IActionResult> UpdateAPriceMenu(int id,
@@ -94,21 +111,6 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedPriceMenu.StatusCode, response);
         }
 
-        [Authorize(Roles = "Admin, FieldManager")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificPriceMenu(int id)
-        {
-            var retrievedPriceMenu = await priceMenuService.RetrieveAPriceMenuById(id);
-
-            if (retrievedPriceMenu.IsSuccess)
-                return Ok(retrievedPriceMenu);
-
-            Response.StatusCode = retrievedPriceMenu.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedPriceMenu);
-
-            return StatusCode(retrievedPriceMenu.StatusCode, response);
-        }
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAPriceMenu(int id)

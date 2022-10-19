@@ -19,11 +19,14 @@ namespace BookingSoccers.Service.Service.BookingInfo
     public class BookingService : IBookingService
     {
         private readonly IBookingRepo bookingRepo;
+        private readonly IPaymentRepo paymentRepo;
         private readonly IMapper mapper;
 
-        public BookingService(IBookingRepo bookingRepo, IMapper mapper)
+        public BookingService(IBookingRepo bookingRepo, IPaymentRepo paymentRepo,
+            IMapper mapper)
         {
             this.bookingRepo = bookingRepo;
+            this.paymentRepo = paymentRepo;
             this.mapper = mapper;
         }
 
@@ -38,14 +41,42 @@ namespace BookingSoccers.Service.Service.BookingInfo
             return GeneralResult<Booking>.Success(newBooking);
         }
 
-        public async Task<GeneralResult<BookingView>> GetBookingAndPaymentsByUserId
-            (int UserId)
+        public async Task<GeneralResult<Booking>> CheckOutABooking(int BookingId)
+        {
+            var returnedBooking = await bookingRepo.GetBookingInfoForCheckOut(BookingId);
+
+            if (returnedBooking == null) return GeneralResult<Booking>.Error
+                    (404, "No booking found to udpate");
+
+            returnedBooking.Status = StatusEnum.CheckedOut;
+
+            bookingRepo.Update(returnedBooking);
+            await bookingRepo.SaveAsync();
+
+            var newPayment = new Payment()
+            {
+                BookingId = BookingId,
+                ReceiverId = returnedBooking.payments.First().ReceiverId,
+                Type = PaymentTypeEnum.PostPay,
+                Amount =
+                returnedBooking.TotalPrice - returnedBooking.payments.First().Amount,
+                Time = DateTime.UtcNow
+            };
+
+            paymentRepo.Create(newPayment);
+            await paymentRepo.SaveAsync();
+
+            return GeneralResult<Booking>.Success(returnedBooking);
+        }
+
+        public async Task<GeneralResult<BookingView>> GetBookingAndPaymentsById
+            (int Id)
         {
             var retrievedBookingPayments = 
-                await bookingRepo.GetPaymentsAndBookingByUserId(UserId);
+                await bookingRepo.GetPaymentsAndBookingById(Id);
 
             if (retrievedBookingPayments == null) return GeneralResult<BookingView>.Error(
-                404, "Booking not found with User Id:" + UserId);
+                404, "Booking not found with User Id:" + Id);
 
             var BookingResult = mapper.Map<BookingView>(retrievedBookingPayments);
 
@@ -60,6 +91,20 @@ namespace BookingSoccers.Service.Service.BookingInfo
             BookingResult.paymentsList = paymentList;
 
             return GeneralResult<BookingView>.Success(BookingResult);
+        }
+
+        public async Task<GeneralResult<List<BookingView2>>> GetBookingsOfAUser(int UserId)
+        {
+            var returnedBookingList = await bookingRepo
+                .GetSummaryBookingListByUserId(UserId);
+
+            if (returnedBookingList.Count == 0) return
+            GeneralResult<List<BookingView2>>.Error(404,
+            "User with Id:" + UserId + " has no bookings yet");
+
+            var FinalList = mapper.Map<List<BookingView2>>(returnedBookingList);
+
+            return GeneralResult<List<BookingView2>>.Success(FinalList);
         }
 
         public async Task<GeneralResult<Booking>> RemoveABooking(int BookingId)

@@ -17,7 +17,7 @@ namespace BookingSoccers.Repo.Entities.SoccerFieldInfo
         [ForeignKey("ManagerId")]
         public User user { get; set; }
 
-        public ImageFolder ImageFolder { get; set; }
+        public ICollection<ImageFolder> ImageList { get; set; }
 
         public ICollection<PriceMenu> PriceMenus { get; set; }
 

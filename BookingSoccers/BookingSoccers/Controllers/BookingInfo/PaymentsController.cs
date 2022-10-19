@@ -44,6 +44,21 @@ namespace BookingSoccers.Controllers.BookingInfo
             return StatusCode(result.StatusCode, response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneSpecificPayment(int id)
+        {
+            var retrievedPayment = await paymentService.RetrieveAPaymentById(id);
+
+            if (retrievedPayment.IsSuccess)
+                return Ok(retrievedPayment);
+
+            Response.StatusCode = retrievedPayment.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedPayment);
+
+            return StatusCode(retrievedPayment.StatusCode, response);
+        }
+
         [Authorize(Roles ="User,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNewPayment(PaymentCreatePayload newPaymentInfo)
@@ -77,22 +92,6 @@ namespace BookingSoccers.Controllers.BookingInfo
             var response = mapper.Map<ErrorResponse>(updatedPayment);
 
             return StatusCode(updatedPayment.StatusCode, response);
-        }
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificPayment(int id)
-        {
-            var retrievedPayment = await paymentService.RetrieveAPaymentById(id);
-
-            if (retrievedPayment.IsSuccess)
-                return Ok(retrievedPayment);
-
-            Response.StatusCode = retrievedPayment.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedPayment);
-
-            return StatusCode(retrievedPayment.StatusCode, response);
         }
 
         [Authorize(Roles ="User,Admin")]

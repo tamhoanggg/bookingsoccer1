@@ -128,8 +128,7 @@ namespace BookingSoccers.Repo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FieldId")
-                        .IsUnique();
+                    b.HasIndex("FieldId");
 
                     b.ToTable("ImageFolders");
                 });
@@ -447,8 +446,8 @@ namespace BookingSoccers.Repo.Migrations
             modelBuilder.Entity("BookingSoccers.Repo.Entities.SoccerFieldInfo.ImageFolder", b =>
                 {
                     b.HasOne("BookingSoccers.Repo.Entities.SoccerFieldInfo.SoccerField", "Field")
-                        .WithOne("ImageFolder")
-                        .HasForeignKey("BookingSoccers.Repo.Entities.SoccerFieldInfo.ImageFolder", "FieldId")
+                        .WithMany("ImageList")
+                        .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -551,8 +550,7 @@ namespace BookingSoccers.Repo.Migrations
                 {
                     b.Navigation("Bookings");
 
-                    b.Navigation("ImageFolder")
-                        .IsRequired();
+                    b.Navigation("ImageList");
 
                     b.Navigation("PriceMenus");
 

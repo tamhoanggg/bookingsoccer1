@@ -44,6 +44,16 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             return bookingDetails;
         }
 
+        public async Task<Booking> GetBookingInfoForCheckOut(int BookingId)
+        {
+            var toUpdateBooking = await Get()
+                .Include(x => x.payments)
+                .Where(x => x.Id == BookingId)
+                .FirstOrDefaultAsync();
+
+            return toUpdateBooking;
+        }
+
         public async Task<List<Booking>> GetBookingsByFieldId(int FieldId)
         {
             var BookingList = await Get()
@@ -88,12 +98,12 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             return Bookings;
         }
 
-        public async Task<Booking> GetPaymentsAndBookingByUserId(int id)
+        public async Task<Booking> GetPaymentsAndBookingById(int id)
         {
             var BookingPayments = await Get()
                 .Include(x => x.payments)
                 .ThenInclude(y => y.ReceiverInfo)
-                .Where(x => x.CustomerId == id)
+                .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
 
             //
@@ -120,6 +130,16 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             return BookingPayments;
         }
 
+        public async Task<List<Booking>> GetSummaryBookingListByUserId(int UserId)
+        {
+            var bookingList = await Get()
+                .Include(x => x.ZoneInfo)
+                .Include(x => x.TypeZone)
+                .Include(x => x.FieldInfo)
+                .Where(x => x.CustomerId == UserId)
+                .ToListAsync();
 
+            return bookingList;
+        }
     }
 }

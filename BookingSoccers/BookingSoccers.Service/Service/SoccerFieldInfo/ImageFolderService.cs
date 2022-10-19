@@ -7,10 +7,14 @@ using BookingSoccers.Repo.Repository.BookingInfo;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
+using Firebase.Auth;
+using Firebase.Storage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +22,9 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 {
     public class ImageFolderService : IImageFolderService
     {
+        private static string API_Key = "AIzaSyCxl4kbzsuDoDDJvz8In5fFQDHww97qr_s";
+        private static string Bucket = "bookingsoccerfield.appspot.com";
+
         private readonly IImageFolderRepo imageFolderRepo;
         private readonly IMapper mapper;
 
@@ -27,14 +34,60 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             this.mapper = mapper;
         }
 
-        public async Task<GeneralResult<ImageFolder>> AddANewImageFolder(ImageFolderCreatePayload imageFolderInfo)
+        public async Task<GeneralResult<List<ImageFolder>>> AddANewImageFolder
+            (List<IFormFile> files, ImageListCreateForm imageFolderInfo)
         {
-            var newImgFolder = mapper.Map<ImageFolder>(imageFolderInfo);
 
-            imageFolderRepo.Create(newImgFolder);
-            await imageFolderRepo.SaveAsync();
+            if (files.Count > 0)
+            {
+                List<ImageFolder> FieldImageList = new List<ImageFolder>();
 
-            return GeneralResult<ImageFolder>.Success(newImgFolder);
+                foreach (var item in files)
+                {
+                    //fullPath = Path.GetFullPath(file.FileName);
+                    Stream stream = item.OpenReadStream();
+
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(API_Key));
+
+                    var task = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.
+                        FromResult(imageFolderInfo.AccessToken),
+                        ThrowOnCancel = true
+                    }
+                    )
+                    .Child("fieldImage")
+                    .Child(imageFolderInfo.FieldId.ToString())
+                    .Child(item.FileName)
+                    .PutAsync(stream);
+
+                    try
+                    {
+                        var link = await task;
+                        Console.WriteLine(link);
+
+                        var ImageFile = new ImageFolder()
+                        {
+                            FieldId = imageFolderInfo.FieldId,
+                            Path = link
+                        };
+
+                        FieldImageList.Add(ImageFile);
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Exception thrown:" + ex);
+                    }
+                }
+
+                imageFolderRepo.BulkCreate(FieldImageList);
+                await imageFolderRepo.SaveAsync();
+                return GeneralResult<List<ImageFolder>>.Success(FieldImageList);
+            }
+            else return GeneralResult<List<ImageFolder>>.Error(400, "Image list is empty");
         }
 
         public async Task<GeneralResult<ImageFolder>> RemoveAImageFolder(int ImgFolderId)
