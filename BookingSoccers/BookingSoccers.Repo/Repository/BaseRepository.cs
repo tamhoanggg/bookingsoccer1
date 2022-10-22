@@ -48,7 +48,7 @@ public BaseRepository(BookingSoccersContext bookingSoccersContext)
             
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null, string includeProperties = "")
+        public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderby = null, string includeProperties = "")
         {
             IQueryable<T> query = dbSet;
 

@@ -186,9 +186,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         }
 
         [AllowAnonymous]
-        [HttpGet("{id}/booking-validate")]
+        [HttpGet("booking-validate")]
         public async Task<IActionResult> ValidateBookingForm
-            (int id, BookingValidateForm info)
+            (BookingValidateForm info)
         {
             var Result =
                 await soccerFieldService.CheckZonesAndCalculatePrice(info);
@@ -204,9 +204,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         }
 
         [Authorize(Roles = "User")]
-        [HttpPost("{id}/booking-payment")]
+        [HttpPost("booking-payment")]
         public async Task<IActionResult> AddANewBookingAndPayment
-            (int id, BookingCreateForm newBookingInfo)
+            (BookingCreateForm newBookingInfo)
         {
             var AddedBooking = await soccerFieldService.AddANewBooking(newBookingInfo);
 
