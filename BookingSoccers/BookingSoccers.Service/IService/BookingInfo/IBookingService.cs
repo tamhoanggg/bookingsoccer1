@@ -1,7 +1,10 @@
 ﻿using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
 using BookingSoccers.Service.Models.DTO.Booking;
 using BookingSoccers.Service.Models.DTO.Payment;
+using BookingSoccers.Service.Models.DTO.User;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Booking;
 using System;
 using System.Collections.Generic;
@@ -17,11 +20,13 @@ namespace BookingSoccers.Service.IService.BookingInfo
 
         Task<GeneralResult<Booking>> RetrieveABookingById(int BookingId);
 
-        Task<GeneralResult<List<BookingView2>>> GetBookingsOfAUser(int UserId);
-
         Task<GeneralResult<BookingView>> GetBookingAndPaymentsById(int Id);
 
-        Task<GeneralResult<List<Booking>>> RetrieveAllBookings();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveBookingsListForAdmin
+            (PagingPayload pagingPayload, BookingPredicate filter);
+
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveBookingsListForUser
+            (PagingPayload pagingPayload, BookingPredicate filter);
 
         Task<GeneralResult<Booking>> UpdateABooking(int Id, BookingUpdatePayload newBookingInfo);
 

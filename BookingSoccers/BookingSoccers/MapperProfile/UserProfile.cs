@@ -15,6 +15,12 @@ namespace BookingSoccers.MapperProfile
             CreateMap<User, UserCreatePayload>().ReverseMap();
             CreateMap<User, BasicUserInfo>().ReverseMap();
             CreateMap<BasicUserInfo, UserUpdatePayload>().ReverseMap();
+            CreateMap<User, UserListInfo>()
+                .ForMember(x => x.RoleName,
+                option => option.MapFrom(y => y.role.Name))
+                .ForMember(x => x.Gender,
+                option => option.MapFrom(y => y.Gender.ToString()))
+                .ReverseMap();
         }
     }
 }

@@ -12,5 +12,7 @@ namespace BookingSoccers.Service.Models.DTO.ZoneSlot
         public TimeSpan SlotStartTime { get; set; }
 
         public TimeSpan SlotEndTime { get; set; }
+
+        public byte Status { get; set; }
     }
 }

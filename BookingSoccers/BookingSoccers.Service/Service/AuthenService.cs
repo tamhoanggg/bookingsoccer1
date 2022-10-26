@@ -48,6 +48,7 @@ namespace BookingSoccers.Service.Service
 
         private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
         {
+            //Configure Jwt token validation options
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,
@@ -58,6 +59,8 @@ namespace BookingSoccers.Service.Service
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
+
+            //Validate jwt token and return claims from the expired access token
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
             if (securityToken is not JwtSecurityToken jwtSecurityToken || 
                 !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, 
@@ -82,13 +85,19 @@ namespace BookingSoccers.Service.Service
 
             try
             {
+                //Verify received Firebase ID Token
                 FirebaseToken decodedToken = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance
                             .VerifyIdTokenAsync(IdToken); 
                 Console.WriteLine("Decoded token" + decodedToken);
                 string uid = decodedToken.Uid;
+                //Create new instance of Firebase Authen
                 var authUser = new FirebaseAuthProvider(new FirebaseConfig(API_key));
+
+                //And get user info from firebase
                 var auth = authUser.GetUserAsync(IdToken);
                 User user = auth.Result;
+
+                //Then check if user exist in DB using user email
                 var UserWithEmail = await userRepo.Get().Where(x =>
                 x.Email == user.Email.ToLower()).FirstOrDefaultAsync();
 
@@ -101,11 +110,13 @@ namespace BookingSoccers.Service.Service
                 userInfo.UserName = UserWithEmail.UserName;
                 userInfo.Email = UserWithEmail.Email;
 
+                //Get role of that user from DB
                 var UserRole = await roleRepo.GetById(UserWithEmail.RoleId);
 
                     userInfo.Role = UserRole.Name;
                     RoleName = UserRole.Name;
 
+                //Generate Claims
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, UserWithEmail.UserName),
@@ -126,10 +137,15 @@ namespace BookingSoccers.Service.Service
                         new SymmetricSecurityKey(key),
                             SecurityAlgorithms.HmacSha256Signature)
                 };
+
+                //Create a new JWT token 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
+                tokenString = tokenHandler.WriteToken(token);
+
                 userInfo.ValidFromDate = token.ValidFrom;
                 userInfo.ValidToDate = token.ValidTo;
-                tokenString = tokenHandler.WriteToken(token);
+
+                //Generate a refresh token along the process
                 RefreshToken = GenerateRefreshToken();
             }
             catch (Exception e) 
@@ -162,6 +178,7 @@ namespace BookingSoccers.Service.Service
 
         public async Task<GeneralResult<APIToken>> RefreshToken(TokenRefresh tokenInfo)
         {
+            //Validate if access or refresh token is not null
             if (tokenInfo.AccessToken is null || tokenInfo.RefreshToken is null)
                 return GeneralResult<APIToken>.Error(400,
                         "Access token or refresh token is empty");
@@ -169,23 +186,29 @@ namespace BookingSoccers.Service.Service
             string? accessToken = tokenInfo.AccessToken;
             string? refreshToken = tokenInfo.RefreshToken;
 
+            //Get principal from the expired access token
             var principal = GetPrincipalFromExpiredToken(accessToken);
             if (principal == null) 
                 GeneralResult<APIToken>.Error(400,"Access token is invalid");
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
+            //Get user name from returned principal
             string username = principal.Identity.Name;
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
+            //And get user from DB using that user name
             var user = await userRepo.Get().Where(x =>
                  x.UserName == username).FirstOrDefaultAsync();
 
+            //Check if no user found with access token
+            //or refresh token is expired
             if (user == null || tokenInfo.RefreshTokenExpiryDate <= DateTime.UtcNow)
                 return GeneralResult<APIToken>.Error(400,
                     "Access token or refresh token is invalid");
 
+            //Create a new access token and refresh token
             var newAccessToken = CreateToken(principal.Claims.ToList());
             var newRefreshToken = GenerateRefreshToken();
 

@@ -5,6 +5,7 @@ using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using Firebase.Auth;
 using Firebase.Storage;
@@ -36,10 +37,12 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetImageFolders()
+        //Get image folder as lists
+        public async Task<IActionResult> GetImageFoldersList
+            ([FromQuery] PagingPayload pagingPayload)
         {
 
-            var result = await imageFolderService.RetrieveAllImageFolders();
+            var result = await imageFolderService.RetrieveImageFoldersList(pagingPayload);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -52,6 +55,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
+        //Get details of an existing image folder 
         public async Task<IActionResult> GetOneSpecificImageFolder(int id)
         {
             var retrievedImageFolder = await imageFolderService.RetrieveAnImageFolderById(id);
@@ -68,6 +72,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager,Admin")]
         [HttpPost("imageFiles")]
+        //Add a new images to a new image folder
         public async Task<IActionResult> UploadImageFiles
             ([FromForm] List<IFormFile> files, [FromForm] ImageListCreateForm info)
         {
@@ -88,7 +93,8 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateABooking(int id,
+        //Add new images to an existing image folder
+        public async Task<IActionResult> UpdateAnImageFolder(int id,
             ImageFolderUpdatePayload NewImageFolderInfo)
         {
 
@@ -106,6 +112,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Remove an existing image folder
         public async Task<IActionResult> DeleteAImageFolder(int id)
         {
             var deletedImageFolder = await imageFolderService.RemoveAImageFolder(id);

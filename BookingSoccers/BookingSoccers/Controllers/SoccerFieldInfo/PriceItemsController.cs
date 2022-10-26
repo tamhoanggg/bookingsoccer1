@@ -2,6 +2,8 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.Payment;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.PriceItem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,10 +30,14 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetPriceItems()
+        //Get price items as list
+        public async Task<IActionResult> GetPriceItemsList
+            ([FromQuery] PagingPayload pagingInfo,
+            [FromQuery] PriceItemPredicate predicate)
         {
 
-            var result = await priceItemService.RetrieveAllPriceItems();
+            var result = await priceItemService.RetrievePriceItemsList
+                (pagingInfo, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -44,6 +50,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
+        //Get details of a price menu's price item
         public async Task<IActionResult> GetOneSpecificPriceItem(int id)
         {
             var retrievedPriceItem = await priceItemService.RetrieveAPriceItemById(id);
@@ -60,6 +67,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
+        //Add a new price item in a price menu
         public async Task<IActionResult> AddNewPriceItem(PriceItemCreatePayload newPriceItemInfo)
         {
             var AddedPriceItem = await priceItemService.AddANewPriceItem(newPriceItemInfo);
@@ -76,7 +84,8 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAPriceMenu(int id,
+        //Update a price item of a price menu
+        public async Task<IActionResult> UpdateAPriceItem(int id,
             PriceItemUpdatePayload NewPriceItemInfo)
         {
 
@@ -95,6 +104,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Remove a price item from a price menu
         public async Task<IActionResult> DeleteAPriceItem(int id)
         {
             var deletedPriceItem = await priceItemService.RemoveAPriceItem(id);

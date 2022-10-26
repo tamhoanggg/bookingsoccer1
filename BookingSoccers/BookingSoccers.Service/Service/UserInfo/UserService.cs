@@ -3,9 +3,13 @@ using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
 using BookingSoccers.Service.Models.DTO.User;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.User;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 
 namespace BookingSoccers.Service.Service.UserInfo
@@ -21,36 +25,41 @@ namespace BookingSoccers.Service.Service.UserInfo
             this.mapper = mapper;
         }
 
-        public async Task< GeneralResult<User> > AddANewUser(UserCreatePayload userinfo)
+        public async Task<GeneralResult<User>> AddANewUser(UserCreatePayload userinfo)
         {
-            
-           var userExistCheck = await userRepo.Get().Where(x =>
-                x.UserName == userinfo.UserName ||
-                x.Email == userinfo.Email ||
-                x.PhoneNumber == userinfo.PhoneNumber).FirstOrDefaultAsync();
+            //Check duplicate user name, email or phone number
+            var userExistCheck = await userRepo.Get().Where(x =>
+                 x.UserName == userinfo.UserName ||
+                 x.Email == userinfo.Email ||
+                 x.PhoneNumber == userinfo.PhoneNumber).FirstOrDefaultAsync();
 
-            if (userExistCheck != null) return 
-                    GeneralResult<User>.Error(409, "User already exists"); 
+            if (userExistCheck != null) return
+                    GeneralResult<User>.Error(409, "User already exists");
 
+            //Mapping new user info to new instance of user
             var toCreateUser = mapper.Map<User>(userinfo);
+
+            //and create it
             userRepo.Create(toCreateUser);
             await userRepo.SaveAsync();
 
             return GeneralResult<User>.Success(toCreateUser);
         }
 
-        public async Task< GeneralResult<User> > GetByEmail(string email)
+        public async Task<GeneralResult<User>> GetByEmail(string email)
         {
+            //Get a user details by email
             var User = await userRepo.GetById(email);
 
             if (User == null) return GeneralResult<User>.Error(
-                404, "User not found with Email:" + email); 
+                404, "User not found with Email:" + email);
 
             return GeneralResult<User>.Success(User);
         }
 
-        public async Task< GeneralResult<User> > RemoveAUser(int UserId)
+        public async Task<GeneralResult<User>> RemoveAUser(int UserId)
         {
+            //Get the requested user by user id and delete it
             var returnedUser = await userRepo.GetById(UserId);
 
             if (returnedUser == null) return GeneralResult<User>.Error(
@@ -62,34 +71,89 @@ namespace BookingSoccers.Service.Service.UserInfo
             return GeneralResult<User>.Success(returnedUser);
         }
 
-        public async Task< GeneralResult< List<User> > > RetrieveAllUsers()
+        public async Task<GeneralResult<ObjectListPagingInfo>> RetrieveUsersList
+            (PagingPayload pagingPayload, UserPredicate filter)
         {
-            var returnedUserList = await userRepo.Get().ToListAsync();
+            //Create a new instance of predicate builder used to build query predicate
+            var newPred = PredicateBuilder.New<User>(true);
 
-            if (returnedUserList.Count == 0) return GeneralResult< List<User>>.Error(
-                404, "No users found ");
+            //list of navi props to include in query
+            string? includeList = "role,";
 
-            return GeneralResult<List<User>>.Success(returnedUserList);
+            //Predicates to add to query (given that any one of them isn't null) 
+            if (filter.RoleId != null)
+            {
+                newPred = newPred.And(x => x.RoleId == filter.RoleId);
+            }
+
+            if (filter.GenderNum != null)
+            {
+                newPred = newPred.And(x => x.Gender == (GenderEnum)filter.GenderNum);
+            }
+
+            //Create a new expression instance
+            Expression<Func<User, bool>>? pred = null;
+
+            //If the Predicate Builder contains any predicate then
+            //convert it to an expression
+            if ( !(newPred.Body.ToString().StartsWith("True") &&
+                newPred.Body.ToString().EndsWith("True")) )
+            {
+                pred = newPred;
+            }
+
+            //Get paged list of items with sort, filters, included navi props
+            var returnedUserList = await userRepo.GetPaginationAsync
+                (pagingPayload.PageNum, pagingPayload.OrderColumn,
+                pagingPayload.IsAscending, includeList, pred);
+
+            if (returnedUserList.Count() == 0) return 
+                    GeneralResult<ObjectListPagingInfo>
+                    .Error(404, "No users found ");
+
+            //Get total elements when running the query
+            var TotalElement = await userRepo.GetPagingTotalElement(pred);
+
+            var UserList = mapper.Map<List<UserListInfo>>(returnedUserList);
+
+            //Create new class to contain list result and paging info
+            var FinalResult = new ObjectListPagingInfo();
+            FinalResult.ObjectList = UserList;
+
+            FinalResult.TotalElement = TotalElement;
+            FinalResult.CurrentPage = pagingPayload.PageNum;
+
+            //Calculate total pages based on total element
+            var CheckRemain = TotalElement % 20;
+            var SumPage = TotalElement / 20;
+            if (CheckRemain > 0) FinalResult.TotalPage = SumPage + 1;
+            else FinalResult.TotalPage = SumPage;
+
+            return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<User>> RetrieveAUserById(int UserId)
         {
+            //Get a user details by user Id
             var userById = await userRepo.GetById(UserId);
 
             if (userById == null) return GeneralResult<User>.Error(
-                404, "User not found with Id:" + UserId); 
+                404, "User not found with Id:" + UserId);
 
             return GeneralResult<User>.Success(userById);
         }
 
         public async Task<GeneralResult<BasicUserInfo>> RetrieveAUserForUpdate(string UserName)
         {
+            //Get the requested user details for update by User name
             var toUpdateUser = await userRepo.GetByUserName(UserName);
 
-            if(toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
+            if (toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
                 404, "User not found with username:" + UserName);
 
             var returnedUser = new BasicUserInfo();
+
+            //Mapping returned user to DTO
             mapper.Map(toUpdateUser, returnedUser);
 
             return GeneralResult<BasicUserInfo>.Success(returnedUser);
@@ -97,13 +161,16 @@ namespace BookingSoccers.Service.Service.UserInfo
 
         public async Task<GeneralResult<User>> UpdateAUser(int Id, UserUpdatePayload newUserInfo)
         {
+            //Get a specific user details for update using Id
             var toUpdateUser = await userRepo.GetById(Id);
 
             if (toUpdateUser == null) return GeneralResult<User>.Error(
                 404, "User not found with Id:" + Id);
 
+            //Mapping new user info to returned user info
             mapper.Map(newUserInfo, toUpdateUser);
 
+            //and update it
             userRepo.Update(toUpdateUser);
             await userRepo.SaveAsync();
 
@@ -112,16 +179,20 @@ namespace BookingSoccers.Service.Service.UserInfo
 
         public async Task<GeneralResult<BasicUserInfo>> UpdateUserInfoForUser(int id, UserUpdatePayload newUserInfo)
         {
+            //Get requested user details for update
             var toUpdateUser = await userRepo.GetById(id);
 
             if (toUpdateUser == null) return GeneralResult<BasicUserInfo>.Error(
                 404, "User not found with Id:" + id);
 
+            //Mapping new user info to returned user
             mapper.Map(newUserInfo, toUpdateUser);
 
+            //and update
             userRepo.Update(toUpdateUser);
             await userRepo.SaveAsync();
 
+            //Mapping updated user to View DTO
             var UpdatedUser = mapper.Map<BasicUserInfo>(newUserInfo);
 
             return GeneralResult<BasicUserInfo>.Success(UpdatedUser);

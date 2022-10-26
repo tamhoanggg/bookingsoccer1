@@ -21,7 +21,7 @@ namespace BookingSoccers.Repo.IRepository.BookingInfo
 
         Task<List<Booking>> GetBookingsByFieldId(int FieldId);
 
-        Task<List<Booking>> GetBookingsDistinctByFieldId(int FieldId);
+        Task<List<Booking>> GetBookingsDistinctByCustomerId(int FieldId);
 
         Task<List<Booking>> GetBookingsForReport
             (int FieldId, DateTime StartDate, DateTime EndDate);

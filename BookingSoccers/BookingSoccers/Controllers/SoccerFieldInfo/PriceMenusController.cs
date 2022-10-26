@@ -2,6 +2,7 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.PriceMenu;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,10 +29,14 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetPriceMenus()
+        //Get price menus as list
+        public async Task<IActionResult> GetPriceMenusList
+            ([FromQuery] PagingPayload pagingPayload,
+            [FromQuery] PriceMenuPredicate predicate)
         {
 
-            var result = await priceMenuService.RetrieveAllPriceMenus();
+            var result = await priceMenuService.RetrievePriceMenusList
+                (pagingPayload, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -44,6 +49,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
+        //Get details of a price menu
         public async Task<IActionResult> GetOneSpecificPriceMenu(int id)
         {
             var retrievedPriceMenu = await priceMenuService.RetrieveAPriceMenuById(id);
@@ -60,6 +66,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
+        //Create a new price menu
         public async Task<IActionResult> AddNewPriceMenu(PriceMenuCreatePayload newPriceMenuInfo)
         {
             var AddedPriceMenu = await priceMenuService.AddANewPriceMenu(newPriceMenuInfo);
@@ -94,6 +101,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager,Admin")]
         [HttpPut("{id}")]
+        //Update an existing price menu
         public async Task<IActionResult> UpdatePriceMenu(int id,
             PriceMenuUpdatePayload NewPriceMenuInfo)
         {
@@ -113,6 +121,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Remove an existing price menu 
         public async Task<IActionResult> DeleteAPriceMenu(int id)
         {
             var deletedPriceMenu = await priceMenuService.RemoveAPriceMenu(id);

@@ -2,6 +2,7 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Zone;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,10 +29,12 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetZones()
+        //Get zones as list
+        public async Task<IActionResult> GetZonesList
+            ([FromQuery] PagingPayload pagingPayload,
+             [FromQuery] ZonePredicate predicate)
         {
-
-            var result = await zoneService.RetrieveAllZones();
+            var result = await zoneService.RetrieveZonesList(pagingPayload, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -43,6 +46,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
         }
 
         [HttpGet("{id}")]
+        //Get details of a zone
         public async Task<IActionResult> GetOneSpecificZone(int id)
         {
             var retrievedZone = await zoneService.RetrieveAZoneById(id);
@@ -59,6 +63,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
+        //Add a new zone to an existing field
         public async Task<IActionResult> AddNewZone(ZoneCreatePayload newZoneInfo)
         {
             var AddedZone = await zoneService.AddANewZone(newZoneInfo);
@@ -75,6 +80,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
+        //Update an existing zone of a field
         public async Task<IActionResult> UpdateAZone(int id,
             ZoneUpdatePayload NewZoneInfo)
         {
@@ -93,6 +99,7 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Remove a zone of a specific field
         public async Task<IActionResult> DeleteAZone(int id)
         {
             var deletedZone = await zoneService.RemoveAZone(id);

@@ -29,6 +29,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
+        //Get all roles
         public async Task<IActionResult> GetRoles()
         {
 
@@ -43,11 +44,29 @@ namespace BookingSoccers.Controllers.UserInfo
             return StatusCode(result.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")]
+        //Get details of a role
+        public async Task<IActionResult> GetOneSpecificRole(byte id)
+        {
+            var retrievedRole = await roleService.RetrieveARoleById(id);
+
+            if (retrievedRole.IsSuccess)
+                return Ok(retrievedRole);
+
+            Response.StatusCode = retrievedRole.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedRole);
+
+            return StatusCode(retrievedRole.StatusCode, response);
+        }
+
         [HttpGet("{id}/users")]
         [Authorize(Roles = "Admin")]
+        //Get users of a role
         public async Task<IActionResult> GetUsersOfARole(byte id) 
         {
-            var result = await roleService.GetUsersByRoleId(id);
+            var result = await roleService.GetUsersOfARole(id);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -60,6 +79,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
          [Authorize(Roles ="Admin")]
         [HttpPost]
+        //Add a new role
         public async Task<IActionResult> AddNewRole(string RoleName)
         {
             var AddedRole = await roleService.AddANewRole(RoleName);
@@ -74,6 +94,7 @@ namespace BookingSoccers.Controllers.UserInfo
         }
          [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
+        //Update an existing role
         public async Task<IActionResult> UpdateARole(byte id, string NewRoleName)
         {
             
@@ -90,23 +111,9 @@ namespace BookingSoccers.Controllers.UserInfo
             return StatusCode(updatedRole.StatusCode, response);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificRole(byte id)
-        {
-            var retrievedRole = await roleService.RetrieveARoleById(id);
-
-            if (retrievedRole.IsSuccess) 
-                return Ok(retrievedRole);
-
-            Response.StatusCode = retrievedRole.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedRole);
-
-            return StatusCode(retrievedRole.StatusCode, response);
-        }
          [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
+        //Delete a role
         public async Task<IActionResult> DeleteARole(byte id)
         {
             var deletedRole = await roleService.RemoveARole(id);

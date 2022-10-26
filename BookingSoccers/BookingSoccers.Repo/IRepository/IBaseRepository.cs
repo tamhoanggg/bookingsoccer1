@@ -13,9 +13,10 @@ namespace BookingSoccers.Repo.IRepository
 
         IQueryable<T> Get();
 
-        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null,
-            string includeProperties = "");
+        Task<List<T>> GetPaginationAsync(int PageNum, string orderColumn, bool isAscending,
+            string? IncludeProperties = null, Expression<Func<T, bool>>? filter = null);
+
+        Task<int> GetPagingTotalElement(Expression<Func<T, bool>>? filter = null);
 
         void BulkCreate(List<T> TypeList);
 

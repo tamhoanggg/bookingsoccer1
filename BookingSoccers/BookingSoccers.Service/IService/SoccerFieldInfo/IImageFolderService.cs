@@ -1,6 +1,8 @@
 ﻿using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.Payment;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +21,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<ImageFolder>> RetrieveAnImageFolderById(int imgFolderId);
 
-        Task<GeneralResult<List<ImageFolder>>> RetrieveAllImageFolders();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveImageFoldersList
+            (PagingPayload pagingPayload);
 
         Task<GeneralResult<ImageFolder>> UpdateAImageFolder(int Id, ImageFolderUpdatePayload newImgFolderInfo);
 

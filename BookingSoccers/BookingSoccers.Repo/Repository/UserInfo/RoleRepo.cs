@@ -23,7 +23,10 @@ namespace BookingSoccers.Repo.Repository.UserInfo
             //if (bookingSoccersContext.Roles == null)
             //    return null;
 
-            var returnedRole = await Get().Where(x => x.Name == RoleName).FirstOrDefaultAsync();
+            var returnedRole = await Get()
+                .Where(x => x.Name == RoleName)
+                .FirstOrDefaultAsync();
+
             return returnedRole;
         }
 
@@ -32,7 +35,6 @@ namespace BookingSoccers.Repo.Repository.UserInfo
             var UsersForRole = await Get()
                 .Include(x => x.Users)
                 .Where(y => y.Id == RoleId)
-                .OrderBy(order => order.Id)
                 .FirstOrDefaultAsync();
 
             return UsersForRole;

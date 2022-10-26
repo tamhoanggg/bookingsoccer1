@@ -4,6 +4,7 @@ using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.Payment;
 using BookingSoccers.Service.Models.Payload.User;
@@ -33,11 +34,33 @@ namespace BookingSoccers.Controllers.BookingInfo
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> GetBookings()
+        [HttpGet("admin")]
+        //Get list of bookings for admin
+        public async Task<IActionResult> GetBookingsListForAdmin
+            ([FromQuery] PagingPayload pagingInfo, 
+            [FromQuery] BookingPredicate predicate)
         {
+            var result = await bookingService
+                .RetrieveBookingsListForAdmin(pagingInfo, predicate);
 
-            var result = await bookingService.RetrieveAllBookings();
+            if (result.IsSuccess)
+                return Ok(result);
+
+            Response.StatusCode = result.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(result);
+            return StatusCode(result.StatusCode, response);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("user")]
+        //Get list of bookings for user
+        public async Task<IActionResult> GetBookingsListForUser
+            ([FromQuery] PagingPayload pagingInfo,
+            [FromQuery] BookingPredicate predicate)
+        {
+            var result = await bookingService
+                .RetrieveBookingsListForUser(pagingInfo, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -49,6 +72,7 @@ namespace BookingSoccers.Controllers.BookingInfo
         }
 
         [HttpGet("{id}")]
+        //Get details of a booking
         public async Task<IActionResult> GetOneSpecificBooking(int id)
         {
             var retrievedBooking = await bookingService.RetrieveABookingById(id);
@@ -65,6 +89,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles = "User")]
         [HttpGet("user/{id}")]
+        //Get a booking details and its payments
         public async Task<IActionResult> GetOneBookingsAndItsPayments(int id)
         {
             var retrievedBooking = await bookingService.GetBookingAndPaymentsById(id);
@@ -79,25 +104,9 @@ namespace BookingSoccers.Controllers.BookingInfo
             return StatusCode(retrievedBooking.StatusCode, response);
         }
 
-        [Authorize(Roles = "User")]
-        [HttpGet("user")]
-        public async Task<IActionResult> GetBookingsOfAUser(int UserId)
-        {
-            var retrievedBookingList = await bookingService
-                .GetBookingsOfAUser(UserId);
-
-            if (retrievedBookingList.IsSuccess)
-                return Ok(retrievedBookingList);
-
-            Response.StatusCode = retrievedBookingList.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedBookingList);
-
-            return StatusCode(retrievedBookingList.StatusCode, response);
-        }
-
         [Authorize(Roles ="User,Admin")]
         [HttpPost]
+        //Add a new booking
         public async Task<IActionResult> AddANewBooking
             (BookingCreatePayload newBookingInfo)
         {
@@ -115,6 +124,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles ="User,Admin")]
         [HttpPut("{id}")]
+        //Update an existing booking
         public async Task<IActionResult> UpdateABooking(int id,
             BookingUpdatePayload NewUserInfo)
         {
@@ -134,6 +144,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles = "User")]
         [HttpPut("{id}/status")]
+        //Update a booking status, for example: Waiting => CheckedIn
         public async Task<IActionResult> UpdateABookingStatus(int id,
             StatusEnum newBookingStatus)
         {
@@ -153,6 +164,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpPut("{id}/zone-id")]
+        //Add Zone Id to an exist booking
         public async Task<IActionResult> UpdateBookingZoneId(int id, int ZoneId) 
         {
             var updatedBookingZoneId = 
@@ -170,6 +182,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpPut("{id}/check-out")]
+        //Update a booking status from CheckedIn => CheckedOut
         public async Task<IActionResult> CheckOutABooking(int id)
         {
             var updatedBooking =
@@ -187,6 +200,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles ="User,Admin")]
         [HttpDelete("{id}")]
+        //Remove an exist booking
         public async Task<IActionResult> DeleteABooking(int id)
         {
             var deletedBooking = await bookingService.RemoveABooking(id);

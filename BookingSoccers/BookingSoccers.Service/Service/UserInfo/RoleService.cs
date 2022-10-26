@@ -26,11 +26,13 @@ namespace BookingSoccers.Service.UserInfo
 
         public async Task<GeneralResult<Role>> AddANewRole(string roleName)
         {
+            //Check duplicate role name
             var existRole = await roleRepo.GetRoleByName(roleName);
 
             if (existRole != null) return GeneralResult<Role>
                     .Error(409 , "Role already exists");
 
+            //Create a new instance of role and create it
             Role newRoleObj = new Role()
             {
                 Name = roleName
@@ -43,6 +45,7 @@ namespace BookingSoccers.Service.UserInfo
 
         public async Task<GeneralResult<Role>> RetrieveARoleById(byte roleId)
         {
+            //Get a role details
             var returnedRole = await roleRepo.GetById(roleId);
 
             if (returnedRole == null) return GeneralResult<Role>.Error(
@@ -52,6 +55,7 @@ namespace BookingSoccers.Service.UserInfo
 
         public async Task<GeneralResult < List<Role> > > RetrieveAllRoles() 
         { 
+            //Return all roles
             var roles = await roleRepo.Get().ToListAsync();
 
             if (roles.Count ==0) return GeneralResult< List<Role> >.Error(
@@ -62,10 +66,12 @@ namespace BookingSoccers.Service.UserInfo
 
         public async Task<GeneralResult<Role>> UpdateARole(byte Id, String newRoleName) 
         {
+            //Get a specific role for update
             var foundRole = await roleRepo.GetById(Id);
             if (foundRole == null) return GeneralResult<Role>.Error(
                 404, "Role not found with Id:" +Id);
 
+            //Change the role name and update it
             foundRole.Name = newRoleName;
             roleRepo.Update(foundRole);
             await roleRepo.SaveAsync();
@@ -75,6 +81,7 @@ namespace BookingSoccers.Service.UserInfo
 
         public async Task<GeneralResult<Role>> RemoveARole(byte roleId) 
         {
+            //Get a specific role and remove it
             var foundRole = await roleRepo.GetById(roleId);
             if (foundRole == null) return GeneralResult<Role>.Error(
                 404, "Role not found with Id:" + roleId); ;
@@ -85,8 +92,9 @@ namespace BookingSoccers.Service.UserInfo
             return GeneralResult<Role>.Success(foundRole);
         }
 
-        public async Task<GeneralResult<Role>> GetUsersByRoleId(byte RoleId)
+        public async Task<GeneralResult<Role>> GetUsersOfARole(byte RoleId)
         {
+            //Get users of a role by role Id
             var finalresult = await roleRepo.GetUsersByRoleId(RoleId);
 
             if(finalresult.Users == null) return GeneralResult<Role>.Error(

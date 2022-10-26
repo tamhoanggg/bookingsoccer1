@@ -1,5 +1,7 @@
 ﻿using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.PriceMenu;
 using System;
@@ -17,7 +19,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<PriceMenu>> RetrieveAPriceMenuById(int priceMenuId);
 
-        Task<GeneralResult<List<PriceMenu>>> RetrieveAllPriceMenus();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrievePriceMenusList
+            (PagingPayload pagingPayload, PriceMenuPredicate filter);
 
         Task<GeneralResult<PriceMenu>> UpdateAPriceMenu(int Id, PriceMenuUpdatePayload newPriceMenuInfo);
 

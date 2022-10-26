@@ -2,6 +2,7 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.SoccerField;
 using BookingSoccers.Service.Models.Payload.Zone;
@@ -33,10 +34,14 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet("admin")]
-        public async Task<IActionResult> GetSoccerFieldsForAdmin()
+        //Get soccer fields as list for admin only
+        public async Task<IActionResult> GetSoccerFieldsListForAdmin
+            ([FromQuery] PagingPayload pagingPayload,
+            [FromQuery] SoccerFieldPredicate predicate)
         {
 
-            var result = await soccerFieldService.RetrieveAllSoccerFields();
+            var result = await soccerFieldService.RetrieveSoccerFieldsListForAdmin
+                (pagingPayload, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -49,10 +54,14 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "User")]
         [HttpGet("user")]
-        public async Task<IActionResult> GetSoccerFieldsForUser()
+        //Get soccer fields as list for user only
+        public async Task<IActionResult> GetSoccerFieldsForUser
+            ([FromQuery] PagingPayload pagingPayload,
+            [FromQuery] SoccerFieldPredicate predicate)
         {
 
-            var result = await soccerFieldService.RetrieveAllSoccerFields();
+            var result = await soccerFieldService.RetrieveSoccerFieldsListForUser
+                (pagingPayload, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -65,6 +74,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("{id}/booking-schedule")]
+        //Get bookings of a date for field manager
         public async Task<IActionResult> GetFieldBookingScheduleOnDate
             (int id, DateTime date) 
         {
@@ -83,6 +93,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager, Admin")]
         [HttpGet("{id}")]
+        //Get a soccer field details for Field Manager and Admin
         public async Task<IActionResult> GetASoccerField(int id)
         {
             var retrievedSoccerField = 
@@ -100,6 +111,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("field-manager/{id}")]
+        //Get list of fields and theirs details owned by a field manager
         public async Task<IActionResult> GetSoccerFieldsInfoForManager(int id) 
         {
             var retrievedSoccerFieldList = 
@@ -117,6 +129,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("{id}/price-menus")]
+        //Get price menus and price items of a field
         public async Task<IActionResult> GetFieldPriceMenusByFieldId(int id) 
         {
             var retrievedPriceMenusList =
@@ -134,6 +147,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpGet("{id}/regular-customers")]
+        //Get regular customer list of a field
         public async Task<IActionResult> GetRegularGuestsByFieldId(int id)
         {
             var returnedRegularGuestList =
@@ -149,8 +163,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(returnedRegularGuestList.StatusCode, response);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpGet("{id}/detail-view")]
+        //Get a field details view for user
         public async Task<IActionResult> GetFieldDetailsForView(int id) 
         {
             var FieldResult =
@@ -166,8 +181,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(FieldResult.StatusCode, response);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpGet("{id}/zone-slots-by-date")]
+        //Get list of zone slots of a field for user view 
         public async Task<IActionResult> GetFieldAvailZoneSlots
             (int id, SoccerFieldZoneSlots info)
         {
@@ -185,8 +201,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(SlotListResult.StatusCode, response);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpGet("booking-validate")]
+        //Check availability of zone slots and pre-calculate booking price 
+        //based on user booking request
         public async Task<IActionResult> ValidateBookingForm
             (BookingValidateForm info)
         {
@@ -205,6 +223,8 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "User")]
         [HttpPost("booking-payment")]
+        //Add a new booking and a payment of type prepay after user
+        //has successfully booked
         public async Task<IActionResult> AddANewBookingAndPayment
             (BookingCreateForm newBookingInfo)
         {
@@ -222,6 +242,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
+        //Create a new soccer field
         public async Task<IActionResult> AddNewSoccerField
             (SoccerFieldCreatePayload newSoccerFieldInfo)
         {
@@ -239,6 +260,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "FieldManager")]
         [HttpPost("{id}/zone")]
+        //Add to an existing field a new zone and its zone slots 
         public async Task<IActionResult> AddNewSoccerFieldZone
             (int id, ZoneCreatePayload Info)
         {
@@ -256,6 +278,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
+        //Update an existing soccer field
         public async Task<IActionResult> UpdateASoccerField(int id,
             SoccerFieldUpdatePayload NewSoccerFieldInfo)
         {
@@ -274,6 +297,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Remove an existing soccer field
         public async Task<IActionResult> DeleteASoccerField(int id)
         {
             var deletedSoccerField = await soccerFieldService.RemoveASoccerField(id);

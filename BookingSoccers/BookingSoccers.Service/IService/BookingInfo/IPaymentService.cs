@@ -1,5 +1,8 @@
 ﻿using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
+using BookingSoccers.Service.Models.Payload.Booking;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Payment;
 using System;
 using System.Collections.Generic;
@@ -15,7 +18,8 @@ namespace BookingSoccers.Service.IService.BookingInfo
 
         Task<GeneralResult<Payment>> RetrieveAPaymentById(int PaymentId);
 
-        Task<GeneralResult<List<Payment>>> RetrieveAllPayments();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrievePaymentsList
+            (PagingPayload pagingPayload, PaymentPredicate filter);
 
         Task<GeneralResult<Payment>> UpdateAPayment(int Id, PaymentUpdatePayload newPaymentInfo);
 

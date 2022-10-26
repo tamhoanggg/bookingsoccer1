@@ -24,6 +24,8 @@ namespace BookingSoccers.Controllers
         }
 
         [HttpPost("/login")]
+        //Validate firebase id token, generate jwt access token, refresh token
+        //if successfully validated
         public async Task<IActionResult> Login(string AccessToken)
         {
             var result =  await authenService.Authentication(AccessToken);
@@ -38,6 +40,7 @@ namespace BookingSoccers.Controllers
         }
 
         [HttpPost("/refresh-token")]
+        //Refresh jwt token
         public async Task<IActionResult> RefreshAccessToken(TokenRefresh refreshTokenInfo)
         {
             var result = await authenService.RefreshToken(refreshTokenInfo);

@@ -1,5 +1,7 @@
 ﻿using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.ZoneSlot;
 using System;
@@ -17,7 +19,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<ZoneSlot>> RetrieveAZoneSlotById(int zoneSlotId);
 
-        Task<GeneralResult<List<ZoneSlot>>> RetrieveAllZoneSlots();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveZoneSlotsList
+            (PagingPayload pagingPayload, ZoneSlotPredicate filter);
 
         Task<GeneralResult<ZoneSlot>> UpdateAZoneSlot(int Id, ZoneSlotUpdatePayload newZoneSlotInfo);
 

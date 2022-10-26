@@ -63,15 +63,15 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             return BookingList;
         }
 
-        public async Task<List<Booking>> GetBookingsDistinctByFieldId(int FieldId)
+        public async Task<List<Booking>> GetBookingsDistinctByCustomerId(int FieldId)
         {
-            var DistinctedBookingList = await Get()
+            var BookingList = await Get()
                 .Include(x => x.Customer)
                 .Where(x => x.FieldId == FieldId)
                 .DistinctBy(x => x.CustomerId)
                 .ToListAsync();
 
-            return DistinctedBookingList;
+            return BookingList;
         }
 
         public async Task<List<Booking>> GetBookingsForReport

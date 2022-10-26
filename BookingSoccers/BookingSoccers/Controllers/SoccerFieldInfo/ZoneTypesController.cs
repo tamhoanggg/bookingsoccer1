@@ -28,6 +28,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
+        //Get all zone types 
         public async Task<IActionResult> GetZoneTypes()
         {
 
@@ -41,8 +42,27 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             var response = mapper.Map<ErrorResponse>(result);
             return StatusCode(result.StatusCode, response);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")]
+        //Get details of a zone type
+        public async Task<IActionResult> GetOneSpecificZoneType(byte id)
+        {
+            var retrievedZoneType = await zoneTypeService.RetrieveAZoneTypeById(id);
+
+            if (retrievedZoneType.IsSuccess)
+                return Ok(retrievedZoneType);
+
+            Response.StatusCode = retrievedZoneType.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedZoneType);
+
+            return StatusCode(retrievedZoneType.StatusCode, response);
+        }
+
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
+        //Create a new zone type
         public async Task<IActionResult> AddNewZoneType(ZoneTypeCreatePayload NewZoneTypeInfo)
         {
             var AddedZoneType = await zoneTypeService.AddANewZoneType(NewZoneTypeInfo);
@@ -56,9 +76,11 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
             return StatusCode(AddedZoneType.StatusCode, response);
         }
+
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAZone(byte id,
+        //Update an existing zone type
+        public async Task<IActionResult> UpdateAZoneType(byte id,
             ZoneTypeUpdatePayload NewZoneTypeInfo)
         {
 
@@ -74,23 +96,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
             return StatusCode(updatedZoneType.StatusCode, response);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneSpecificZoneType(byte id)
-        {
-            var retrievedZoneType = await zoneTypeService.RetrieveAZoneTypeById(id);
-
-            if (retrievedZoneType.IsSuccess)
-                return Ok(retrievedZoneType);
-
-            Response.StatusCode = retrievedZoneType.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(retrievedZoneType);
-
-            return StatusCode(retrievedZoneType.StatusCode, response);
-        }
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Delete an existing zone type
         public async Task<IActionResult> DeleteAZoneType(byte id)
         {
             var deletedZoneType = await zoneTypeService.RemoveAZoneType(id);

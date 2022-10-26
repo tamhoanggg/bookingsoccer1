@@ -2,6 +2,7 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.BookingInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.Payment;
 using Microsoft.AspNetCore.Authorization;
@@ -30,10 +31,13 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetPayments()
+        //Get list of payments
+        public async Task<IActionResult> GetPaymentsList
+            ([FromQuery] PagingPayload pagingInfo,
+            [FromQuery] PaymentPredicate predicate)
         {
 
-            var result = await paymentService.RetrieveAllPayments();
+            var result = await paymentService.RetrievePaymentsList(pagingInfo, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -45,6 +49,7 @@ namespace BookingSoccers.Controllers.BookingInfo
         }
 
         [HttpGet("{id}")]
+        //Get a payment details
         public async Task<IActionResult> GetOneSpecificPayment(int id)
         {
             var retrievedPayment = await paymentService.RetrieveAPaymentById(id);
@@ -61,6 +66,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles ="User,Admin")]
         [HttpPost]
+        //Create a new payment
         public async Task<IActionResult> AddNewPayment(PaymentCreatePayload newPaymentInfo)
         {
             var AddedPayment = await paymentService.AddANewPayment(newPaymentInfo);
@@ -77,6 +83,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles ="User,Admin")]
         [HttpPut("{id}")]
+        //Update an existing payment
         public async Task<IActionResult> UpdateAPayment(int id,
             PaymentUpdatePayload NewPaymentInfo)
         {
@@ -96,6 +103,7 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [Authorize(Roles ="User,Admin")]
         [HttpDelete("{id}")]
+        //Remove an existing payment
         public async Task<IActionResult> DeleteAPayment(int id)
         {
             var deletedPayment = await paymentService.RemoveAPayment(id);

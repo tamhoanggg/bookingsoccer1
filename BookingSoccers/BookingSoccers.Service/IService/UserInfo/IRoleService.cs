@@ -20,7 +20,6 @@ namespace BookingSoccers.Service.IService.UserInfo
 
         Task<GeneralResult<Role>> RemoveARole(byte RoleId);
 
-        Task<GeneralResult<Role>> GetUsersByRoleId(byte RoleId);
-
+        Task<GeneralResult<Role>> GetUsersOfARole(byte RoleId);
     }
 }

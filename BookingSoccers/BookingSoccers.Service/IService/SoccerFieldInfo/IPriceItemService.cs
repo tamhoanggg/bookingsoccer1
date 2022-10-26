@@ -1,5 +1,7 @@
 ﻿using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.ImageFolder;
 using BookingSoccers.Service.Models.Payload.PriceItem;
 using System;
@@ -17,7 +19,8 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<PriceItem>> RetrieveAPriceItemById(int priceItemId);
 
-        Task<GeneralResult<List<PriceItem>>> RetrieveAllPriceItems();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrievePriceItemsList
+            (PagingPayload pagingPayload, PriceItemPredicate filter);
 
         Task<GeneralResult<PriceItem>> UpdateAPriceItem(int Id, PriceItemUpdatePayload newPriceItemInfo);
 

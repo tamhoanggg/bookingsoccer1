@@ -3,6 +3,7 @@ using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
 using BookingSoccers.Service.Models.DTO.User;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,10 +35,12 @@ namespace BookingSoccers.Controllers.UserInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        //Get users as list
+        public async Task<IActionResult> GetListUsers(
+            [FromQuery] PagingPayload paginginfo,[FromQuery] UserPredicate predicate)
         {
-
-            var result = await userService.RetrieveAllUsers();
+            var result = await userService.RetrieveUsersList
+                (paginginfo, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -48,58 +51,9 @@ namespace BookingSoccers.Controllers.UserInfo
             return StatusCode(result.StatusCode, response);
         }
 
-        [Authorize(Roles ="Admin")]
-        [HttpPost("admin")]
-        public async Task<IActionResult> AddNewUserForAdmin(UserCreatePayload userInfo)
-        {
-            var AddedUser = await userService.AddANewUser(userInfo);
-
-            if (AddedUser.IsSuccess)
-                return Ok(AddedUser);
-
-            Response.StatusCode = AddedUser.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(AddedUser);
-
-            return StatusCode(AddedUser.StatusCode, response);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> AddNewUserNormal(UserCreatePayload userInfo)
-        {
-            var AddedUser = await userService.AddANewUser(userInfo);
-
-            if (AddedUser.IsSuccess)
-                return Ok(AddedUser);
-
-            Response.StatusCode = AddedUser.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(AddedUser);
-
-            return StatusCode(AddedUser.StatusCode, response);
-        }
-
-        [Authorize(Roles ="Admin")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAUser(int id, UserUpdatePayload NewUserInfo)
-        {
-
-
-            var updatedUser = await userService.UpdateAUser(id, NewUserInfo);
-
-            if (updatedUser.IsSuccess)
-                return Ok(updatedUser);
-
-            Response.StatusCode = updatedUser.StatusCode;
-
-            var response = mapper.Map<ErrorResponse>(updatedUser);
-
-            return StatusCode(updatedUser.StatusCode, response);
-        }
-
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
+        //Get details of a user
         public async Task<IActionResult> GetOneSpecificUser(int id)
         {
             var retrievedUser = await userService.RetrieveAUserById(id);
@@ -116,7 +70,8 @@ namespace BookingSoccers.Controllers.UserInfo
 
         [HttpGet("{username}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserForUserUpdate(string Username) 
+        //Get users details for user update
+        public async Task<IActionResult> GetUserForUserUpdate(string Username)
         {
             var retrievedUser = await userService.RetrieveAUserForUpdate(Username);
 
@@ -130,8 +85,62 @@ namespace BookingSoccers.Controllers.UserInfo
             return StatusCode(retrievedUser.StatusCode, response);
         }
 
+        [Authorize(Roles ="Admin")]
+        [HttpPost("admin")]
+        //Create a new user for admin
+        public async Task<IActionResult> AddNewUserForAdmin(UserCreatePayload userInfo)
+        {
+            var AddedUser = await userService.AddANewUser(userInfo);
+
+            if (AddedUser.IsSuccess)
+                return Ok(AddedUser);
+
+            Response.StatusCode = AddedUser.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(AddedUser);
+
+            return StatusCode(AddedUser.StatusCode, response);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        //Add a new user for guests
+        public async Task<IActionResult> AddNewUserNormal(UserCreatePayload userInfo)
+        {
+            var AddedUser = await userService.AddANewUser(userInfo);
+
+            if (AddedUser.IsSuccess)
+                return Ok(AddedUser);
+
+            Response.StatusCode = AddedUser.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(AddedUser);
+
+            return StatusCode(AddedUser.StatusCode, response);
+        }
+
+        [Authorize(Roles ="Admin")]
+        [HttpPut("{id}")]
+        //Update an existing user
+        public async Task<IActionResult> UpdateAUser(int id, UserUpdatePayload NewUserInfo)
+        {
+
+
+            var updatedUser = await userService.UpdateAUser(id, NewUserInfo);
+
+            if (updatedUser.IsSuccess)
+                return Ok(updatedUser);
+
+            Response.StatusCode = updatedUser.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(updatedUser);
+
+            return StatusCode(updatedUser.StatusCode, response);
+        }
+
         [HttpPut("user/{id}")]
         [Authorize(Roles ="User")]
+        //Update a user for user
         public async Task<IActionResult> UpdateUserInfoForUser(int id, UserUpdatePayload toUpdateInfo) 
         {
 
@@ -150,6 +159,7 @@ namespace BookingSoccers.Controllers.UserInfo
 
          [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
+        //Remove an existing user
         public async Task<IActionResult> DeleteAUser(int id)
         {
             var deletedUser = await userService.RemoveAUser(id);

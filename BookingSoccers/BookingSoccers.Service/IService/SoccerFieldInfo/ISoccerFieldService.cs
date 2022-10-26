@@ -1,9 +1,11 @@
 ﻿using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
 using BookingSoccers.Service.Models.DTO.Booking;
 using BookingSoccers.Service.Models.DTO.PriceMenu;
 using BookingSoccers.Service.Models.DTO.SoccerField;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Booking;
 using BookingSoccers.Service.Models.Payload.SoccerField;
 using System;
@@ -43,9 +45,11 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<SoccerFieldView1>> GetFieldForUserByFieldID(int FieldId);
 
-        Task<GeneralResult<List<SoccerField>>> RetrieveAllSoccerFields();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveSoccerFieldsListForAdmin
+            (PagingPayload pagingPayload, SoccerFieldPredicate filter);
 
-        Task<GeneralResult<List<SoccerFieldListView>>> RetrieveAllSoccerFieldsForUser();
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveSoccerFieldsListForUser
+            (PagingPayload pagingPayload, SoccerFieldPredicate filter);
 
         Task<GeneralResult<SoccerField>> UpdateASoccerField
             (int Id, SoccerFieldUpdatePayload newSoccerFieldInfo);

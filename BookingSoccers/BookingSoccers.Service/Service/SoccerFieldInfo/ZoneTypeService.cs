@@ -27,14 +27,17 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
         public async Task<GeneralResult<ZoneType>> AddANewZoneType(ZoneTypeCreatePayload zoneTypeInfo)
         {
+            //Check duplicate zone type
             var CheckZoneTypeExist = await zoneTypeRepo.
                 GetZoneTypeByName(zoneTypeInfo.Name);
 
             if (CheckZoneTypeExist != null) return
                     GeneralResult<ZoneType>.Error(409, "Zone type already exists");
 
+            //Then map new zone type info to new instance of zone type
             var toCreateZoneType = mapper.Map<ZoneType>(zoneTypeInfo);
 
+            //and create
             zoneTypeRepo.Create(toCreateZoneType);
             await zoneTypeRepo.SaveAsync();
 
@@ -43,6 +46,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
         public async Task<GeneralResult<ZoneType>> RemoveAZoneType(byte ZoneTypeId)
         {
+            //Get specific zone type by Id and delete it
             var toDeleteZoneType = await zoneTypeRepo.GetById(ZoneTypeId);
 
             if (toDeleteZoneType == null) return GeneralResult<ZoneType>.Error(
@@ -56,6 +60,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
         public async Task<GeneralResult<List<ZoneType>>> RetrieveAllZoneTypes()
         {
+            //Get all zone types
             var ZoneTypeList = await zoneTypeRepo.Get().ToListAsync();
 
             if (ZoneTypeList.Count == 0) return GeneralResult<List<ZoneType>>.Error(
@@ -66,6 +71,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
         public async Task<GeneralResult<ZoneType>> RetrieveAZoneTypeById(byte zoneTypeId)
         {
+            //Get details of a zone type by Id
             var retrievedZoneSlot = await zoneTypeRepo.GetById(zoneTypeId);
 
             if (retrievedZoneSlot == null) return GeneralResult<ZoneType>.Error(
@@ -77,11 +83,13 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
         public async Task<GeneralResult<ZoneType>> UpdateAZoneType(byte Id, 
             ZoneTypeUpdatePayload newZoneTypeInfo)
         {
+            //Get a specific zone type details for updating
             var toUpdateZoneType = await zoneTypeRepo.GetById(Id);
 
             if (toUpdateZoneType == null) return GeneralResult<ZoneType>.Error(
                 404, "No zone type found with Id:" + Id);
 
+            //Mappin new zone type info to returned zone type
             mapper.Map(newZoneTypeInfo, toUpdateZoneType);
 
             zoneTypeRepo.Update(toUpdateZoneType);

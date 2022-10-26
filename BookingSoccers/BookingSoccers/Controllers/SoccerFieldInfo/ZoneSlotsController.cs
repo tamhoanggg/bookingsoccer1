@@ -2,6 +2,7 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.Zone;
 using BookingSoccers.Service.Models.Payload.ZoneSlot;
 using Microsoft.AspNetCore.Authorization;
@@ -29,9 +30,13 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetZoneSlots()
+        //Get zone slots of a zone that belongs to a field as list
+        public async Task<IActionResult> GetZoneSlotsList
+            ([FromQuery] PagingPayload pagingPayload,
+             [FromQuery] ZoneSlotPredicate predicate)
         {
-            var result = await zoneSlotService.RetrieveAllZoneSlots();
+            var result = await zoneSlotService.RetrieveZoneSlotsList
+                (pagingPayload, predicate);
 
             if (result.IsSuccess)
                 return Ok(result);
@@ -44,6 +49,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
+        //Get details of a zoneslot
         public async Task<IActionResult> GetOneSpecificZoneSlot(int id)
         {
             var retrievedZoneSlot = await zoneSlotService.RetrieveAZoneSlotById(id);
@@ -60,6 +66,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
         [Authorize(Roles ="FieldManager,Admin")]
         [HttpPost]
+        //Create a new zone slot of a zone of a specific field 
         public async Task<IActionResult> AddNewZoneSlot(ZoneSlotCreatePayload NewZoneSlotInfo)
         {
             var AddedZoneSlot = await zoneSlotService.AddANewZoneSlot(NewZoneSlotInfo);
@@ -76,7 +83,8 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAZone(int id,
+        //Update a zone slot of a field's zone
+        public async Task<IActionResult> UpdateAZoneSlot(int id,
             ZoneSlotUpdatePayload NewZoneSlotInfo)
         {
 
@@ -94,6 +102,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
 
          [Authorize(Roles ="FieldManager,Admin")]
         [HttpDelete("{id}")]
+        //Remove a zoneslot of field's zone
         public async Task<IActionResult> DeleteAZoneSlot(int id)
         {
             var deletedZoneSlot = await zoneSlotService.RemoveAZoneSlot(id);
