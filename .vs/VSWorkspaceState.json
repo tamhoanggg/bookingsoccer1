@@ -2,11 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\BookingSoccers",
-    "\\BookingSoccers\\BookingSoccers",
-    "\\BookingSoccers\\BookingSoccers.Repo",
-    "\\BookingSoccers\\BookingSoccers.Repo\\IRepository",
-    "\\BookingSoccers\\BookingSoccers\\Controllers"
+    "\\BookingSoccers\\BookingSoccers.Service",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\Common",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\DTO",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\DTO\\SoccerField",
+    "\\BookingSoccers\\BookingSoccers.Service\\Models\\Payload\\SoccerField",
+    "\\BookingSoccers\\BookingSoccers.Service\\Service",
+    "\\BookingSoccers\\BookingSoccers.Service\\Service\\SoccerFieldInfo"
   ],
-  "SelectedNode": "\\BookingSoccers\\BookingSoccers\\Controllers\\AuthenController.cs",
+  "SelectedNode": "\\BookingSoccers\\BookingSoccers.Service\\Service\\SoccerFieldInfo\\SoccerFieldService.cs",
   "PreviewInSolutionExplorer": false
 }

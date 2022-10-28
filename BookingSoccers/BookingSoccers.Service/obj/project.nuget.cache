@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zls+nZiQiEdQbbJzEYGW238sqo8O3Kt9gGfVQMPlFzEU/vCy6fBhWAEOjq9fT9/bY1Q5f1G230ydP+tWYkXc3A==",
+  "dgSpecHash": "3piICA5C9WRtXGMlAuYvEXEns6pLhElAL/4l1URGM+mJxkqaGHlsUB5FeJK6sB8a7meEdhFIxRJdDLKZihAwyg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Service\\BookingSoccers.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\entityframework\\6.3.0\\entityframework.6.3.0.nupkg.sha512",

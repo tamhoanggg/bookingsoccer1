@@ -880,14 +880,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var FinalResult = new ObjectListPagingInfo();
 
             //Create new desired response 
-            FinalResult.ObjectList = returnedSoccerFieldList.Select(x => new
-            {
-                x.Id,
-                x.FieldName,
-                x.OpenHour,
-                x.CloseHour,
-                x.Address,
-            }).ToList();
+            FinalResult.ObjectList = returnedSoccerFieldList;
 
             FinalResult.TotalElement = TotalElement;
             FinalResult.CurrentPage = pagingPayload.PageNum;
