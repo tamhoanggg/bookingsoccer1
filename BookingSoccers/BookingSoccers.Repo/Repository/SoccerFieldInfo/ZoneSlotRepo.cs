@@ -18,6 +18,13 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<ZoneSlot> getAZoneSlotByZoneId(int Id)
+        {
+           var zoneSlot =  Get().Where(x => x.ZoneId == Id).MaxBy(x=>x.EndTime);
+
+            return zoneSlot;
+        }
+
         public async Task<List<ZoneSlot>> getZoneSlots(int ZoneId, DateTime date)
         {
 

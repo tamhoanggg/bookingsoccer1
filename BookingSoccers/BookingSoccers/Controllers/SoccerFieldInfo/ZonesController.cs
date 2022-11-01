@@ -78,7 +78,24 @@ namespace BookingSoccers.Controllers.ZoneInfo
             return StatusCode(AddedZone.StatusCode, response);
         }
 
-         [Authorize(Roles ="FieldManager,Admin")]
+        [Authorize(Roles = "FieldManager,Admin")]
+        [HttpPost("{id}")]
+        //Add new zone slots for an existing zone 
+        public async Task<IActionResult> AddZoneSlotsForZone(int id, int fieldId)
+        {
+            var AddedZone = await zoneService.AddZoneSlotsForZone(fieldId,id);
+
+            if (AddedZone.IsSuccess)
+                return Ok(AddedZone);
+
+            Response.StatusCode = AddedZone.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(AddedZone);
+
+            return StatusCode(AddedZone.StatusCode, response);
+        }
+
+        [Authorize(Roles ="FieldManager,Admin")]
         [HttpPut("{id}")]
         //Update an existing zone of a field
         public async Task<IActionResult> UpdateAZone(int id,

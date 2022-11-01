@@ -76,7 +76,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [HttpGet("{id}/booking-schedule")]
         //Get bookings of a date for field manager
         public async Task<IActionResult> GetFieldBookingScheduleOnDate
-            (int id, DateTime date) 
+            (int id, [FromQuery] DateTime date) 
         {
             var retrievedFieldSchedule =
                 await soccerFieldService.GetFieldScheduleOfADateById(id, date);
@@ -185,7 +185,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [HttpGet("{id}/zone-slots-by-date")]
         //Get list of zone slots of a field for user view 
         public async Task<IActionResult> GetFieldAvailZoneSlots
-            (int id, SoccerFieldZoneSlots info)
+            (int id,[FromQuery] SoccerFieldZoneSlots info)
         {
             var SlotListResult =
                 await zoneService.GetFieldAvailZoneSlotsForADate
@@ -206,7 +206,7 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         //Check availability of zone slots and pre-calculate booking price 
         //based on user booking request
         public async Task<IActionResult> ValidateBookingForm
-            (BookingValidateForm info)
+            ([FromQuery] BookingValidateForm info)
         {
             var Result =
                 await soccerFieldService.CheckZonesAndCalculatePrice(info);

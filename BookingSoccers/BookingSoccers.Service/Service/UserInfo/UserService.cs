@@ -114,11 +114,11 @@ namespace BookingSoccers.Service.Service.UserInfo
             //Get total elements when running the query
             var TotalElement = await userRepo.GetPagingTotalElement(pred);
 
-            var UserList = mapper.Map<List<UserListInfo>>(returnedUserList);
+            //var UserList = mapper.Map<List<UserListInfo>>(returnedUserList);
 
             //Create new class to contain list result and paging info
             var FinalResult = new ObjectListPagingInfo();
-            FinalResult.ObjectList = UserList;
+            FinalResult.ObjectList = returnedUserList;
 
             FinalResult.TotalElement = TotalElement;
             FinalResult.CurrentPage = pagingPayload.PageNum;

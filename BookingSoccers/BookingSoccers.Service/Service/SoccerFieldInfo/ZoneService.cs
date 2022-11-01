@@ -282,5 +282,58 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             return GeneralResult<Zone>.Success(toUpdateSoccerFieldZone);
         }
+
+        public async Task<GeneralResult<List<ZoneSlot>>> AddZoneSlotsForZone(int FieldId, int ZoneId)
+        {
+            var maxZoneSlot = await zoneSlotRepo.getAZoneSlotByZoneId(ZoneId);
+
+            var FieldOpeningTime = await soccerFieldRepo.GetById(FieldId);
+
+            var UtcDate = maxZoneSlot.EndTime.ToUniversalTime();
+
+            TimeSpan StartTime = FieldOpeningTime.OpenHour;
+            TimeSpan EndTime = FieldOpeningTime.CloseHour;
+
+            TimeSpan ActiveHours = EndTime - StartTime;
+       
+            int Minutes = ActiveHours.Hours * 60 + ActiveHours.Minutes;
+            int loopInt = Minutes / 30;
+
+            int resetHour = (24 * 60) - Minutes;
+
+            List<ZoneSlot> toCreateZoneSlotList = new List<ZoneSlot>();
+            DateTime loopDate = UtcDate.AddMinutes(resetHour);
+
+            for (int i = 0; i < 15; i++)
+            {
+                for (int a = 0; a < loopInt; a++)
+                {
+                    var zoneSlot = new ZoneSlot();
+
+                    zoneSlot.ZoneId = ZoneId;
+                    zoneSlot.Status = 0;
+                    zoneSlot.StartTime = loopDate;
+
+                    var NextTime = loopDate.AddMinutes(30);
+
+                    zoneSlot.EndTime = NextTime;
+                    toCreateZoneSlotList.Add(zoneSlot);
+
+                    loopDate = NextTime;
+                }
+                var NextDay = loopDate.AddMinutes(resetHour);
+                loopDate = NextDay;
+            }
+
+            zoneSlotRepo.BulkCreate(toCreateZoneSlotList);
+            await zoneSlotRepo.SaveAsync();
+
+            return GeneralResult<List<ZoneSlot>>.Success(toCreateZoneSlotList);
+
+        
+
+
+
+        }
     }
 }
