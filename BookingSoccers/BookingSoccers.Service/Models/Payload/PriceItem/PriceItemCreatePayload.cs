@@ -11,19 +11,19 @@ namespace BookingSoccers.Service.Models.Payload.PriceItem
     {
         public int PriceMenuId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "StartTimeHour cannot be null or empty")]
         public int StartTimeHour { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "StartTimeMinute cannot be null or empty")]
         public int StartTimeMinute { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "EndTimeHour cannot be null or empty")]
         public int EndTimeHour { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "EndTimeMinute cannot be null or empty")]
         public int EndTimeMinute { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Price cannot be null or empty")]
         [Range(50000, 500000, 
         ErrorMessage = "Hiring price must be greater than 10k VND and less than 500k VND")]
         public int Price { get; set; }

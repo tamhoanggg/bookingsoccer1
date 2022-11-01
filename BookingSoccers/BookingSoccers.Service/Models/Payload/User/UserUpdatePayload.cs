@@ -27,11 +27,12 @@ namespace BookingSoccers.Service.Models.Payload.User
         public GenderEnum Gender { get; set; }
 
         [Required]
-        [StringLength(15)]
+        [RegularExpression("(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})", ErrorMessage = "Phone is required and must be properly formatted.")]
         public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(45)]
+        [EmailAddress]
         public string Email { get; set; }
     }
 }

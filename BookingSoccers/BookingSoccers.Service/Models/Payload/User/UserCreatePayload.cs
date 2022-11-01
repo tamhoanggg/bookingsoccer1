@@ -13,27 +13,28 @@ namespace BookingSoccers.Service.Models.Payload.User
     {
         public byte RoleId { get; set; }
 
-        [Required]
-        [StringLength(45)]
+        [Required(ErrorMessage = "Username cannot be null or empty")]
+        [StringLength(0, ErrorMessage = "UserName must contain at least 1 character and less than 45 character", MinimumLength = 45)]
         public string UserName { get; set; }
 
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "FirstName cannot be null or empty")]
+        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 20 character", MinimumLength = 20)]
         public string FirstName { get; set; }
 
-        [StringLength(20)]
+        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 20 character", MinimumLength = 20)]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Gender cannot be null or empty")]
         [CheckGender]
         public GenderEnum Gender { get; set; }
 
-        [Required]
-        [StringLength(15)]
+        [Required(ErrorMessage = "Phone cannot be null or empty")]
+        [RegularExpression("(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})", ErrorMessage = "Phone is required and must be properly formatted.")]
         public string PhoneNumber { get; set; }
 
-        [Required]
-        [StringLength(45)]
+        [Required(ErrorMessage = "Email cannot be null or empty")]
+        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 45 character", MinimumLength = 45)]
+        [EmailAddress]
         public string Email { get; set; }
     }
 }

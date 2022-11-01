@@ -30,7 +30,7 @@ namespace BookingSoccers.Service.Models.Payload.Booking
 
         public byte Rating { get; set; }
 
-        [MaxLength(1000)]
+        [MaxLength(1000, ErrorMessage = "Comment must be lesser than 100 characters")]
         public string Comment { get; set; }
     }
 }

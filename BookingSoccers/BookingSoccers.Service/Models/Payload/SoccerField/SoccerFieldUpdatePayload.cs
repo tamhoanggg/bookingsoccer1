@@ -11,36 +11,37 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
     {
         public int ManagerId { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "FieldName cannot be null or empty")]
+        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 100 character", MinimumLength = 100)]
         public string FieldName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Description cannot be null or empty")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "OpenTimeHour cannot be null or empty")]
         public int OpenTimeHour { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "OpenTimeMinute cannot be null or empty")]
         public int OpenTimeMinute { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "CloseTimeHour cannot be null or empty")]
         public int CloseTimeHour { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "CloseTimeMinute cannot be null or empty")]
         public int CloseTimeMinute { get; set; }
 
-        [Required]
-        [StringLength(100)]
+
+        [Required(ErrorMessage = "Address cannot be null or empty")]
+        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 100 character", MinimumLength = 100)]
         public string Address { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Status cannot be null or empty")]
         public byte Status { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "TotalReviews cannot be null or empty")]
         public int TotalReviews { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "ReviewScoreSum cannot be null or empty")]
         public int ReviewScoreSum { get; set; }
 
     }

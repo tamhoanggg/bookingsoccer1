@@ -11,7 +11,7 @@ namespace BookingSoccers.Service.Models.Payload.ImageFolder
     {
         public int FieldId { get; set; }
 
-        [StringLength(200)]
+        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 200 character", MinimumLength = 200)]
         public string Path { get; set; }
     }
 }

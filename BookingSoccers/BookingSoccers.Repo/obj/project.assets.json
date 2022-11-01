@@ -2370,11 +2370,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj",
       "projectName": "BookingSoccers.Repo",
-      "projectPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj",
+      "projectPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\BookingSoccers.Repo.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.Repo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

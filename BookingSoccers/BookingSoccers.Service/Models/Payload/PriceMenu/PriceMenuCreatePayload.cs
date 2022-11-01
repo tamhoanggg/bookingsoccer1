@@ -15,16 +15,16 @@ namespace BookingSoccers.Service.Models.Payload.PriceMenu
 
         public byte ZoneTypeId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "DateType cannot be null or empty")]
         public DayTypeEnum DayType { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "StartDate cannot be null or empty")]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "EndDate cannot be null or empty")]
         public DateTime EndDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Status cannot be null or empty")]
         public byte Status { get; set; }
 
     }
