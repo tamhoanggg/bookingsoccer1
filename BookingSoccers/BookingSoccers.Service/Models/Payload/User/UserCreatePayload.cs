@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BookingSoccers.Repo.Validations.GenderValidation;
 
 namespace BookingSoccers.Service.Models.Payload.User
 {
@@ -23,7 +24,8 @@ namespace BookingSoccers.Service.Models.Payload.User
         [StringLength(20)]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Gender cannot be null or empty")]
+        [CheckGender]
         public GenderEnum Gender { get; set; }
 
         [Required]
