@@ -11,7 +11,7 @@ namespace BookingSoccers.Service.Models.Payload.ZoneType
     public class ZoneTypeCreatePayload
     {
         [Required(ErrorMessage = "Name cannot be null or empty")]
-        [StringLength(0,ErrorMessage ="Name must contain at least 1 character and less than 15 character",MinimumLength =15)]
+        [StringLength(15,ErrorMessage ="Name must contain at least 1 character and less than 15 character",MinimumLength =1)]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "DepositPercent cannot be null or empty")]

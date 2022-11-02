@@ -12,7 +12,7 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         public int ManagerId { get; set; }
 
         [Required(ErrorMessage = "FieldName cannot be null or empty")]
-        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 100 character", MinimumLength = 100)]
+        [StringLength(100, ErrorMessage = "Field Name must contain at least 1 character and less than 100 character", MinimumLength = 1)]
         public string FieldName { get; set; }
 
         [Required(ErrorMessage = "Description cannot be null or empty")]
@@ -32,7 +32,7 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
 
 
         [Required(ErrorMessage = "Address cannot be null or empty")]
-        [StringLength(0, ErrorMessage = "Name must contain at least 1 character and less than 100 character", MinimumLength = 100)]
+        [StringLength(100, ErrorMessage = "Address must contain at least 1 character and less than 100 character", MinimumLength = 1)]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Status cannot be null or empty")]

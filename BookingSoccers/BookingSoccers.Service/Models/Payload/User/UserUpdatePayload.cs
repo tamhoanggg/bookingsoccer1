@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BookingSoccers.Repo.Validations.GenderValidation;
 
 namespace BookingSoccers.Service.Models.Payload.User
 {
@@ -12,26 +13,27 @@ namespace BookingSoccers.Service.Models.Payload.User
     {
         public byte RoleId { get; set; }
 
-        [Required]
-        [StringLength(45)]
+        [Required(ErrorMessage = "Username cannot be null or empty")]
+        [StringLength(45, ErrorMessage = "UserName must contain at least 1 character and less than 45 character", MinimumLength = 1)]
         public string UserName { get; set; }
 
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "FirstName cannot be null or empty")]
+        [StringLength(20, ErrorMessage = "First Name must contain at least 1 character and less than 20 character", MinimumLength = 1)]
         public string FirstName { get; set; }
 
-        [StringLength(20)]
+        [StringLength(20, ErrorMessage = "Name must contain at least 1 character and less than 20 character", MinimumLength = 1)]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Gender cannot be null or empty")]
+        [CheckGender]
         public GenderEnum Gender { get; set; }
 
         [Required]
         [RegularExpression("(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})", ErrorMessage = "Phone is required and must be properly formatted.")]
         public string PhoneNumber { get; set; }
 
-        [Required]
-        [StringLength(45)]
+        [Required(ErrorMessage = "Email cannot be null or empty")]
+        [StringLength(45, ErrorMessage = "Name must contain at least 1 character and less than 45 character", MinimumLength = 1)]
         [EmailAddress]
         public string Email { get; set; }
     }
