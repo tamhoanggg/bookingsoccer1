@@ -16,10 +16,10 @@ namespace BookingSoccers.Service.Models.Payload.Payment
         [RegularExpression("^[0-9]+$", ErrorMessage = "ReceiverId is an Positive Integer.")]
         public int ReceiverId { get; set; }
 
-        [Range(1, 2, ErrorMessage = "PaymentTypeEnum must be between 0 and 1.")]
+        [Range(1, 2, ErrorMessage = "PaymentTypeEnum must be between 1 and 2.")]
         public PaymentTypeEnum Type { get; set; }
 
-        [Range(1000, 100000, ErrorMessage = "Amount  must be between 0 and 23.")]
+        [Range(1000, 100000, ErrorMessage = "Amount  must be between 100 and 100000.")]
         public int Amount { get; set; }
 
         public DateTime Time { get; set; }

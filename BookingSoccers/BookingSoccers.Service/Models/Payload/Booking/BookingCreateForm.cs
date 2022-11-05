@@ -10,12 +10,16 @@ namespace BookingSoccers.Service.Models.Payload.Booking
 {
     public class BookingCreateForm
     {
-        [RegularExpression("^[a-zA-Z]+$",ErrorMessage ="UserName was character Only")]
+        [RegularExpression("^[a-zA-Z0-9]+$", 
+            ErrorMessage ="UserName must consist of uppper case " +
+            "or lowercase characters and numbers and not special characters")]
         public string UserName { get; set; }
 
         public string ZoneType { get; set; }
 
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = " was character Only")]
+        [RegularExpression("^[a-zA-Z0-9]+$", 
+            ErrorMessage = "FieldName must consist of uppper case " +
+            "or lowercase characters and numbers and not special characters")]
         public string FieldName { get; set; }
 
         public int ZoneId { get; set; }
@@ -23,13 +27,13 @@ namespace BookingSoccers.Service.Models.Payload.Booking
         [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Address was character Only")]
         public string Address { get; set; }
 
-        [Range(50000,10000000,ErrorMessage ="Total Price must between 50000 and 1000000")]
+        [Range(50000,1000000,ErrorMessage ="Total Price must between 50000 and 1000000")]
         public int TotalPrice { get; set; }
 
-        [RegularExpression("^[0-9]+$", ErrorMessage = "DepositPercent is an Positive Integer.")]
+        [Range(10, 50, ErrorMessage = "DepositPercent must be between 10 and 50")]
         public int DepositPercent { get; set; }
 
-        [Range(1000, 1000000, ErrorMessage = "Total Price must between 1000 and 100000")]
+        [Range(1000, 100000, ErrorMessage = "Total Price must between 1000 and 100000")]
         public int PrepayAmount { get; set; }
 
         public DateTime HireDate { get; set; }

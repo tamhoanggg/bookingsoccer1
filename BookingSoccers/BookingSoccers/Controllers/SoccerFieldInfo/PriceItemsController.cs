@@ -51,9 +51,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [Authorize(Roles = "Admin, FieldManager")]
         [HttpGet("{id}")]
         //Get details of a price menu's price item
-        public async Task<IActionResult> GetOneSpecificPriceItem(int id)
+        public async Task<IActionResult> GetAPriceItemDetails(int id)
         {
-            var retrievedPriceItem = await priceItemService.RetrieveAPriceItemById(id);
+            var retrievedPriceItem = await priceItemService.GetAPriceItemDetails(id);
 
             if (retrievedPriceItem.IsSuccess)
                 return Ok(retrievedPriceItem);

@@ -18,5 +18,7 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 
         Task<SoccerField> GetFieldByFieldName(string FieldName);
 
+        Task<SoccerField> GetFieldDetails(int FieldId);
+
     }
 }

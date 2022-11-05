@@ -52,7 +52,7 @@ namespace BookingSoccers.Controllers.BookingInfo
         //Get a payment details
         public async Task<IActionResult> GetOneSpecificPayment(int id)
         {
-            var retrievedPayment = await paymentService.RetrieveAPaymentById(id);
+            var retrievedPayment = await paymentService.GetAPaymentDetails(id);
 
             if (retrievedPayment.IsSuccess)
                 return Ok(retrievedPayment);

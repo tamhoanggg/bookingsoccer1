@@ -50,9 +50,9 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         //Get details of a zoneslot
-        public async Task<IActionResult> GetOneSpecificZoneSlot(int id)
+        public async Task<IActionResult> GetAZoneSlotDetails(int id)
         {
-            var retrievedZoneSlot = await zoneSlotService.RetrieveAZoneSlotById(id);
+            var retrievedZoneSlot = await zoneSlotService.GetAZoneSlotDetails(id);
 
             if (retrievedZoneSlot.IsSuccess)
                 return Ok(retrievedZoneSlot);

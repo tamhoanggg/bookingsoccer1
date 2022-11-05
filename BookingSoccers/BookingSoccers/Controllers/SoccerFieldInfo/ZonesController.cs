@@ -47,9 +47,9 @@ namespace BookingSoccers.Controllers.ZoneInfo
 
         [HttpGet("{id}")]
         //Get details of a zone
-        public async Task<IActionResult> GetOneSpecificZone(int id)
+        public async Task<IActionResult> GetAZoneDetails(int id)
         {
-            var retrievedZone = await zoneService.RetrieveAZoneById(id);
+            var retrievedZone = await zoneService.GetAZoneDetails(id);
 
             if (retrievedZone.IsSuccess)
                 return Ok(retrievedZone);

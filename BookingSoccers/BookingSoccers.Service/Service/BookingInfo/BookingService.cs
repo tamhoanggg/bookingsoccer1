@@ -123,15 +123,52 @@ namespace BookingSoccers.Service.Service.BookingInfo
             return GeneralResult<Booking>.Success(foundBooking);
         }
 
-        public async Task<GeneralResult<Booking>> RetrieveABookingById(int BookingId)
+        public async Task<GeneralResult<Object>> GetABookingDetails(int BookingId)
         {
             //Get details of the requested Booking by Booking Id
             var foundBooking = await bookingRepo.GetBookingDetailsById(BookingId);
 
-            if (foundBooking == null) return GeneralResult<Booking>.Error(
+            if (foundBooking == null) return GeneralResult<Object>.Error(
                 404, "Booking not found with Id:" + BookingId);
 
-            return GeneralResult<Booking>.Success(foundBooking);
+            var ReturnedResult = new 
+            {
+                foundBooking.Id, 
+                UserInfo = new 
+                { 
+                    foundBooking.CustomerId, 
+                    foundBooking.Customer.UserName, foundBooking.Customer.FirstName, 
+                    foundBooking.Customer.LastName, 
+                    Gender = foundBooking.Customer.Gender.ToString(), 
+                    foundBooking.Customer.PhoneNumber, foundBooking.Customer.Email 
+                },
+                PaymentInfo = foundBooking.payments.Select(x => new 
+                {
+                    x.Id, x.ReceiverId, ReceiverName = x.ReceiverInfo.UserName, 
+                    PaymentType = x.Type.ToString(), x.Amount, CreateTime = x.Time
+                }).ToList(),
+                FieldInfo = new
+                {
+                    foundBooking.FieldId, foundBooking.FieldInfo.ManagerId,
+                    foundBooking.FieldInfo.FieldName, foundBooking.FieldInfo.OpenHour,
+                    foundBooking.FieldInfo.CloseHour, foundBooking.FieldInfo.Address
+                },
+                ZoneInfo = new 
+                {
+                    foundBooking.ZoneId, foundBooking.ZoneInfo.Number
+                },
+                ZoneTypeInfo = new 
+                { 
+                    foundBooking.ZoneTypeId, foundBooking.TypeZone.Name 
+                }, 
+                foundBooking.TotalPrice, StartTime = foundBooking.StartTime.ToLocalTime(),
+                EndTime = foundBooking.EndTime.ToLocalTime(), 
+                CreateTime = foundBooking.CreateTime.ToLocalTime(), 
+                Status = foundBooking.Status.ToString(), foundBooking.Rating, 
+                foundBooking.Comment
+            };
+
+            return GeneralResult<Object>.Success(ReturnedResult);
         }
 
         public async Task<GeneralResult<ObjectListPagingInfo>> 

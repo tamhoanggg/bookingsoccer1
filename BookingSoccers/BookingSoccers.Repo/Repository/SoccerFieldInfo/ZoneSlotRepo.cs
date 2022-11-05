@@ -25,6 +25,19 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             return zoneSlot;
         }
 
+        public async Task<ZoneSlot> getAZoneSlotDetails(int ZoneSlotId)
+        {
+            var ZoneSlotDetails = await Get()
+                .Include(x => x.FieldZone)
+                .ThenInclude(x => x.Field)
+                .Include(x => x.FieldZone)
+                .ThenInclude(x => x.ZoneCate)
+                .Where(x => x.Id == ZoneSlotId)
+                .FirstOrDefaultAsync();
+
+            return ZoneSlotDetails;
+        }
+
         public async Task<List<ZoneSlot>> getZoneSlots(int ZoneId, DateTime date)
         {
 

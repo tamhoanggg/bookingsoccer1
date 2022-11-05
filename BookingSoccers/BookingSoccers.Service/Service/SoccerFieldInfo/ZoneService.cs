@@ -255,15 +255,29 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
 
 
-        public async Task<GeneralResult<Zone>> RetrieveAZoneById(int ZoneId)
+        public async Task<GeneralResult<Object>> GetAZoneDetails(int ZoneId)
         {
             //Get a specific zone details
-            var retrievedSoccerFieldZone = await zoneRepo.GetById(ZoneId);
+            var ZoneDetails = await zoneRepo.getAZoneDetails(ZoneId);
 
-            if (retrievedSoccerFieldZone == null) return GeneralResult<Zone>.Error(
+            if (ZoneDetails == null) return GeneralResult<Object>.Error(
                 404, "No soccer field found with Id:" + ZoneId);
 
-            return GeneralResult<Zone>.Success(retrievedSoccerFieldZone);
+            var FinalResult = new
+            {
+                ZoneDetails.Id, ZoneTypeInfo = new
+                { 
+                    ZoneDetails.ZoneTypeId, ZoneDetails.ZoneCate.Name
+                },
+                ZoneDetails.Number, FieldInfo = new 
+                {
+                    ZoneDetails.FieldId, ZoneDetails.Field.FieldName, 
+                    ZoneDetails.Field.OpenHour, ZoneDetails.Field.CloseHour, 
+                    ZoneDetails.Field.Address
+                }
+            };
+
+            return GeneralResult<Object>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<Zone>> UpdateAZone(int Id, ZoneUpdatePayload newZoneInfo)

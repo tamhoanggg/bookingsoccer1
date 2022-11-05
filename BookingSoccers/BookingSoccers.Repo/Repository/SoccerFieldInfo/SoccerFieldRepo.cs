@@ -49,6 +49,20 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             return Field;
         }
 
+        public async Task<SoccerField> GetFieldDetails(int FieldId)
+        {
+            var FieldDetails = await Get()
+                .Include(x => x.ImageList)
+                .Include(x => x.PriceMenus)
+                .ThenInclude(x => x.PriceItems)
+                .Include(x => x.Zones)
+                .Include(x => x.user)
+                .Where(x => x.Id == FieldId)
+                .FirstOrDefaultAsync();
+
+            return FieldDetails;
+        }
+
         public async Task<List<SoccerField>> GetFieldsForManagerByManagerId(int ManagerId)
         {
             var SoccerFieldList =

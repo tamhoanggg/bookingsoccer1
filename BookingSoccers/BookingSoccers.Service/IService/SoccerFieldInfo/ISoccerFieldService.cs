@@ -27,7 +27,7 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<PreBookingInfo>> CheckZonesAndCalculatePrice
             (BookingValidateForm createFormInfo); 
 
-        Task<GeneralResult<SoccerField>> RetrieveASoccerFieldById(int SoccerFieldId);
+        Task<GeneralResult<Object>> GetAFieldDetails(int FieldId);
 
         Task<GeneralResult<List<SoccerFieldView3>>> GetFieldsForManagerByManagerId
             (int ManagerId);

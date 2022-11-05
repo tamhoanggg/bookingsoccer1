@@ -10,5 +10,7 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
     public interface IPriceItemRepo : IBaseRepository<PriceItem>
     {
         Task<PriceItem> getFieldViaPriceItem(int Id);
+
+        Task<PriceItem> getAPriceItemDetail(int id);    
     }
 }

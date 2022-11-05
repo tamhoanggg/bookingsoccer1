@@ -12,5 +12,7 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
         Task<List<Zone>> getFieldZonesByFieldId(int FieldId);
 
         Task<List<Zone>> getZonesByZoneType(int FieldId, byte ZoneType);
+
+        Task<Zone> getAZoneDetails(int ZoneId);
     }
 }

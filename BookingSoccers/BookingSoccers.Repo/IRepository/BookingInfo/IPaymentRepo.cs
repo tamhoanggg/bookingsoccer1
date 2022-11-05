@@ -9,5 +9,6 @@ namespace BookingSoccers.Repo.IRepository.BookingInfo
 {
     public interface IPaymentRepo : IBaseRepository<Payment>
     {
+        Task<Payment> GetPaymentDetail(int PaymentId);
     }
 }

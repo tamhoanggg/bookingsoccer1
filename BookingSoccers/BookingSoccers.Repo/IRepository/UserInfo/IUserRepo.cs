@@ -11,5 +11,7 @@ namespace BookingSoccers.Repo.IRepository.UserInfo
     public interface IUserRepo : IBaseRepository<User>
     {
           Task<User> GetByUserName(string UserName);
+
+        Task<User> GetUserDetails(int PageNum, int UserId);
     }
 }

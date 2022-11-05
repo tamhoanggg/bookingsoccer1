@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vKQtxcCw3Whtgy4/hX9PekKfFNc2CZd1Cg6SyHQn7uZcU+vsuGZcnajB7xWy/SzOZuqNLE+Bd+MpQCLQ3/1LjA==",
+  "dgSpecHash": "LSABqhiz3z+5UhFJYYVTXYIBinKps+IRYNPY+D1bDRblmuKms0fpsdDHAijDDb4YD+iq0YyWuEradY0DvFTb5Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\tamhoanggg\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Visual Studio Repo\\bookingsoccer1\\BookingSoccers\\BookingSoccers.ConsoleApp\\BookingSoccers.ConsoleApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\firebaseauthentication.net\\3.7.2\\firebaseauthentication.net.3.7.2.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.9\\microsoft.aspnetcore.authentication.jwtbearer.6.0.9.nupkg.sha512",

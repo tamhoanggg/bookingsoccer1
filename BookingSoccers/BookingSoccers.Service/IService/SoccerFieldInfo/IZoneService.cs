@@ -22,7 +22,7 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
 
         Task<GeneralResult<List<ZoneSlot>>>AddZoneSlotsForZone(int FieldId,int ZoneId);
 
-        Task<GeneralResult<Zone>> RetrieveAZoneById(int ZoneId);
+        Task<GeneralResult<Object>> GetAZoneDetails(int ZoneId);
 
         Task<GeneralResult<ObjectListPagingInfo>> RetrieveZonesList
             (PagingPayload pagingPayload, ZonePredicate filter);

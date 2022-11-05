@@ -30,5 +30,19 @@ namespace BookingSoccers.Repo.Repository.UserInfo
                 .FirstOrDefaultAsync();
             return returnedUser;
         }
+
+        public async Task<User> GetUserDetails(int PageNum, int UserId)
+        {
+            var returnedUserDetails = await Get()
+                .Include(x => x.SoccerFields)
+                .Include(x => x.Bookings)
+                .ThenInclude(x => x.payments)
+                .Where(x => x.Id == UserId)
+                .Skip((PageNum -1) * 20)
+                .Take(20)
+                .FirstOrDefaultAsync();
+
+            return returnedUserDetails;
+        }
     }
 }

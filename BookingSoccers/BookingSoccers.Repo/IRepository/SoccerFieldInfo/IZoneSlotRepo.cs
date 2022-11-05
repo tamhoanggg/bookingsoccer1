@@ -15,5 +15,6 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 
         Task<ZoneSlot> getAZoneSlotByZoneId(int Id);
 
+        Task<ZoneSlot> getAZoneSlotDetails(int ZoneSlotId);
     }
 }

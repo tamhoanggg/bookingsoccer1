@@ -18,6 +18,19 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<PriceItem> getAPriceItemDetail(int id)
+        {
+            var returnedPriceItem = await Get()
+                .Include(x => x.Menu)
+                .ThenInclude(x => x.Field)
+                .Include(x => x.Menu)
+                .ThenInclude(x => x.TypeOfZone)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            return returnedPriceItem;
+        }
+
         public async Task<PriceItem> getFieldViaPriceItem(int Id)
         {
             var returnPriceItem = await Get()

@@ -3,6 +3,8 @@ using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.User;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.UserInfo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -45,11 +47,13 @@ namespace BookingSoccers.Controllers.UserInfo
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("{id}")]
+        [HttpGet("role-details")]
         //Get details of a role
-        public async Task<IActionResult> GetOneSpecificRole(byte id)
+        public async Task<IActionResult> GetARoleDetails
+            ([FromQuery]PagingPayload pagingPayload, [FromQuery]UserPredicate filter)
         {
-            var retrievedRole = await roleService.RetrieveARoleById(id);
+            var retrievedRole = await roleService.RetrieveARoleDetails
+                (pagingPayload, filter);
 
             if (retrievedRole.IsSuccess)
                 return Ok(retrievedRole);

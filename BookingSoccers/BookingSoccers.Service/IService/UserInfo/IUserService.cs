@@ -18,7 +18,8 @@ namespace BookingSoccers.Service.IService.UserInfo
 
         Task< GeneralResult<User> > AddANewUser(UserCreatePayload userinfo);
 
-        Task< GeneralResult<User> > RetrieveAUserById(int UserId);
+        Task< GeneralResult<ObjectListPagingInfo> > RetrieveAUserDetails
+            (int PageNum, int UserId);
 
         Task<GeneralResult<BasicUserInfo>> RetrieveAUserForUpdate(string UserName);
 

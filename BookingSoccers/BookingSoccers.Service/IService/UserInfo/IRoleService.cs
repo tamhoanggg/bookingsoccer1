@@ -1,5 +1,8 @@
 ﻿using BookingSoccers.Repo.Entities.UserInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.DTO;
+using BookingSoccers.Service.Models.Payload.User;
+using BookingSoccers.Service.Models.Payload;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +15,8 @@ namespace BookingSoccers.Service.IService.UserInfo
     {
         Task<GeneralResult<Role>> AddANewRole(string RoleName);
 
-        Task<GeneralResult<Role>> RetrieveARoleById(byte roleId);
+        Task<GeneralResult<ObjectListPagingInfo>> RetrieveARoleDetails
+            (PagingPayload pagingPayload, UserPredicate filter);
 
         Task<GeneralResult< List<Role> > > RetrieveAllRoles();
 

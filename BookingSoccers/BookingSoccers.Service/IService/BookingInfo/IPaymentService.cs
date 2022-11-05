@@ -16,7 +16,7 @@ namespace BookingSoccers.Service.IService.BookingInfo
     {
         Task<GeneralResult<Payment>> AddANewPayment(PaymentCreatePayload paymentinfo);
 
-        Task<GeneralResult<Payment>> RetrieveAPaymentById(int PaymentId);
+        Task<GeneralResult<Object>> GetAPaymentDetails(int PaymentId);
 
         Task<GeneralResult<ObjectListPagingInfo>> RetrievePaymentsList
             (PagingPayload pagingPayload, PaymentPredicate filter);

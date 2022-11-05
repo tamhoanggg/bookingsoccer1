@@ -1,5 +1,6 @@
 ﻿
 
+using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.Entities.SoccerFieldInfo;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,6 +27,8 @@ namespace BookingSoccers.Repo.Entities.UserInfo
         public byte RoleId { get; set; }
 
         public ICollection<SoccerField> SoccerFields { get; set; }  
+
+        public ICollection<Booking> Bookings { get; set; }
 
         [Required]
         [StringLength(45)]

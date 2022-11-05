@@ -34,7 +34,9 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
         public async Task<Booking> GetBookingDetailsById(int id)
         {
             var bookingDetails = await Get()
+                .Include(x => x.Customer)
                 .Include(x => x.payments)
+                .ThenInclude(x => x.ReceiverInfo)
                 .Include(x => x.ZoneInfo)
                 .Include(x => x.FieldInfo)
                 .Include(x => x.TypeZone)

@@ -17,7 +17,7 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<PriceItem>> AddANewPriceItem(
             PriceItemCreatePayload priceItemInfo);
 
-        Task<GeneralResult<PriceItem>> RetrieveAPriceItemById(int priceItemId);
+        Task<GeneralResult<Object>> GetAPriceItemDetails(int priceItemId);
 
         Task<GeneralResult<ObjectListPagingInfo>> RetrievePriceItemsList
             (PagingPayload pagingPayload, PriceItemPredicate filter);

@@ -682,7 +682,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
         }
 
-        public async Task<GeneralResult<SoccerField>> RemoveASoccerField(int SoccerFieldId)
+        public async Task<GeneralResult<SoccerField>> 
+            RemoveASoccerField(int SoccerFieldId)
         {
             //Get requested soccer field then remove it
             var toDeleteSoccerField = await soccerFieldRepo.GetById(SoccerFieldId);
@@ -894,16 +895,52 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
-        public async Task<GeneralResult<SoccerField>> 
-            RetrieveASoccerFieldById(int SoccerFieldId)
+        public async Task<GeneralResult<Object>> GetAFieldDetails(int FieldId)
         {
             //Get details of the requested soccer field 
-            var retrievedSoccerField = await soccerFieldRepo.GetById(SoccerFieldId);
+            var FieldDetails = await soccerFieldRepo.GetFieldDetails(FieldId);
 
-            if (retrievedSoccerField == null) return GeneralResult<SoccerField>.Error(
-                404, "No soccer field found with Id:"+ SoccerFieldId);
+            if (FieldDetails == null) return GeneralResult<Object>.Error(
+                404, "No soccer field found with Id:"+ FieldId);
 
-            return GeneralResult<SoccerField>.Success(retrievedSoccerField);
+            int AverageScore = 0;
+            if (FieldDetails.TotalReviews > 0 && FieldDetails.ReviewScoreSum > 0)
+                AverageScore = FieldDetails.ReviewScoreSum / FieldDetails.TotalReviews;
+
+            var FinalResult = new 
+            {
+                FieldDetails.Id,
+                ManagerInfo = new 
+                {
+                  FieldDetails.ManagerId, FieldDetails.user.UserName, 
+                  Gender = FieldDetails.user.Gender.ToString(), FieldDetails.user.Email, 
+                  FieldDetails.user.PhoneNumber
+                },
+                ImageList = FieldDetails.ImageList.Select(x => new 
+                {
+                    x.Id, x.Path
+                }),
+                ZoneInfo = FieldDetails.Zones.Select(x => new 
+                {
+                    x.Id, x.ZoneTypeId, x.Number
+                }).ToList(),
+                FieldDetails.FieldName, FieldDetails.OpenHour, FieldDetails.CloseHour, 
+                PriceMenus = FieldDetails.PriceMenus.Select(x => new 
+                {
+                    x.Id, x.ZoneTypeId, DayType = x.DayType.ToString(), 
+                    StartDate = x.StartDate.ToLocalTime(), 
+                    EndDate = x.EndDate.ToLocalTime(), x.Status, 
+                    PriceItems = x.PriceItems.Select(x => new 
+                    {
+                        x.Id, x.StartTime, x.EndTime, x.Price
+                    }).ToList()
+
+                }).ToList(), FieldDetails.Address, FieldDetails.Status,
+                AvgScore = AverageScore
+
+            };
+
+            return GeneralResult<Object>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<SoccerField>> UpdateASoccerField(int Id,

@@ -207,15 +207,35 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
-        public async Task<GeneralResult<ZoneSlot>> RetrieveAZoneSlotById(int zoneSlotId)
+        public async Task<GeneralResult<Object>> GetAZoneSlotDetails(int zoneSlotId)
         {
             //Get a zone slot details by Id 
-            var retrievedZoneSlot = await zoneSlotRepo.GetById(zoneSlotId);
+            var ZoneSlotDetails = await zoneSlotRepo.getAZoneSlotDetails(zoneSlotId);
 
-            if (retrievedZoneSlot == null) return GeneralResult<ZoneSlot>.Error(
+            if (ZoneSlotDetails == null) return GeneralResult<Object>.Error(
                 404, "No zone slot found with Id:" + zoneSlotId);
 
-            return GeneralResult<ZoneSlot>.Success(retrievedZoneSlot);
+            var FinalResult = new
+            {
+                ZoneSlotDetails.Id, StartTime = ZoneSlotDetails.StartTime.ToLocalTime(),
+                EndTime = ZoneSlotDetails.EndTime.ToLocalTime(), ZoneSlotDetails.Status, 
+                ZoneInfo = new 
+                {
+                    ZoneSlotDetails.ZoneId , ZoneSlotDetails.FieldZone.ZoneTypeId, 
+                    ZoneSlotDetails.FieldZone.ZoneCate.Name, 
+                    ZoneSlotDetails.FieldZone.Number
+                },
+                FieldInfo = new 
+                {
+                    ZoneSlotDetails.FieldZone.FieldId, 
+                    ZoneSlotDetails.FieldZone.Field.FieldName,
+                    ZoneSlotDetails.FieldZone.Field.OpenHour, 
+                    ZoneSlotDetails.FieldZone.Field.CloseHour, 
+                    ZoneSlotDetails.FieldZone.Field.Address
+                }
+            };
+
+            return GeneralResult<Object>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<ZoneSlot>> UpdateAZoneSlot(int Id, ZoneSlotUpdatePayload newZoneSlotInfo)

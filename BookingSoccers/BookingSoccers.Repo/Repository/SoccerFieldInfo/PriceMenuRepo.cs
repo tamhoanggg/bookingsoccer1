@@ -55,6 +55,18 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             return returnedPriceMenu;
         }
 
+        public async Task<PriceMenu> GetAPriceMenuDetails(int PriceMenuId)
+        {
+            var returnedPriceMenu = await Get()
+                .Include(x => x.PriceItems)
+                .Include(x => x.Field)
+                .Include(x => x.TypeOfZone)
+                .Where(x => x.Id == PriceMenuId)
+                .FirstOrDefaultAsync();
+
+            return returnedPriceMenu;
+        }
+
         public async Task<PriceMenu> GetFieldOpeningHour(int MenuId)
         {
             var ReturnedField = await Get()

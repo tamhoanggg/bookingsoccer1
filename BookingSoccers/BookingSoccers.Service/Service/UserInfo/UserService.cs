@@ -132,15 +132,69 @@ namespace BookingSoccers.Service.Service.UserInfo
             return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
-        public async Task<GeneralResult<User>> RetrieveAUserById(int UserId)
+        public async Task<GeneralResult<ObjectListPagingInfo>> RetrieveAUserDetails
+            (int PageNum, int UserId)
         {
             //Get a user details by user Id
-            var userById = await userRepo.GetById(UserId);
+            var userDetails = await userRepo.GetUserDetails(PageNum, UserId);
 
-            if (userById == null) return GeneralResult<User>.Error(
+            if (userDetails == null) return GeneralResult<ObjectListPagingInfo>.Error(
                 404, "User not found with Id:" + UserId);
 
-            return GeneralResult<User>.Success(userById);
+            Object listResult = new Object();
+
+            if (userDetails.RoleId == 1) return 
+                    GeneralResult<ObjectListPagingInfo>.Error(
+                400, "Cannot view other Admin user details");
+
+            //If user is a field manager select properties to show for field manager 
+            if (userDetails.RoleId == 2) 
+            {
+                listResult = new 
+                { 
+                    userDetails.Id, userDetails.UserName,
+                    userDetails.FirstName, userDetails.LastName,
+                    Gender = userDetails.Gender.ToString(), userDetails.PhoneNumber, 
+                    userDetails.Email, FieldList = userDetails.SoccerFields.ToList()
+                };
+            }
+
+            //If user role is user then select properties to show for user
+            if (userDetails.RoleId == 3)
+            {
+                listResult = new
+                {
+                    userDetails.Id, userDetails.UserName,
+                    userDetails.FirstName, userDetails.LastName,
+                    Gender = userDetails.Gender.ToString(), userDetails.PhoneNumber,
+                    userDetails.Email, BookingList = userDetails.Bookings.ToList()
+                };
+            }
+
+            var predicate = PredicateBuilder.New<User>(true);
+
+            predicate = predicate.And(x => x.Id == UserId);
+
+            Expression<Func<User, bool>>? pred = predicate;
+
+            //Get total elements when running the query
+            var TotalElement = await userRepo.GetPagingTotalElement(pred);
+
+            //Create new class to contain list result and paging info
+            var FinalResult = new ObjectListPagingInfo();
+
+            FinalResult.ObjectList = listResult;
+
+            FinalResult.TotalElement = TotalElement;
+            FinalResult.CurrentPage = PageNum;
+
+            //Calculate total pages based on total element 
+            var CheckRemain = TotalElement % 20;
+            var SumPage = TotalElement / 20;
+            if (CheckRemain > 0) FinalResult.TotalPage = SumPage + 1;
+            else FinalResult.TotalPage = SumPage;
+
+            return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<BasicUserInfo>> RetrieveAUserForUpdate(string UserName)

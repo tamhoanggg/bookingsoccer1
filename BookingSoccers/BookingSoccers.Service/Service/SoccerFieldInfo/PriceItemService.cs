@@ -212,15 +212,35 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
-        public async Task<GeneralResult<PriceItem>> RetrieveAPriceItemById(int priceItemId)
+        public async Task<GeneralResult<Object>> GetAPriceItemDetails(int priceItemId)
         {
             //Get requested price item details by Id
-            var foundPriceItem = await priceItemRepo.GetById(priceItemId);
+            var foundPriceItem = await priceItemRepo.getAPriceItemDetail(priceItemId);
 
-            if (foundPriceItem == null) return GeneralResult<PriceItem>.Error(
+            if (foundPriceItem == null) return GeneralResult<Object>.Error(
                 404, "No price item found with Id:" + priceItemId);
 
-            return GeneralResult<PriceItem>.Success(foundPriceItem);
+            var FinalResult = new
+            {
+                foundPriceItem.Id, foundPriceItem.StartTime, foundPriceItem.EndTime, 
+                foundPriceItem.Price, PriceMenuInfo = new 
+                {
+                    foundPriceItem.PriceMenuId, foundPriceItem.Menu.ZoneTypeId, 
+                    foundPriceItem.Menu.TypeOfZone.Name, 
+                    DayType = foundPriceItem.Menu.DayType.ToString(), 
+                    StartDate = foundPriceItem.Menu.StartDate.ToLocalTime(),
+                    EndDate = foundPriceItem.Menu.EndDate.ToLocalTime(),
+                    foundPriceItem.Menu.Status
+                },
+                FieldInfo = new 
+                {
+                    foundPriceItem.Menu.FieldId, foundPriceItem.Menu.Field.FieldName,
+                    foundPriceItem.Menu.Field.ManagerId, foundPriceItem.Menu.Field.OpenHour,
+                    foundPriceItem.Menu.Field.CloseHour, foundPriceItem.Menu.Field.Address,
+                }
+            };
+
+            return GeneralResult<Object>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<PriceItem>> UpdateAPriceItem

@@ -230,15 +230,38 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             return GeneralResult<ObjectListPagingInfo>.Success(FinalResult);
         }
 
-        public async Task<GeneralResult<PriceMenu>> RetrieveAPriceMenuById(int priceMenuId)
+        public async Task<GeneralResult<Object>> GetAPriceMenuDetails(int priceMenuId)
         {
             //Get the requested price menu details
-            var foundPriceMenu = await priceMenuRepo.GetById(priceMenuId);
+            var foundPriceMenu = await priceMenuRepo.GetAPriceMenuDetails(priceMenuId);
 
-            if (foundPriceMenu == null) return GeneralResult<PriceMenu>.Error(
+            if (foundPriceMenu == null) return GeneralResult<Object>.Error(
                 404, "No price menu found with Id:" + priceMenuId);
 
-            return GeneralResult<PriceMenu>.Success(foundPriceMenu);
+            var FinalResult = new
+            {
+                foundPriceMenu.Id,
+                FieldInfo = new
+                {
+                    foundPriceMenu.FieldId, foundPriceMenu.Field.FieldName,
+                    foundPriceMenu.Field.ManagerId, foundPriceMenu.Field.OpenHour,
+                    foundPriceMenu.Field.CloseHour, foundPriceMenu.Field.Address
+                },
+                ZoneTypeInfo = new
+                {
+                    foundPriceMenu.ZoneTypeId, foundPriceMenu.TypeOfZone.Name
+                },
+                DayType = foundPriceMenu.DayType.ToString(),
+                StartDate = foundPriceMenu.StartDate.ToLocalTime(),
+                EndDate = foundPriceMenu.EndDate.ToLocalTime(),
+                foundPriceMenu.Status,
+                PriceItemList = foundPriceMenu.PriceItems.Select(x => new 
+                {
+                    x.Id, x.StartTime, x.EndTime, x.Price
+                }).ToList(),
+            };
+
+            return GeneralResult<Object>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<PriceMenu>> UpdateAPriceMenu(int Id, PriceMenuUpdatePayload newPriceMenuInfo)

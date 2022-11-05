@@ -56,15 +56,41 @@ namespace BookingSoccers.Service.Service.BookingInfo
             return GeneralResult<Payment>.Success(searchPayment);
         }
 
-        public async Task<GeneralResult<Payment>> RetrieveAPaymentById(int PaymentId)
+        public async Task<GeneralResult<Object>> GetAPaymentDetails(int PaymentId)
         {
             //Get requested payment details and return it
-            var returnedPayment = await paymentRepo.GetById(PaymentId);
+            var returnedPaymentDetails = await paymentRepo
+                .GetPaymentDetail(PaymentId);
 
-            if (returnedPayment == null) return GeneralResult<Payment>.Error(
+            if (returnedPaymentDetails == null) return GeneralResult<Object>.Error(
                 404, "Payment not found with Id:" + PaymentId);
 
-            return GeneralResult<Payment>.Success(returnedPayment);
+            var FinalResult = new
+            {
+                returnedPaymentDetails.Id,
+                ReceiverInfo = new 
+                {
+                    returnedPaymentDetails.ReceiverId,
+                    returnedPaymentDetails.ReceiverInfo.UserName,
+                    Gender = returnedPaymentDetails.ReceiverInfo.Gender.ToString(),
+                    returnedPaymentDetails.ReceiverInfo.PhoneNumber,
+                    returnedPaymentDetails.ReceiverInfo.Email
+                },
+                BookingInfo = new
+                {
+                    returnedPaymentDetails.BookingInfo.Id,
+                    returnedPaymentDetails.BookingInfo.TotalPrice,
+                    StartTime = returnedPaymentDetails.BookingInfo.StartTime.ToLocalTime(),
+                    EndTime = returnedPaymentDetails.BookingInfo.EndTime.ToLocalTime(),
+                    CreateTime = returnedPaymentDetails.BookingInfo.CreateTime.ToLocalTime(),
+                    Status = returnedPaymentDetails.BookingInfo.Status.ToString(), 
+                    returnedPaymentDetails.BookingInfo.Rating, 
+                    returnedPaymentDetails.BookingInfo.Comment
+                }
+
+            };
+
+            return GeneralResult<Object>.Success(FinalResult);
         }
 
         public async Task<GeneralResult<ObjectListPagingInfo>> RetrievePaymentsList

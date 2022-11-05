@@ -73,9 +73,9 @@ namespace BookingSoccers.Controllers.BookingInfo
 
         [HttpGet("{id}")]
         //Get details of a booking
-        public async Task<IActionResult> GetOneSpecificBooking(int id)
+        public async Task<IActionResult> GetABookingDetails(int id)
         {
-            var retrievedBooking = await bookingService.RetrieveABookingById(id);
+            var retrievedBooking = await bookingService.GetABookingDetails(id);
 
             if (retrievedBooking.IsSuccess)
                 return Ok(retrievedBooking);

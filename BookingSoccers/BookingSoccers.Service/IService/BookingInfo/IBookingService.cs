@@ -18,7 +18,7 @@ namespace BookingSoccers.Service.IService.BookingInfo
     {
         Task<GeneralResult<Booking>> AddANewBooking(BookingCreatePayload bookinginfo);
 
-        Task<GeneralResult<Booking>> RetrieveABookingById(int BookingId);
+        Task<GeneralResult<Object>> GetABookingDetails(int BookingId);
 
         Task<GeneralResult<BookingView>> GetBookingAndPaymentsById(int Id);
 

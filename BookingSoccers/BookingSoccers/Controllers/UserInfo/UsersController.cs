@@ -54,18 +54,19 @@ namespace BookingSoccers.Controllers.UserInfo
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         //Get details of a user
-        public async Task<IActionResult> GetOneSpecificUser(int id)
+        public async Task<IActionResult> GetAUserDetails(int PageNum, int id)
         {
-            var retrievedUser = await userService.RetrieveAUserById(id);
+            var retrievedUserDetails = await userService.RetrieveAUserDetails
+                (PageNum, id);
 
-            if (retrievedUser.IsSuccess)
-                return Ok(retrievedUser);
+            if (retrievedUserDetails.IsSuccess)
+                return Ok(retrievedUserDetails);
 
-            Response.StatusCode = retrievedUser.StatusCode;
+            Response.StatusCode = retrievedUserDetails.StatusCode;
 
-            var response = mapper.Map<ErrorResponse>(retrievedUser);
+            var response = mapper.Map<ErrorResponse>(retrievedUserDetails);
 
-            return StatusCode(retrievedUser.StatusCode, response);
+            return StatusCode(retrievedUserDetails.StatusCode, response);
         }
 
         [HttpGet("{username}")]

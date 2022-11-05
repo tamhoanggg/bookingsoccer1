@@ -2,6 +2,8 @@
 using BookingSoccers.Repo.Context;
 using BookingSoccers.Service.IService.SoccerFieldInfo;
 using BookingSoccers.Service.Models.Common;
+using BookingSoccers.Service.Models.Payload.Zone;
+using BookingSoccers.Service.Models.Payload;
 using BookingSoccers.Service.Models.Payload.ZoneType;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -46,9 +48,11 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         //Get details of a zone type
-        public async Task<IActionResult> GetOneSpecificZoneType(byte id)
+        public async Task<IActionResult> GetAZoneTypeDetails
+            ([FromQuery]PagingPayload pagingPayload, [FromQuery]ZonePredicate filter)
         {
-            var retrievedZoneType = await zoneTypeService.RetrieveAZoneTypeById(id);
+            var retrievedZoneType = await zoneTypeService.GetAZoneTypeDetails
+                (pagingPayload, filter);
 
             if (retrievedZoneType.IsSuccess)
                 return Ok(retrievedZoneType);

@@ -18,6 +18,17 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<Zone> getAZoneDetails(int ZoneId)
+        {
+            var ZoneDetails = await Get()
+                .Include(x => x.Field)
+                .Include(x => x.ZoneCate)
+                .Where(x => x.Id == ZoneId)
+                .FirstOrDefaultAsync();
+
+            return ZoneDetails;
+        }
+
         public async Task<List<Zone>> getFieldZonesByFieldId(int FieldId)
         {
             var IdList = await Get()

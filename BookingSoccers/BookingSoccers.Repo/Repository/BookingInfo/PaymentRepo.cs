@@ -1,6 +1,7 @@
 ﻿using BookingSoccers.Repo.Context;
 using BookingSoccers.Repo.Entities.BookingInfo;
 using BookingSoccers.Repo.IRepository.BookingInfo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,16 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
+        public async Task<Payment> GetPaymentDetail(int PaymentId)
+        {
+            var returnedPayment = await Get()
+                .Include(x => x.ReceiverInfo)
+                .Include(x => x.BookingInfo)
+                .ThenInclude(x => x.Customer)
+                .Where(x => x.Id == PaymentId)
+                .FirstOrDefaultAsync();
+
+            return returnedPayment;
+        }
     }
 }

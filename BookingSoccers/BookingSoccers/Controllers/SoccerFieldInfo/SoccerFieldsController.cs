@@ -94,10 +94,10 @@ namespace BookingSoccers.Controllers.SoccerFieldInfo
         [Authorize(Roles = "FieldManager, Admin")]
         [HttpGet("{id}")]
         //Get a soccer field details for Field Manager and Admin
-        public async Task<IActionResult> GetASoccerField(int id)
+        public async Task<IActionResult> GetAFieldDetails(int id)
         {
             var retrievedSoccerField = 
-                await soccerFieldService.RetrieveASoccerFieldById(id);
+                await soccerFieldService.GetAFieldDetails(id);
 
             if (retrievedSoccerField.IsSuccess)
                 return Ok(retrievedSoccerField);

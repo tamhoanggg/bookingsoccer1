@@ -13,6 +13,8 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 
         Task<PriceMenu> GetAPriceMenu(int FieldId, DateTime date, byte ZoneTypeId);
 
+        Task<PriceMenu> GetAPriceMenuDetails(int PriceMenuId);
+
         Task<PriceMenu> GetFieldOpeningHour(int MenuId);
     }
 }

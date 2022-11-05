@@ -17,7 +17,7 @@ namespace BookingSoccers.Service.IService.SoccerFieldInfo
         Task<GeneralResult<ZoneSlot>> AddANewZoneSlot(
             ZoneSlotCreatePayload zoneSlotInfo);
 
-        Task<GeneralResult<ZoneSlot>> RetrieveAZoneSlotById(int zoneSlotId);
+        Task<GeneralResult<Object>> GetAZoneSlotDetails(int zoneSlotId);
 
         Task<GeneralResult<ObjectListPagingInfo>> RetrieveZoneSlotsList
             (PagingPayload pagingPayload, ZoneSlotPredicate filter);

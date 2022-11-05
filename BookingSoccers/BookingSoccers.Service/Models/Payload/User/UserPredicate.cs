@@ -8,7 +8,7 @@ namespace BookingSoccers.Service.Models.Payload.User
 {
     public class UserPredicate
     {
-        public int? RoleId { get; set; }
+        public byte? RoleId { get; set; }
 
         public int? GenderNum { get; set; }
     }
