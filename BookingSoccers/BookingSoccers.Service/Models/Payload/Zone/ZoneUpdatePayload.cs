@@ -18,10 +18,13 @@ namespace BookingSoccers.Service.Models.Payload.Zone
         [Required(ErrorMessage = "Number cannot be null or empty")]
         public byte Number { get; set; }
 
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Width is a positive Integer.")]
         public int Width { get; set; }
 
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Length is a positive Integer.")]
         public int Length { get; set; }
 
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Area is a positive Integer.")]
         public int Area { get; set; }
     }
 }

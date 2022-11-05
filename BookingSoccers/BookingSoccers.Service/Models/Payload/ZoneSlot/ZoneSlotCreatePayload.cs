@@ -14,6 +14,7 @@ namespace BookingSoccers.Service.Models.Payload.ZoneSlot
         public DateTime EndTime { get; set; }
 
         [Required(ErrorMessage = "Status cannot be null or empty")]
+        [Range(0, 1, ErrorMessage = "status between 0 to 1.")]
         public byte Status { get; set; }
     }
 }

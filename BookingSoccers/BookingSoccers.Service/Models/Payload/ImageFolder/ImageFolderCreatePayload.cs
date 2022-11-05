@@ -9,6 +9,7 @@ namespace BookingSoccers.Service.Models.Payload.ImageFolder
 {
     public class ImageFolderCreatePayload
     {
+        [RegularExpression("^[0-9]+$", ErrorMessage = "FieldId is an Positive Integer.")]
         public int FieldId { get; set; }
 
         [StringLength(200, ErrorMessage = "Path must contain at least 1 character and less than 200 character", MinimumLength = 1)]

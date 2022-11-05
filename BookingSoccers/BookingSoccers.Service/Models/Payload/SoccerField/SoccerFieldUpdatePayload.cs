@@ -19,15 +19,19 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         public string Description { get; set; }
 
         [Required(ErrorMessage = "OpenTimeHour cannot be null or empty")]
+        [Range(0, 23, ErrorMessage = "OpenHour  must be between 0 and 23.")]
         public int OpenTimeHour { get; set; }
 
         [Required(ErrorMessage = "OpenTimeMinute cannot be null or empty")]
+        [Range(0, 59, ErrorMessage = "OpenHour  must be between 0 and 59.")]
         public int OpenTimeMinute { get; set; }
 
         [Required(ErrorMessage = "CloseTimeHour cannot be null or empty")]
+        [Range(0, 23, ErrorMessage = "OpenHour  must be between 0 and 23.")]
         public int CloseTimeHour { get; set; }
 
         [Required(ErrorMessage = "CloseTimeMinute cannot be null or empty")]
+        [Range(0, 59, ErrorMessage = "OpenHour  must be between 0 and 59.")]
         public int CloseTimeMinute { get; set; }
 
 

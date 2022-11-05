@@ -11,6 +11,7 @@ namespace BookingSoccers.Service.Models.Payload.User
 {
     public class UserCreatePayload
     {
+        [Range(1, 3, ErrorMessage = "Role ID between 1 to 3.")]
         public byte RoleId { get; set; }
 
         [Required(ErrorMessage = "Username cannot be null or empty")]

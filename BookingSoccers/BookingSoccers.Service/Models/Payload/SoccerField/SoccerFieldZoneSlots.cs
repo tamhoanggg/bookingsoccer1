@@ -9,7 +9,7 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
     public class SoccerFieldZoneSlots
     {
         public int FieldId { get; set; }
-
+            
         public DateTime Date { get; set; }
     }
 }
