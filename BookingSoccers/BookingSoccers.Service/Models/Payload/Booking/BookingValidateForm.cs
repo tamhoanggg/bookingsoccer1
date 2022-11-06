@@ -20,7 +20,7 @@ namespace BookingSoccers.Service.Models.Payload.Booking
         public int FieldId { get; set; }
 
         [Required(ErrorMessage = "Address cannot be null or empty")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Address was character Only")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Address was character Only")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "BookingDate cannot be null or empty")]
@@ -33,7 +33,7 @@ namespace BookingSoccers.Service.Models.Payload.Booking
         public int StartTimeMinute { get; set; }
 
         [Required(ErrorMessage = "HireAMount cannot be null or empty")]
-        [Range(50000, 1000000, ErrorMessage = "HireAMount must between 50000 and 1000000")]
+        [RegularExpression("^60|120$",ErrorMessage ="HireAmount value was only 60 or 120")]
         public int HireAmount { get; set; }
 
     }
