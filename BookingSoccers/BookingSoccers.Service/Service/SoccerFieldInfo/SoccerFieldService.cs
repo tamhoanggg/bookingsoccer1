@@ -102,6 +102,9 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 return GeneralResult<PreBookingInfo>.Error
                     (400, "Invalid hire start time or end time");
 
+            if(StartTime < DateTime.Now) return GeneralResult<PreBookingInfo>.Error
+                    (400, "Start time can not be smaller than current time");
+
             var FieldResult = await soccerFieldRepo.GetById(createFormInfo.FieldId);
 
             var ZoneTypeResult = await zoneTypeRepo.GetById(createFormInfo.ZoneTypeId);

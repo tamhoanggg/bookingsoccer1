@@ -42,6 +42,7 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Status cannot be null or empty")]
+        [Range(0, 1, ErrorMessage = "Status must be either 0 or 1")]
         public byte Status { get; set; }
 
         [Required(ErrorMessage = "TotalReviews cannot be null or empty")]

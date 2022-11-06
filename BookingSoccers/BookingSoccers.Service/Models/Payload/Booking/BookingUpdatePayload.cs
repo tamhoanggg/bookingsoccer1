@@ -41,6 +41,7 @@ namespace BookingSoccers.Service.Models.Payload.Booking
         public DateTime CreateTime { get; set; }
 
         [Required(ErrorMessage = "Status cannot be null or empty")]
+        [Range(1, 4, ErrorMessage = "Status value must be between 1 to 5")]
         public StatusEnum Status { get; set; }
 
         [Required(ErrorMessage = "Rating cannot be null or empty")]
@@ -49,7 +50,7 @@ namespace BookingSoccers.Service.Models.Payload.Booking
 
 
         [Required(ErrorMessage = "Comment cannot be null or empty")]
-        [MaxLength(1000, ErrorMessage = "Comment must be lesser than 100 characters")]
-        public string Comment { get; set; }
+        [StringLength(1000, MinimumLength = 0, ErrorMessage = "Comment must be lesser than 100 characters")]
+        public string? Comment { get; set; }
     }
 }

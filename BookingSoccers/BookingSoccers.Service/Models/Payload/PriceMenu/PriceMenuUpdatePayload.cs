@@ -19,6 +19,7 @@ namespace BookingSoccers.Service.Models.Payload.PriceMenu
         public byte ZoneTypeId { get; set; }
 
         [Required(ErrorMessage = "DateType cannot be null or empty")]
+        [Range(1, 3, ErrorMessage = "DayType is between 1 and 3")]
         public DayTypeEnum DayType { get; set; }
 
         [Required(ErrorMessage = "StartDate cannot be null or empty")]

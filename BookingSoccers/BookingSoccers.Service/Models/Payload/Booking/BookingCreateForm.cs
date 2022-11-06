@@ -20,16 +20,14 @@ namespace BookingSoccers.Service.Models.Payload.Booking
         public string ZoneType { get; set; }
 
         [Required(ErrorMessage = "FieldName cannot be null or empty")]
-        [RegularExpression("^[a-zA-Z0-9]+$", 
-            ErrorMessage = "FieldName must consist of uppper case " +
-            "or lowercase characters and numbers and not special characters")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "FieldName must be between 1 and 100 characters")]
         public string FieldName { get; set; }
 
         [Required(ErrorMessage = "ZoneID cannot be null or empty")]
         public int ZoneId { get; set; }
 
         [Required(ErrorMessage = "Address cannot be null or empty")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Address was character Only")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "Address must be between 1 and 100 characters")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Total price cannot be null or empty")]

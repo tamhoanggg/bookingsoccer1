@@ -20,8 +20,8 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         [Required(ErrorMessage = "Description cannot be null or empty")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "ImageFolderPath cannot be null or empty")]
-        public string ImageFolderPath { get; set; }
+        [StringLength(200, MinimumLength = 1, ErrorMessage = "ImageFolderPath must be between 1 and 200 characters")]
+        public string? ImageFolderPath { get; set; }
 
         [Required(ErrorMessage = "OpenHour cannot be null or empty")]
         [Range(0 , 23, ErrorMessage = "OpenHour  must be between 0 and 23.")]
@@ -47,7 +47,7 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
         [Range(0, 1, ErrorMessage = "Status has value between 0 and 1")]
         public byte Status { get; set; }
 
-        public string IdToken { get; set; }
+        public string? IdToken { get; set; }
 
     }
 }
