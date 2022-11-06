@@ -11,6 +11,7 @@ namespace BookingSoccers.Service.Models.Payload.User
 {
     public class UserCreatePayload
     {
+        [Required(ErrorMessage = "RoleID cannot be null or empty")]
         [Range(1, 3, ErrorMessage = "Role ID between 1 to 3.")]
         public byte RoleId { get; set; }
 
@@ -18,10 +19,12 @@ namespace BookingSoccers.Service.Models.Payload.User
         [StringLength(45, ErrorMessage = "UserName must contain at least 1 character and less than 45 character", MinimumLength = 1)]
         public string UserName { get; set; }
 
+
         [Required(ErrorMessage = "FirstName cannot be null or empty")]
         [StringLength(20, ErrorMessage = "First Name must contain at least 1 character and less than 20 character", MinimumLength = 1)]
         public string FirstName { get; set; }
 
+        [Required(ErrorMessage = "LastName cannot be null or empty")]
         [StringLength(20, ErrorMessage = "Last Name must contain at least 1 character and less than 20 character", MinimumLength = 1)]
         public string LastName { get; set; }
 

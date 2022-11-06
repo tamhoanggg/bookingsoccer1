@@ -9,6 +9,7 @@ namespace BookingSoccers.Service.Models.Payload.PriceItem
 {
     public class PriceItemCreatePayload
     {
+        [Required(ErrorMessage = "PriceMenuID cannot be null or empty")]
         [RegularExpression("^[0-9]+$", ErrorMessage = "PriceMenuID is an Positive Integer.")]
         public int PriceMenuId { get; set; }
 

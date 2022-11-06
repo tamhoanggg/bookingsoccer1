@@ -5,6 +5,7 @@ namespace BookingSoccers.Service.Models.Payload.ZoneSlot
     public class ZoneSlotCreatePayload
     {
         [Required(ErrorMessage = "ZoneId cannot be null or empty")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "ZoneID is an Positive Integer.")]
         public int ZoneId { get; set; }
 
         [Required(ErrorMessage = "StartTime cannot be null or empty")]

@@ -9,6 +9,7 @@ namespace BookingSoccers.Service.Models.Payload.ImageFolder
 {
     public class ImageListCreateForm
     {
+        [Required(ErrorMessage = "FieldID cannot be null or empty")]
         [RegularExpression("^[0-9]+$", ErrorMessage = "FieldId is an Positive Integer.")]
         public int FieldId { get; set; }
 

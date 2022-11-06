@@ -11,9 +11,11 @@ namespace BookingSoccers.Service.Models.Payload.PriceMenu
 {
     public class PriceMenuCreatePayload
     {
+        [Required(ErrorMessage = "FieldID cannot be null or empty")]
         [RegularExpression("^[0-9]+$", ErrorMessage = "FieldID is an Positive Integer.")]
         public int FieldId { get; set; }
 
+        [Required(ErrorMessage = "ZoneTypeID cannot be null or empty")]
         [Range(1, 3, ErrorMessage = "ZoneTypeId  must be between 1 and 3.")]
         public byte ZoneTypeId { get; set; }
 

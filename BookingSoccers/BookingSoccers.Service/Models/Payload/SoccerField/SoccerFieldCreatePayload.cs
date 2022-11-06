@@ -9,6 +9,8 @@ namespace BookingSoccers.Service.Models.Payload.SoccerField
 {
     public class SoccerFieldCreatePayload
     {
+        [Required(ErrorMessage = "ManagerID cannot be null or empty")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "ManagerID is an Positive Integer.")]
         public int ManagerId { get; set; }
 
         [Required(ErrorMessage = "FieldName cannot be null or empty")]
