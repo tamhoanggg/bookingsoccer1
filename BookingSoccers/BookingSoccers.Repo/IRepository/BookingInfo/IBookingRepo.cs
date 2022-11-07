@@ -13,7 +13,7 @@ namespace BookingSoccers.Repo.IRepository.BookingInfo
 
         Task<List<Booking>> GetSummaryBookingListByUserId(int UserId);
 
-        Task<Booking> CheckBookingDuplicate(DateTime Start, DateTime End);
+        Task<Booking> CheckBookingDuplicate(int ZoneId, DateTime Start, DateTime End);
 
         Task<Booking> GetPaymentsAndBookingById(int Id);
 

@@ -998,7 +998,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             //Check duplicate booking
             var CheckBookingExist = await bookingRepo
-                .CheckBookingDuplicate(StartTime.ToUniversalTime(), EndTime.ToUniversalTime());
+                .CheckBookingDuplicate
+                (bookingInfo.ZoneId, StartTime.ToUniversalTime(), EndTime.ToUniversalTime());
 
             if (CheckBookingExist != null) return GeneralResult<AddedBookingView>
                     .Error(409, "Can not book, another booking with overlapping slots found");

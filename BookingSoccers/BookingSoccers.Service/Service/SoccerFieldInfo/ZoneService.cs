@@ -97,7 +97,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             DateTime loopDate = UtcDate;
             //Create zone slots of zone within opening time for the next specified days
-            for(int i =0; i <15; i++) 
+            for(int i =0; i <30; i++) 
             { 
                 for(int a = 0; a < loopInt; a++) 
                 {
@@ -318,7 +318,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             List<ZoneSlot> toCreateZoneSlotList = new List<ZoneSlot>();
             DateTime loopDate = UtcDate.AddMinutes(resetHour);
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 30; i++)
             {
                 for (int a = 0; a < loopInt; a++)
                 {

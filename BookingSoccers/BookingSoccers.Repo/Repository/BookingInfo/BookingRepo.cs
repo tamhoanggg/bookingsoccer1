@@ -20,12 +20,13 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
-        public async Task<Booking> CheckBookingDuplicate(DateTime Start, DateTime End)
+        public async Task<Booking> CheckBookingDuplicate(int ZoneId, DateTime Start, DateTime End)
         {
             var BookingResult = await Get()
-                .Where(x => (Start < x.StartTime && End > x.EndTime) ||
-                (x.StartTime <= Start && Start <= x.EndTime) || 
-                (x.StartTime <= End && End <= x.EndTime))
+                .Where(x => x.ZoneId == ZoneId && (Start < x.StartTime && End > x.EndTime) ||
+                (x.StartTime == Start && x.EndTime == End) ||
+                (x.StartTime <= Start && End < x.EndTime) || 
+                (x.StartTime <= End && Start < x.EndTime))
                 .FirstOrDefaultAsync();
 
             return BookingResult;
