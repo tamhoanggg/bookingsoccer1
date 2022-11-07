@@ -62,7 +62,7 @@ namespace BookingSoccers.Service.Models.Payload.Booking
         public int EndTimeMinute { get; set; }
 
         [Required(ErrorMessage = "Status cannot be null or empty")]
-        [Range(0, 1, ErrorMessage = "Status has only 0 and 1.")]
+        [Range(1, 1, ErrorMessage = "Status can only be 1.")]
         public StatusEnum Status { get; set; }
 
         public List<int> SlotsIdList { get; set; }
