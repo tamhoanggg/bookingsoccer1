@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BookingSoccers.Repo.Entities.UserInfo;
+using BookingSoccers.Repo.IRepository.BookingInfo;
+using BookingSoccers.Repo.IRepository.SoccerFieldInfo;
 using BookingSoccers.Repo.IRepository.UserInfo;
 using BookingSoccers.Service.IService.UserInfo;
 using BookingSoccers.Service.Models.Common;
@@ -16,13 +18,18 @@ namespace BookingSoccers.Service.Service.UserInfo
 {
     public class UserService : IUserService
     {
+        private readonly ISoccerFieldRepo soccerFieldRepo;
+        private readonly IBookingRepo bookingRepo;
         private readonly IUserRepo userRepo;
         private readonly IMapper mapper;
 
-        public UserService(IUserRepo userRepo, IMapper mapper)
+        public UserService(IUserRepo userRepo, IMapper mapper,
+            IBookingRepo bookingRepo, ISoccerFieldRepo soccerFieldRepo)
         {
             this.userRepo = userRepo;
             this.mapper = mapper;
+            this.bookingRepo = bookingRepo;
+            this.soccerFieldRepo = soccerFieldRepo;
         }
 
         public async Task<GeneralResult<User>> AddANewUser(UserCreatePayload userinfo)
@@ -135,8 +142,11 @@ namespace BookingSoccers.Service.Service.UserInfo
         public async Task<GeneralResult<ObjectListPagingInfo>> RetrieveAUserDetails
             (int PageNum, int UserId)
         {
+            if(PageNum < 1) return GeneralResult<ObjectListPagingInfo>.Error(
+                404, "PageNum must be equal or greater than 1");
+
             //Get a user details by user Id
-            var userDetails = await userRepo.GetUserDetails(PageNum, UserId);
+            var userDetails = await userRepo.GetById(UserId);
 
             if (userDetails == null) return GeneralResult<ObjectListPagingInfo>.Error(
                 404, "User not found with Id:" + UserId);
@@ -150,24 +160,32 @@ namespace BookingSoccers.Service.Service.UserInfo
             //If user is a field manager select properties to show for field manager 
             if (userDetails.RoleId == 2) 
             {
+                //Get bookings and payments of a user
+                var ReturnedFields = await soccerFieldRepo
+                    .GetPaginationFieldList(PageNum, UserId);
+
                 listResult = new 
                 { 
                     userDetails.Id, userDetails.UserName,
                     userDetails.FirstName, userDetails.LastName,
                     Gender = userDetails.Gender.ToString(), userDetails.PhoneNumber, 
-                    userDetails.Email, FieldList = userDetails.SoccerFields.ToList()
+                    userDetails.Email, FieldList = ReturnedFields
                 };
             }
 
             //If user role is user then select properties to show for user
             if (userDetails.RoleId == 3)
             {
-                listResult = new
+                //Get bookings and payments of a user
+                var ReturnedBookings = await bookingRepo
+                    .GetBookingsPaginationByUserId(PageNum, UserId);
+
+                    listResult = new
                 {
                     userDetails.Id, userDetails.UserName,
                     userDetails.FirstName, userDetails.LastName,
                     Gender = userDetails.Gender.ToString(), userDetails.PhoneNumber,
-                    userDetails.Email, BookingList = userDetails.Bookings.ToList()
+                    userDetails.Email, BookingList = ReturnedBookings
                 };
             }
 

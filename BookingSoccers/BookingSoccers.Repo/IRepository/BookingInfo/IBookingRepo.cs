@@ -17,6 +17,8 @@ namespace BookingSoccers.Repo.IRepository.BookingInfo
 
         Task<Booking> GetPaymentsAndBookingById(int Id);
 
+        Task<List<Booking>> GetBookingsPaginationByUserId(int PageNum, int UserId);
+
         Task<Booking> GetBookingInfoForCheckOut(int BookingId);
 
         Task<List<Booking>> GetBookingsByFieldId(int FieldId);

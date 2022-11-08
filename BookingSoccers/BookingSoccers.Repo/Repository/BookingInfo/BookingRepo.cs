@@ -133,6 +133,20 @@ namespace BookingSoccers.Repo.Repository.BookingInfo
             return BookingPayments;
         }
 
+        public async Task<List<Booking>> 
+            GetBookingsPaginationByUserId(int PageNum, int UserId)
+        {
+            var returnedList = await Get()
+                .Include(x => x.payments)
+                .Where(x => x.CustomerId == UserId)
+                .OrderBy(x => x.Id)
+                .Skip((PageNum - 1) * 20)
+                .Take(20)
+                .ToListAsync();
+
+            return returnedList;
+        }
+
         public async Task<List<Booking>> GetSummaryBookingListByUserId(int UserId)
         {
             var bookingList = await Get()

@@ -20,5 +20,7 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 
         Task<SoccerField> GetFieldDetails(int FieldId);
 
+        Task<List<SoccerField>> GetPaginationFieldList(int PageNum, int ManagerId);
+
     }
 }

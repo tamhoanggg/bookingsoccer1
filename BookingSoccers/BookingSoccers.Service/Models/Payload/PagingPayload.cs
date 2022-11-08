@@ -10,6 +10,7 @@ namespace BookingSoccers.Service.Models.Payload
     public class PagingPayload
     {
         [Required]
+        [Range(1, Int32.MaxValue, ErrorMessage = "PageNum must be 1 or greater")]
         public int PageNum { get; set; }
 
         [Required]

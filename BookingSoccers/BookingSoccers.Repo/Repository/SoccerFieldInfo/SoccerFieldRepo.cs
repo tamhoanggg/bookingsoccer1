@@ -75,6 +75,19 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             return SoccerFieldList;
         }
 
+        public async Task<List<SoccerField>> 
+            GetPaginationFieldList(int PageNum, int ManagerId)
+        {
+            var ReturnedFieldList = await Get()
+                .Where(x => x.ManagerId == ManagerId)
+                .OrderBy(x => x.Id)
+                .Skip((PageNum - 1) * 20)
+                .Take(20)
+                .ToListAsync();
+
+            return ReturnedFieldList;
+        }
+
         public async Task<SoccerField> GetSoccerFieldByFieldId(int Id)
         {
             var returnedSoccerField =
