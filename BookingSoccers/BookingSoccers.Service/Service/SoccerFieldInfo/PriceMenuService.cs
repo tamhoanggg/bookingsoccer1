@@ -44,11 +44,17 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var FilteredCheckList = PriceMenuExistCheck
                 .Where(x =>
              (Info.StartDate < x.StartDate && x.EndDate < Info.EndDate) ||
-             (x.StartDate <= Info.StartDate && Info.StartDate <= x.EndDate) ||
-             (x.StartDate <= Info.EndDate && Info.EndDate <= x.EndDate)).FirstOrDefault();
+             (Info.StartDate < x.StartDate && x.EndDate >= Info.EndDate) ||
+             (Info.StartDate == x.StartDate && x.EndDate == Info.EndDate) ||
+             (x.StartDate <= Info.StartDate && Info.StartDate < x.EndDate && 
+             x.StartDate < Info.EndDate && Info.EndDate < x.EndDate) ||
+             (x.StartDate <= Info.StartDate && Info.StartDate < x.EndDate && 
+             Info.EndDate >= x.EndDate))
+                .FirstOrDefault();
 
             if (FilteredCheckList != null) return
-                    GeneralResult<PriceMenu>.Error(409, "Price menu already exists");
+                    GeneralResult<PriceMenu>
+                    .Error(409, "Price menu already exists or overlaps with other menus");
 
             //After validation, map new price menu info to new price menu instance
             var newPriceMenu = mapper.Map<PriceMenu>(Info);

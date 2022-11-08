@@ -18,9 +18,9 @@ namespace BookingSoccers.Repo.Repository.SoccerFieldInfo
             bookingSoccersContext = _bookingSoccersContext;
         }
 
-        public async Task<ZoneSlot> getAZoneSlotByZoneId(int Id)
+        public async Task<DateTime> getAZoneSlotByZoneId(int Id)
         {
-           var zoneSlot =  Get().Where(x => x.ZoneId == Id).MaxBy(x=>x.EndTime);
+           var zoneSlot = await  Get().Where(x => x.ZoneId == Id).MaxAsync(x => x.EndTime);
 
             return zoneSlot;
         }

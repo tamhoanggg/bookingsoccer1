@@ -14,7 +14,9 @@ namespace BookingSoccers.Service.IService.UserInfo
 {
     public interface IUserService
     {
-        public Task< GeneralResult<User> > GetByEmail(string email);
+        Task< GeneralResult<User> > GetByEmail(string email);
+
+        Task<GeneralResult<User>> GetAUserByUserName(string UserName);
 
         Task< GeneralResult<User> > AddANewUser(UserCreatePayload userinfo);
 

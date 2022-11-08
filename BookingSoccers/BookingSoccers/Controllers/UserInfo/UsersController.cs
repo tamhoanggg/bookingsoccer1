@@ -69,6 +69,24 @@ namespace BookingSoccers.Controllers.UserInfo
             return StatusCode(retrievedUserDetails.StatusCode, response);
         }
 
+        [Authorize(Roles = "FieldManager")]
+        [HttpGet("field-manager/{username}")]
+        //Get details of a user
+        public async Task<IActionResult> GetManagerUserDetails(string UserName)
+        {
+            var retrievedUserDetails = await userService.GetAUserByUserName
+                (UserName);
+
+            if (retrievedUserDetails.IsSuccess)
+                return Ok(retrievedUserDetails);
+
+            Response.StatusCode = retrievedUserDetails.StatusCode;
+
+            var response = mapper.Map<ErrorResponse>(retrievedUserDetails);
+
+            return StatusCode(retrievedUserDetails.StatusCode, response);
+        }
+
         [HttpGet("{username}")]
         [Authorize(Roles = "User")]
         //Get users details for user update

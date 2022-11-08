@@ -251,5 +251,15 @@ namespace BookingSoccers.Service.Service.UserInfo
 
             return GeneralResult<BasicUserInfo>.Success(UpdatedUser);
         }
+
+        public async Task<GeneralResult<User>> GetAUserByUserName(string UserName)
+        {
+            var returnedUser = await userRepo.GetByUserName(UserName);
+
+            if (returnedUser == null) return GeneralResult<User>
+                    .Error(404, "No user associated with UserName:" + UserName);
+
+            return GeneralResult<User>.Success(returnedUser);
+        }
     }
 }

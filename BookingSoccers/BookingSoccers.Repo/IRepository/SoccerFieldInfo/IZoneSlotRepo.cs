@@ -13,7 +13,7 @@ namespace BookingSoccers.Repo.IRepository.SoccerFieldInfo
 
         Task<List<ZoneSlot>> getZoneSlots(int Id, DateTime date);
 
-        Task<ZoneSlot> getAZoneSlotByZoneId(int Id);
+        Task<DateTime> getAZoneSlotByZoneId(int Id);
 
         Task<ZoneSlot> getAZoneSlotDetails(int ZoneSlotId);
     }

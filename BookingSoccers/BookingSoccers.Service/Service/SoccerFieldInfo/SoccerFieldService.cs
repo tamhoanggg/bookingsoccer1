@@ -812,7 +812,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
             var newPred = PredicateBuilder.New<SoccerField>(true);
 
             //list of navi props to include in query
-            string? includeList = "user,";
+            string? includeList = "user,ImageList";
 
             //Predicates to add to query (given that any one of them isn't null) 
             if (filter.Status != null)
@@ -927,7 +927,8 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 {
                     x.Id, x.ZoneTypeId, x.Number
                 }).ToList(),
-                FieldDetails.FieldName, FieldDetails.OpenHour, FieldDetails.CloseHour, 
+                FieldDetails.FieldName, FieldDetails.Description, 
+                FieldDetails.OpenHour, FieldDetails.CloseHour, 
                 PriceMenus = FieldDetails.PriceMenus.Select(x => new 
                 {
                     x.Id, x.ZoneTypeId, DayType = x.DayType.ToString(), 
@@ -997,12 +998,12 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
                 0);
 
             //Check duplicate booking
-            var CheckBookingExist = await bookingRepo
-                .CheckBookingDuplicate
-                (bookingInfo.ZoneId, StartTime.ToUniversalTime(), EndTime.ToUniversalTime());
+            //var CheckBookingExist = await bookingRepo
+            //    .CheckBookingDuplicate
+            //    (bookingInfo.ZoneId, StartTime.ToUniversalTime(), EndTime.ToUniversalTime());
 
-            if (CheckBookingExist != null) return GeneralResult<AddedBookingView>
-                    .Error(409, "Can not book, another booking with overlapping slots found");
+            //if (CheckBookingExist != null) return GeneralResult<AddedBookingView>
+            //        .Error(409, "Can not book, another booking with overlapping slots found");
 
             List<ZoneSlot> ZoneList = new List<ZoneSlot>();
             //for each zone slot change its status to 1 (occupied)

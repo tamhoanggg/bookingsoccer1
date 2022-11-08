@@ -303,7 +303,7 @@ namespace BookingSoccers.Service.Service.SoccerFieldInfo
 
             var FieldOpeningTime = await soccerFieldRepo.GetById(FieldId);
 
-            var UtcDate = maxZoneSlot.EndTime.ToUniversalTime();
+            var UtcDate = maxZoneSlot.ToUniversalTime();
 
             TimeSpan StartTime = FieldOpeningTime.OpenHour;
             TimeSpan EndTime = FieldOpeningTime.CloseHour;
